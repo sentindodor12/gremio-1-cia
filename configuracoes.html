@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Configurações - Grêmio 1ª Cia</title>
+    
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #0a0a0a;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #000000;
+            border-bottom: 2px solid #8b0000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            font-size: 10px;
+            color: #888;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            white-space: nowrap;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #e74c3c;
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: #e74c3c !important;
+            border: 1px solid #e74c3c;
+            padding: 6px 18px !important;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: 600 !important;
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: #e74c3c;
+            color: #fff !important;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 1px solid #555;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #1a1a1a;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .user-info .user-role {
+            background: #8b0000;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* ===== CONFIGURAÇÕES ===== */
+        .config-section {
+            padding: 30px 0;
+        }
+
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .config-header h2 {
+            font-size: 28px;
+            color: #fff;
+        }
+
+        .config-header h2 span {
+            color: #e74c3c;
+        }
+
+        .config-header p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .config-card {
+            background: #141414;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .config-card:hover {
+            border-color: #8b0000;
+        }
+
+        .config-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 12px;
+        }
+
+        .config-card .card-header .icon {
+            font-size: 24px;
+            color: #e74c3c;
+        }
+
+        .config-card .card-header h3 {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .config-card .card-header .badge {
+            background: #8b0000;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* ===== TABELA DE USUÁRIOS ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .table-wrapper table thead th {
+            padding: 10px 12px;
+            text-align: left;
+            color: #888;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .table-wrapper table tbody td {
+            padding: 10px 12px;
+            color: #ccc;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .table-wrapper table tbody tr:hover td {
+            background: #1a1a1a;
+        }
+
+        .table-wrapper table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-role {
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-role.adm {
+            background: #1a3a2a;
+            color: #2ecc71;
+        }
+
+        .badge-role.dev {
+            background: #2a1a3a;
+            color: #9b59b6;
+        }
+
+        .badge-role.user {
+            background: #1a2a3a;
+            color: #3498db;
+        }
+
+        .btn-icon {
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-icon:hover {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .btn-icon.delete:hover {
+            color: #e74c3c;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 18px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #8b0000;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #a93226;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .btn-outline:hover {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 5px 14px;
+            font-size: 12px;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalFade 0.3s ease;
+        }
+
+        @keyframes modalFade {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 0 5px;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #8b0000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: #555;
+        }
+
+        .form-group select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        /* ===== LOGS ===== */
+        .logs-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .logs-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .logs-container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 3px;
+        }
+
+        .logs-container::-webkit-scrollbar-thumb {
+            background: #8b0000;
+            border-radius: 3px;
+        }
+
+        .log-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid #1a1a1a;
+            font-size: 13px;
+        }
+
+        .log-item:hover {
+            background: #1a1a1a;
+        }
+
+        .log-item .log-usuario {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .log-item .log-acao {
+            color: #888;
+        }
+
+        .log-item .log-data {
+            color: #555;
+            font-size: 12px;
+        }
+
+        .log-item .log-role {
+            padding: 1px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .log-item .log-role.adm {
+            background: #1a3a2a;
+            color: #2ecc71;
+        }
+
+        .log-item .log-role.dev {
+            background: #2a1a3a;
+            color: #9b59b6;
+        }
+
+        .log-item .log-role.user {
+            background: #1a2a3a;
+            color: #3498db;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        .empty-state .icon {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* ===== INFO ===== */
+        .info-text {
+            color: #888;
+            font-size: 13px;
+            padding: 10px 0;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #000000;
+            color: #666;
+            padding: 30px 0;
+            border-top: 2px solid #8b0000;
+            margin-top: 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .footer-info h3 {
+            color: #fff;
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .footer-info p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: #e74c3c;
+        }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .footer-copy p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 992px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 62px;
+                left: 0;
+                width: 100%;
+                background: #000;
+                padding: 20px;
+                gap: 12px;
+                border-bottom: 2px solid #8b0000;
+                text-align: center;
+            }
+
+            .nav-menu.open {
+                display: flex;
+            }
+
+            .nav-menu a {
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .config-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .config-header h2 {
+                font-size: 22px;
+            }
+
+            .config-card {
+                padding: 20px;
+            }
+
+            .log-item {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .modal {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .logo h1 {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .logo img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .config-header h2 {
+                font-size: 18px;
+            }
+
+            .config-card {
+                padding: 15px;
+            }
+
+            .config-card .card-header h3 {
+                font-size: 16px;
+            }
+
+            .table-wrapper table {
+                font-size: 12px;
+            }
+
+            .table-wrapper table thead th,
+            .table-wrapper table tbody td {
+                padding: 8px 10px;
+            }
+
+            .footer {
+                padding: 20px 0;
+            }
+
+            .footer-info h3 {
+                font-size: 16px;
+            }
+
+            .modal {
+                padding: 15px;
+            }
+
+            .modal-header h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                <h1>GRÊMIO 1ª CIA</h1>
+                <span>Gestão</span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/configuracoes" class="active">Configurações</a>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">Menu</button>
+        </div>
+    </header>
+
+    <!-- CONFIGURAÇÕES -->
+    <section class="config-section">
+        <div class="container">
+            <div class="config-header">
+                <div>
+                    <h2>Configurações <span>do Sistema</span></h2>
+                    <p>Gerencie usuários e visualize logs do sistema</p>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Usuário</span>
+                    <span class="user-role" id="userRole">DEV</span>
+                </div>
+            </div>
+
+            <div class="config-grid">
+                <!-- Gerenciar Usuários -->
+                <div class="config-card">
+                    <div class="card-header">
+                        <span class="icon">👤</span>
+                        <h3>Gerenciar Usuários</h3>
+                        <span class="badge">DEV</span>
+                    </div>
+                    <p class="info-text">Adicione ou remova usuários do sistema.</p>
+                    <button class="btn btn-primary btn-block" onclick="abrirModalUsuario()" style="margin-top: 10px;">
+                        + Adicionar Usuário
+                    </button>
+                    <div class="table-wrapper" style="margin-top: 15px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Usuário</th>
+                                    <th>Email</th>
+                                    <th>Função</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaUsuarios">
+                                <tr>
+                                    <td colspan="4" style="text-align: center; color: #666; padding: 20px;">
+                                        Carregando usuários...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Logs do Sistema -->
+                <div class="config-card">
+                    <div class="card-header">
+                        <span class="icon">📋</span>
+                        <h3>Logs do Sistema</h3>
+                        <span class="badge">DEV</span>
+                    </div>
+                    <p class="info-text">Histórico de acessos ao sistema.</p>
+                    <div class="logs-container" id="logsContainer">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            Carregando logs...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informações do Sistema -->
+            <div class="config-card" style="margin-top: 25px;">
+                <div class="card-header">
+                    <span class="icon">ℹ</span>
+                    <h3>Sobre o Sistema</h3>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 10px 0;">
+                    <div>
+                        <p style="color: #888; font-size: 12px;">Sistema</p>
+                        <p style="color: #fff; font-size: 14px;">Grêmio 1ª Cia - Gestão</p>
+                    </div>
+                    <div>
+                        <p style="color: #888; font-size: 12px;">Versão</p>
+                        <p style="color: #fff; font-size: 14px;">1.0.0</p>
+                    </div>
+                    <div>
+                        <p style="color: #888; font-size: 12px;">Desenvolvido por</p>
+                        <p style="color: #fff; font-size: 14px;">SD TOMAZ</p>
+                    </div>
+                    <div>
+                        <p style="color: #888; font-size: 12px;">Email</p>
+                        <p style="color: #fff; font-size: 14px;">limpaplus.sup1@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL ADICIONAR USUÁRIO -->
+    <div class="modal-overlay" id="modalUsuario">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Adicionar Usuário</h3>
+                <button class="modal-close" onclick="fecharModalUsuario()">✕</button>
+            </div>
+            <form id="formUsuario" onsubmit="adicionarUsuario(event)">
+                <div class="form-group">
+                    <label for="nomeUsuario">Nome</label>
+                    <input type="text" id="nomeUsuario" placeholder="Digite o nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="emailUsuario">Email</label>
+                    <input type="email" id="emailUsuario" placeholder="email@exemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="senhaUsuario">Senha</label>
+                    <input type="password" id="senhaUsuario" placeholder="Digite a senha" required>
+                </div>
+                <div class="form-group">
+                    <label for="roleUsuario">Função</label>
+                    <select id="roleUsuario" required>
+                        <option value="adm">Administrador</option>
+                        <option value="dev">Desenvolvedor</option>
+                        <option value="user">Usuário</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="fecharModalUsuario()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>GRÊMIO 1ª CIA</h3>
+                <p>Espaço de lazer e integração</p>
+            </div>
+            <div class="footer-links">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/configuracoes">Configurações</a>
+            </div>
+            <div class="footer-copy">
+                <p>&copy; 2026 Grêmio 1ª Cia</p>
+                <p>Todos os direitos reservados</p>
+                <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== VARIÁVEIS =====
+        let usuarioLogado = null;
+
+        // ===== MENU MOBILE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('open');
+                });
+            }
+
+            const navLinks = navMenu.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            // Verificar sessão
+            fetch('/api/verificar_sessao')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logado) {
+                        usuarioLogado = data.user;
+                        document.getElementById('userName').textContent = data.user.nome || data.user.email.split('@')[0];
+                        document.getElementById('userRole').textContent = data.user.role.toUpperCase();
+
+                        // Verificar se é DEV
+                        if (data.user.role !== 'dev') {
+                            document.querySelector('.config-grid').innerHTML = `
+                                <div style="grid-column: 1 / -1; text-align: center; padding: 60px; color: #e74c3c;">
+                                    <span style="font-size: 48px; display: block; margin-bottom: 20px;">⛔</span>
+                                    <h3>Acesso Negado</h3>
+                                    <p style="color: #888; margin-top: 10px;">Apenas desenvolvedores têm acesso a esta página.</p>
+                                    <a href="/dashboard" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">Voltar ao Dashboard</a>
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        // Carregar dados
+                        carregarUsuarios();
+                        carregarLogs();
+                    } else {
+                        window.location.href = '/login';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao verificar sessão:', error);
+                    window.location.href = '/login';
+                });
+        });
+
+        // ===== CARREGAR USUÁRIOS =====
+        function carregarUsuarios() {
+            fetch('/api/usuarios')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('tabelaUsuarios');
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #666; padding: 20px;">
+                                    Nenhum usuário cadastrado.
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    tbody.innerHTML = data.map(user => {
+                        const roleBadge = {
+                            'adm': 'badge-role adm',
+                            'dev': 'badge-role dev',
+                            'user': 'badge-role user'
+                        }[user.role] || 'badge-role user';
+
+                        const roleLabel = {
+                            'adm': 'Administrador',
+                            'dev': 'Desenvolvedor',
+                            'user': 'Usuário'
+                        }[user.role] || 'Usuário';
+
+                        const isSelf = user.id === usuarioLogado.id;
+
+                        return `
+                            <tr>
+                                <td>${user.nome}</td>
+                                <td>${user.email}</td>
+                                <td><span class="badge-role ${roleBadge}">${roleLabel}</span></td>
+                                <td>
+                                    ${!isSelf ? `
+                                        <button class="btn-icon delete" onclick="deletarUsuario(${user.id}, '${user.nome}')" title="Excluir">✕</button>
+                                    ` : `
+                                        <span style="color: #555; font-size: 11px;">Você</span>
+                                    `}
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar usuários:', error);
+                    document.getElementById('tabelaUsuarios').innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #e74c3c; padding: 20px;">
+                                Erro ao carregar usuários.
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+
+        // ===== CARREGAR LOGS =====
+        function carregarLogs() {
+            fetch('/api/logs')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('logsContainer');
+
+                    if (data.length === 0) {
+                        container.innerHTML = `
+                            <div style="text-align: center; padding: 20px; color: #666;">
+                                Nenhum log registrado.
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = data.map(log => {
+                        const roleBadge = {
+                            'adm': 'adm',
+                            'dev': 'dev',
+                            'user': 'user'
+                        }[log.role] || 'user';
+
+                        let dataFormatada = log.data;
+                        try {
+                            const dataObj = new Date(log.data);
+                            dataFormatada = dataObj.toLocaleDateString('pt-BR') + ' ' + 
+                                           dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                        } catch(e) {}
+
+                        return `
+                            <div class="log-item">
+                                <span class="log-usuario">${log.usuario}</span>
+                                <span class="log-acao">${log.acao}</span>
+                                <span class="log-role ${roleBadge}">${log.role.toUpperCase()}</span>
+                                <span class="log-data">${dataFormatada}</span>
+                            </div>
+                        `;
+                    }).join('');
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar logs:', error);
+                    document.getElementById('logsContainer').innerHTML = `
+                        <div style="text-align: center; padding: 20px; color: #e74c3c;">
+                            Erro ao carregar logs.
+                        </div>
+                    `;
+                });
+        }
+
+        // ===== MODAL USUÁRIO =====
+        function abrirModalUsuario() {
+            document.getElementById('modalUsuario').classList.add('active');
+            document.getElementById('formUsuario').reset();
+        }
+
+        function fecharModalUsuario() {
+            document.getElementById('modalUsuario').classList.remove('active');
+        }
+
+        // ===== ADICIONAR USUÁRIO =====
+        function adicionarUsuario(event) {
+            event.preventDefault();
+
+            const nome = document.getElementById('nomeUsuario').value.trim();
+            const email = document.getElementById('emailUsuario').value.trim();
+            const senha = document.getElementById('senhaUsuario').value.trim();
+            const role = document.getElementById('roleUsuario').value;
+
+            if (!nome || !email || !senha) {
+                alert('Preencha todos os campos.');
+                return;
+            }
+
+            const btn = document.querySelector('#formUsuario button[type="submit"]');
+            btn.textContent = 'Adicionando...';
+            btn.disabled = true;
+
+            fetch('/api/usuarios', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, senha, role })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fecharModalUsuario();
+                    carregarUsuarios();
+                    alert('Usuário adicionado com sucesso!');
+                } else {
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            })
+            .finally(() => {
+                btn.textContent = 'Adicionar';
+                btn.disabled = false;
+            });
+        }
+
+        // ===== DELETAR USUÁRIO =====
+        function deletarUsuario(id, nome) {
+            if (!confirm(`Tem certeza que deseja excluir o usuário "${nome}"?`)) {
+                return;
+            }
+
+            fetch(`/api/usuarios/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    carregarUsuarios();
+                    alert('Usuário excluído com sucesso!');
+                } else {
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            });
+        }
+
+        // ===== LOGOUT =====
+        function logout() {
+            fetch('/api/logout', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer logout:', error);
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                });
+        }
+
+        console.log('Configurações - Grêmio 1ª Cia');
+    </script>
+
+</body>
+</html>

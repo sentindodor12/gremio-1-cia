@@ -1,0 +1,6 @@
+
+Flask
+Flask-Cors
+Flask-Mail
+bcrypt
+gunicorn

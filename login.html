@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Login - Grêmio 1ª Cia</title>
+    
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #000000;
+            border-bottom: 2px solid #8b0000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            font-size: 10px;
+            color: #888;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            white-space: nowrap;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #e74c3c;
+        }
+
+        .btn-login {
+            background: #8b0000;
+            color: #fff !important;
+            padding: 8px 22px !important;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: 600 !important;
+        }
+
+        .btn-login:hover {
+            background: #a93226 !important;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 1px solid #555;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #1a1a1a;
+        }
+
+        /* ===== LOGIN ===== */
+        .login-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            min-height: calc(100vh - 130px);
+        }
+
+        .login-box {
+            background: #141414;
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 40px 35px;
+            max-width: 420px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .login-box:hover {
+            border-color: #8b0000;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .login-header h2 {
+            color: #fff;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+
+        .login-header p {
+            color: #888;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .login-header .line {
+            width: 50px;
+            height: 2px;
+            background: #8b0000;
+            margin: 10px auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #8b0000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: #555;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 13px;
+        }
+
+        .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .form-options label input[type="checkbox"] {
+            accent-color: #8b0000;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .form-options a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .form-options a:hover {
+            color: #e74c3c;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: #8b0000;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #a93226;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .login-footer a {
+            color: #e74c3c;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-footer a:hover {
+            color: #ff6b6b;
+            text-decoration: underline;
+        }
+
+        /* Mensagem de erro */
+        .error-message {
+            background: #3a1a1a;
+            border: 1px solid #8b0000;
+            color: #e74c3c;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Loader do botão */
+        .btn-loader {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #000000;
+            color: #666;
+            padding: 30px 0;
+            border-top: 2px solid #8b0000;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .footer-info h3 {
+            color: #fff;
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .footer-info p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: #e74c3c;
+        }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .footer-copy p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 62px;
+                left: 0;
+                width: 100%;
+                background: #000;
+                padding: 20px;
+                gap: 12px;
+                border-bottom: 2px solid #8b0000;
+                text-align: center;
+            }
+
+            .nav-menu.open {
+                display: flex;
+            }
+
+            .nav-menu a {
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .login-box {
+                padding: 30px 20px;
+            }
+
+            .login-header h2 {
+                font-size: 20px;
+            }
+
+            .form-options {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .logo h1 {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .logo img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .login-box {
+                padding: 25px 15px;
+            }
+
+            .login-header img {
+                width: 55px;
+                height: 55px;
+            }
+
+            .login-header h2 {
+                font-size: 18px;
+            }
+
+            .form-group input {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+
+            .login-footer {
+                font-size: 12px;
+            }
+
+            .footer {
+                padding: 20px 0;
+            }
+
+            .footer-info h3 {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-box {
+                padding: 20px 12px;
+            }
+
+            .login-header h2 {
+                font-size: 16px;
+            }
+
+            .login-header img {
+                width: 45px;
+                height: 45px;
+            }
+
+            .form-group label {
+                font-size: 11px;
+            }
+
+            .form-group input {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                <h1>GRÊMIO 1ª CIA</h1>
+                <span>Gestão</span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/login" class="btn-login">Entrar</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">Menu</button>
+        </div>
+    </header>
+
+    <!-- LOGIN -->
+    <section class="login-section">
+        <div class="login-box">
+            <div class="login-header">
+                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                <h2>ACESSO RESTRITO</h2>
+                <p>Faça login para acessar o sistema</p>
+                <div class="line"></div>
+            </div>
+
+            <!-- Mensagem de erro -->
+            <div id="errorMessage" class="error-message">
+                Email ou senha incorretos. Tente novamente.
+            </div>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="seuemail@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Digite sua senha" required>
+                </div>
+
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" id="lembrar"> Lembrar-me
+                    </label>
+                    <a href="#">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    Entrar no Sistema
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p>Não tem acesso? <a href="/avaliacao">Envie sua avaliação</a></p>
+                <p style="margin-top: 5px;"><a href="/">Voltar para página inicial</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>GRÊMIO 1ª CIA</h3>
+                <p>Espaço de lazer e integração</p>
+            </div>
+            <div class="footer-links">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/login">Login</a>
+            </div>
+            <div class="footer-copy">
+                <p>&copy; 2026 Grêmio 1ª Cia</p>
+                <p>Todos os direitos reservados</p>
+                <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== MENU MOBILE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('open');
+                });
+            }
+
+            const navLinks = navMenu.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            // Verificar se já está logado via API
+            fetch('/api/verificar_sessao')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logado) {
+                        localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
+                        window.location.href = '/dashboard';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao verificar sessão:', error);
+                });
+        });
+
+        // ===== LOGIN COM API REAL =====
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value.trim();
+            const errorMsg = document.getElementById('errorMessage');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // Esconder mensagem anterior
+            errorMsg.classList.remove('show');
+
+            // Validação básica
+            if (!email || !senha) {
+                errorMsg.textContent = 'Por favor, preencha todos os campos.';
+                errorMsg.classList.add('show');
+                return false;
+            }
+
+            if (!email.includes('@') || !email.includes('.')) {
+                errorMsg.textContent = 'Por favor, insira um email válido.';
+                errorMsg.classList.add('show');
+                return false;
+            }
+
+            // Mostrar loading
+            loginBtn.innerHTML = '<span class="btn-loader"></span> Entrando...';
+            loginBtn.disabled = true;
+
+            // Chamar API de login
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    senha: senha
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Salvar usuário na sessão local
+                    localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
+
+                    // Redirecionar para dashboard
+                    window.location.href = '/dashboard';
+                } else {
+                    // Mostrar erro
+                    errorMsg.textContent = data.error || 'Email ou senha incorretos.';
+                    errorMsg.classList.add('show');
+                    loginBtn.innerHTML = 'Entrar no Sistema';
+                    loginBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao fazer login:', error);
+                errorMsg.textContent = 'Erro de conexão com o servidor.';
+                errorMsg.classList.add('show');
+                loginBtn.innerHTML = 'Entrar no Sistema';
+                loginBtn.disabled = false;
+            });
+
+            return false;
+        }
+
+        console.log('Página de Login - Grêmio 1ª Cia');
+    </script>
+
+</body>
+</html>

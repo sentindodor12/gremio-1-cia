@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "nome": "Admin",
+    "email": "admin@gremio.com",
+    "senha": "$2b$12$SXI0RWJlmv0AIxCIDIQzsOEgJyQ2PjjNKr95EUAHdY9ybYuoUANUO",
+    "role": "adm"
+  },
+  {
+    "id": 2,
+    "nome": "Dev Master",
+    "email": "dev@gremio.com",
+    "senha": "$2b$12$g.AicnL9TduRRC0LRQGjeu5HL02g8eKnEg52gorzTfUwYgCyKU/iW",
+    "role": "dev"
+  }
+]

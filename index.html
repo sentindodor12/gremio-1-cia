@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Grêmio 1ª Cia</title>
+    
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #0a0a0a;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* ===== SPLASH SCREEN ===== */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: splashAnimation 3s ease forwards;
+            padding: 20px;
+        }
+
+        .splash-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .splash-logo img {
+            width: 160px;
+            max-width: 60%;
+            height: auto;
+            object-fit: contain;
+            animation: logoEntrance 0.8s ease-out forwards;
+            filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.3));
+        }
+
+        .splash-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 6px;
+            animation: titleFade 1s ease-out 0.3s forwards;
+            opacity: 0;
+            margin-top: 5px;
+        }
+
+        .splash-subtitle {
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 4px;
+            animation: titleFade 1s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+
+        .loader {
+            margin-top: 25px;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid #8b0000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @keyframes splashAnimation {
+            0% { transform: scale(1.05); opacity: 0; }
+            20% { transform: scale(1); opacity: 1; }
+            80% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes logoEntrance {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            60% { transform: scale(1.05) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes titleFade {
+            0% { transform: translateY(15px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #000000;
+            border-bottom: 2px solid #8b0000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            font-size: 10px;
+            color: #888;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            white-space: nowrap;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #e74c3c;
+        }
+
+        .btn-login {
+            background: #8b0000;
+            color: #fff !important;
+            padding: 8px 22px !important;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: 600 !important;
+        }
+
+        .btn-login:hover {
+            background: #a93226 !important;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 1px solid #555;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #1a1a1a;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 450px;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 0;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .hero-text {
+            max-width: 700px;
+            text-align: center;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        .hero-text h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            color: #fff;
+        }
+
+        .hero-text h2 span {
+            color: #e74c3c;
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-image img {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.2));
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .hero-grid .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 8px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .hero-grid .item:hover {
+            background: rgba(139, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .hero-grid .item .icon {
+            font-size: 22px;
+        }
+
+        .hero-grid .item .label {
+            font-size: 9px;
+            color: #888;
+            font-weight: 500;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #8b0000;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #a93226;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #555;
+        }
+
+        .btn-secondary:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+            padding: 8px 20px;
+            font-size: 13px;
+        }
+
+        .btn-outline:hover {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        /* ===== ATIVIDADES ===== */
+        .atividades {
+            padding: 60px 0;
+            background: #0d0d0d;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: #8b0000;
+            margin: 10px auto 0;
+        }
+
+        .atividades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 20px;
+        }
+
+        .atividade-card {
+            background: #141414;
+            padding: 25px 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #1a1a1a;
+        }
+
+        .atividade-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: #8b0000;
+        }
+
+        .atividade-card .icon {
+            font-size: 34px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .atividade-card h3 {
+            font-size: 15px;
+            color: #fff;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .atividade-card p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .atividade-card .status {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-disponivel {
+            background: #1a3a2a;
+            color: #4caf50;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 60px 0;
+            background: #0a0a0a;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: #141414;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #1a1a1a;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #8b0000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .feature-card .icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* ===== SCHEDULE ===== */
+        .schedule-section {
+            padding: 60px 0;
+            background: #0d0d0d;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #141414;
+            border-radius: 8px;
+            border: 1px solid #1a1a1a;
+            border-left: 4px solid #8b0000;
+        }
+
+        .schedule-item .day {
+            font-weight: 600;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .schedule-item .time {
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .schedule-item .time-detail {
+            color: #888;
+            font-size: 12px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #000000;
+            color: #666;
+            padding: 40px 0;
+            border-top: 2px solid #8b0000;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .footer-info h3 {
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .footer-info p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: #e74c3c;
+        }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .footer-copy p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                padding: 12px;
+                max-width: 450px;
+            }
+
+            .hero-grid .item {
+                padding: 8px 6px;
+            }
+
+            .hero-grid .item .icon {
+                font-size: 20px;
+            }
+
+            .hero-image img {
+                max-width: 170px;
+            }
+
+            .hero-text h2 {
+                font-size: 30px;
+            }
+
+            .atividades-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 62px;
+                left: 0;
+                width: 100%;
+                background: #000;
+                padding: 20px;
+                gap: 12px;
+                border-bottom: 2px solid #8b0000;
+                text-align: center;
+            }
+
+            .nav-menu.open {
+                display: flex;
+            }
+
+            .nav-menu a {
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 20px 0;
+            }
+
+            .hero-content {
+                padding: 20px 0;
+                gap: 20px;
+            }
+
+            .hero-text h2 {
+                font-size: 26px;
+            }
+
+            .hero-text p {
+                font-size: 14px;
+                padding: 0 10px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                max-width: 280px;
+                margin: 0 auto;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero-image img {
+                max-width: 140px;
+            }
+
+            .hero-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 400px;
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .hero-grid .item .icon {
+                font-size: 18px;
+            }
+
+            .hero-grid .item .label {
+                font-size: 8px;
+            }
+
+            .atividades-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .atividade-card {
+                padding: 20px 12px;
+            }
+
+            .atividade-card .icon {
+                font-size: 28px;
+            }
+
+            .atividade-card h3 {
+                font-size: 14px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .schedule-item {
+                padding: 12px 16px;
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .splash-title {
+                font-size: 22px;
+                letter-spacing: 3px;
+            }
+
+            .splash-logo img {
+                width: 120px;
+                max-width: 50%;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .section-subtitle {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .logo h1 {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .logo img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .hero-text h2 {
+                font-size: 22px;
+            }
+
+            .hero-text p {
+                font-size: 13px;
+                padding: 0 5px;
+            }
+
+            .hero-image img {
+                max-width: 120px;
+            }
+
+            .hero-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+                padding: 10px;
+                max-width: 320px;
+            }
+
+            .hero-grid .item {
+                padding: 6px 4px;
+            }
+
+            .hero-grid .item .icon {
+                font-size: 16px;
+            }
+
+            .hero-grid .item .label {
+                font-size: 7px;
+            }
+
+            .atividades-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .atividade-card {
+                padding: 15px 10px;
+            }
+
+            .atividade-card .icon {
+                font-size: 26px;
+            }
+
+            .atividade-card h3 {
+                font-size: 13px;
+            }
+
+            .atividade-card p {
+                font-size: 11px;
+            }
+
+            .atividade-card .status {
+                font-size: 10px;
+                padding: 2px 12px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .section-subtitle {
+                font-size: 13px;
+            }
+
+            .splash-title {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+
+            .splash-subtitle {
+                font-size: 11px;
+                letter-spacing: 2px;
+            }
+
+            .splash-logo img {
+                width: 100px;
+                max-width: 50%;
+            }
+
+            .loader {
+                width: 30px;
+                height: 30px;
+            }
+
+            .schedule-item {
+                padding: 10px 12px;
+            }
+
+            .schedule-item .day {
+                font-size: 13px;
+            }
+
+            .schedule-item .time {
+                font-size: 13px;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+
+            .feature-card h3 {
+                font-size: 16px;
+            }
+
+            .feature-card p {
+                font-size: 13px;
+            }
+
+            .footer {
+                padding: 30px 0;
+            }
+
+            .footer-info h3 {
+                font-size: 18px;
+            }
+
+            .footer-info p {
+                font-size: 13px;
+            }
+
+            .footer-copy p {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 280px;
+                gap: 8px;
+            }
+
+            .hero-grid .item {
+                padding: 8px 6px;
+            }
+
+            .hero-grid .item .icon {
+                font-size: 20px;
+            }
+
+            .hero-grid .item .label {
+                font-size: 9px;
+            }
+
+            .atividades-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .hero-text h2 {
+                font-size: 20px;
+            }
+
+            .logo h1 {
+                font-size: 12px;
+            }
+
+            .logo img {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1300px;
+            }
+
+            .hero-text h2 {
+                font-size: 42px;
+            }
+
+            .hero-text p {
+                font-size: 18px;
+            }
+
+            .hero-grid {
+                max-width: 600px;
+                padding: 25px;
+                gap: 15px;
+            }
+
+            .hero-grid .item .icon {
+                font-size: 28px;
+            }
+
+            .hero-grid .item .label {
+                font-size: 11px;
+            }
+
+            .hero-image img {
+                max-width: 250px;
+            }
+
+            .atividades-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 25px;
+            }
+
+            .section-title {
+                font-size: 34px;
+            }
+
+            .schedule-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 900px;
+            }
+        }
+
+        @media print {
+            .header {
+                position: static;
+            }
+            .nav-menu {
+                display: none !important;
+            }
+            .menu-toggle {
+                display: none !important;
+            }
+            .hero {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            .hero-text h2 {
+                color: #000 !important;
+            }
+            .hero-text p {
+                color: #333 !important;
+            }
+            .btn {
+                display: none !important;
+            }
+            .footer {
+                background: #f0f0f0 !important;
+                color: #333 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splashScreen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                <div class="splash-title">GRÊMIO 1ª CIA</div>
+                <div class="splash-subtitle">Sistema de Gestão</div>
+            </div>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <div id="mainContent" style="display: none;">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="container header-content">
+                <div class="logo">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <h1>GRÊMIO 1ª CIA</h1>
+                    <span>Gestão</span>
+                </div>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="/" class="active">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/login" class="btn-login">Entrar</a>
+                </nav>
+                <button class="menu-toggle" id="menuToggle">Menu</button>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container hero-content">
+                <div class="hero-image">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                </div>
+                <div class="hero-text">
+                    <h2>Bem-vindo ao <span>Grêmio 1ª Cia</span></h2>
+                    <p>
+                        O espaço de lazer da 1ª Companhia. Aqui você encontra diversas atividades 
+                        para relaxar e se divertir. Participe, sugira melhorias e faça parte 
+                        da nossa comunidade.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="/login" class="btn btn-primary">Acessar Sistema</a>
+                        <a href="/avaliacao" class="btn btn-secondary">Dar Sugestão</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ATIVIDADES -->
+        <section class="atividades">
+            <div class="container">
+                <h2 class="section-title">Atividades Disponíveis</h2>
+                <p class="section-subtitle">Confira todas as opções de lazer do Grêmio</p>
+                <div class="atividades-grid">
+                    <div class="atividade-card">
+                        <span class="icon">🎯</span>
+                        <h3>TABULERO</h3>
+                        <p>Jogos de tabuleiro</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                    <div class="atividade-card">
+                        <span class="icon">🃏</span>
+                        <h3>BARALHO</h3>
+                        <p>Cartas para jogos</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                    <div class="atividade-card">
+                        <span class="icon">🏓</span>
+                        <h3>PING PONG</h3>
+                        <p>Mesa com raquetes</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                    <div class="atividade-card">
+                        <span class="icon">🎱</span>
+                        <h3>SINUCA</h3>
+                        <p>Mesa profissional</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                    <div class="atividade-card">
+                        <span class="icon">⚽</span>
+                        <h3>PEBOLIM</h3>
+                        <p>Futebol de mesa</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                    <div class="atividade-card">
+                        <span class="icon">🎯</span>
+                        <h3>DARDO</h3>
+                        <p>Alvo com dardos</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                    <div class="atividade-card">
+                        <span class="icon">🕹️</span>
+                        <h3>FLIPERAMA</h3>
+                        <p>Máquinas retrô</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                    <div class="atividade-card">
+                        <span class="icon">🎮</span>
+                        <h3>VIDEO GAME</h3>
+                        <p>Console com jogos</p>
+                        <span class="status status-disponivel">Disponível</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FUNCIONALIDADES -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Funcionalidades do Sistema</h2>
+                <p class="section-subtitle">Gerencie o Grêmio de forma eficiente</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <span class="icon">👥</span>
+                        <h3>Lista de Membros</h3>
+                        <p>Visualize todos os participantes, pesquise por nomes e acompanhe quem frequenta o Grêmio.</p>
+                        <a href="/lista" class="btn btn-outline">Ver Lista</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="icon">💡</span>
+                        <h3>Sugestões</h3>
+                        <p>Envie ideias para melhorar o espaço, sugerir novos jogos ou equipamentos para o Grêmio.</p>
+                        <a href="/avaliacao" class="btn btn-outline">Dar Sugestão</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HORÁRIO DE FUNCIONAMENTO -->
+        <section class="schedule-section">
+            <div class="container">
+                <h2 class="section-title">Horário de Funcionamento</h2>
+                <p class="section-subtitle">Confira os horários do Grêmio 1ª Cia</p>
+                <div class="schedule-grid">
+                    <div class="schedule-item">
+                        <span class="day">Segunda a Quinta</span>
+                        <div>
+                            <span class="time">11:30 - 12:30</span>
+                            <span class="time-detail"> e </span>
+                            <span class="time">16:30 - 22:00</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Sexta</span>
+                        <span class="time">12:00 - 22:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Finais de Semana e Feriados</span>
+                        <span class="time">08:00 - 22:00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container footer-content">
+                <div class="footer-info">
+                    <h3>GRÊMIO 1ª CIA</h3>
+                    <p>Espaço de lazer e integração</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/login">Login</a>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; 2026 Grêmio 1ª Cia</p>
+                    <p>Todos os direitos reservados</p>
+                    <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ===== SPLASH SCREEN =====
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const splash = document.getElementById('splashScreen');
+                const mainContent = document.getElementById('mainContent');
+                
+                splash.style.opacity = '0';
+                splash.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(function() {
+                    splash.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    mainContent.style.animation = 'fadeIn 0.5s ease';
+                }, 500);
+            }, 3000);
+        });
+
+        // ===== MENU MOBILE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('open');
+                });
+            }
+
+            const navLinks = navMenu.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('open');
+                    }
+                });
+            });
+        });
+
+        console.log('Grêmio 1ª Cia - Sistema carregado com sucesso!');
+    </script>
+
+</body>
+</html>

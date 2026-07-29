@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nome": "Cabo Silva",
+    "pelotao": "1° Pelotão",
+    "email": "cabo.silva@email.com"
+  },
+  {
+    "id": 2,
+    "nome": "Sgt Santos",
+    "pelotao": "2° Pelotão",
+    "email": "sgt.santos@email.com"
+  },
+  {
+    "id": 3,
+    "nome": "Ten Ribeiro",
+    "pelotao": "3° Pelotão",
+    "email": "ten.ribeiro@email.com"
+  }
+]

@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Lista de Membros - Grêmio 1ª Cia</title>
+    
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #0a0a0a;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #000000;
+            border-bottom: 2px solid #8b0000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            font-size: 10px;
+            color: #888;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            white-space: nowrap;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #e74c3c;
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: #e74c3c !important;
+            border: 1px solid #e74c3c;
+            padding: 6px 18px !important;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: 600 !important;
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: #e74c3c;
+            color: #fff !important;
+        }
+
+        .btn-login-header {
+            background: #8b0000;
+            color: #fff !important;
+            padding: 6px 18px !important;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-weight: 600 !important;
+            text-decoration: none;
+        }
+
+        .btn-login-header:hover {
+            background: #a93226 !important;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 1px solid #555;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #1a1a1a;
+        }
+
+        /* ===== LISTA ===== */
+        .lista-section {
+            padding: 30px 0;
+        }
+
+        .lista-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .lista-header h2 {
+            font-size: 26px;
+            color: #fff;
+        }
+
+        .lista-header h2 span {
+            color: #e74c3c;
+        }
+
+        .lista-header p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .lista-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 0 12px;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus-within {
+            border-color: #8b0000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            padding: 10px 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-box input::placeholder {
+            color: #555;
+        }
+
+        .search-box .search-icon {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 22px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #8b0000;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #a93226;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #2ecc71;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .btn-outline:hover {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        /* ===== TABELA ===== */
+        .table-container {
+            background: #141414;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .table-container:hover {
+            border-color: #8b0000;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        table thead {
+            background: #1a1a1a;
+            border-bottom: 2px solid #8b0000;
+        }
+
+        table thead th {
+            padding: 14px 16px;
+            text-align: left;
+            color: #ccc;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        table tbody tr {
+            border-bottom: 1px solid #1a1a1a;
+            transition: background 0.2s;
+        }
+
+        table tbody tr:hover {
+            background: #1a1a1a;
+        }
+
+        table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        table tbody td {
+            padding: 12px 16px;
+            color: #ddd;
+            vertical-align: middle;
+        }
+
+        table tbody td .avatar {
+            width: 36px;
+            height: 36px;
+            background: #8b0000;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        table tbody td .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        table tbody td .user-cell .name {
+            font-weight: 500;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        table tbody td .user-cell .info {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .actions .btn-icon {
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .actions .btn-icon:hover {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .actions .btn-icon.edit:hover {
+            color: #3498db;
+        }
+
+        .actions .btn-icon.delete:hover {
+            color: #e74c3c;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalFade 0.3s ease;
+        }
+
+        @keyframes modalFade {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 0 5px;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #8b0000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: #555;
+        }
+
+        .form-group select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        /* ===== PAGINAÇÃO ===== */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-top: 1px solid #1a1a1a;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pagination .info {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .pagination .pages {
+            display: flex;
+            gap: 5px;
+        }
+
+        .pagination .pages button {
+            background: transparent;
+            border: 1px solid #2a2a2a;
+            color: #888;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .pagination .pages button:hover {
+            border-color: #8b0000;
+            color: #fff;
+        }
+
+        .pagination .pages button.active {
+            background: #8b0000;
+            border-color: #8b0000;
+            color: #fff;
+        }
+
+        /* ===== BANNER VISUALIZAÇÃO ===== */
+        .viewer-banner {
+            background: #1a2a3a;
+            border: 1px solid #2a3a4a;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            color: #88aacc;
+            font-size: 14px;
+        }
+
+        .viewer-banner .icon {
+            font-size: 18px;
+        }
+
+        .viewer-banner strong {
+            color: #fff;
+        }
+
+        .viewer-banner a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        .viewer-banner a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #000000;
+            color: #666;
+            padding: 30px 0;
+            border-top: 2px solid #8b0000;
+            margin-top: 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .footer-info h3 {
+            color: #fff;
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .footer-info p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: #e74c3c;
+        }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .footer-copy p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 62px;
+                left: 0;
+                width: 100%;
+                background: #000;
+                padding: 20px;
+                gap: 12px;
+                border-bottom: 2px solid #8b0000;
+                text-align: center;
+            }
+
+            .nav-menu.open {
+                display: flex;
+            }
+
+            .nav-menu a {
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .lista-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .lista-header h2 {
+                font-size: 22px;
+            }
+
+            .lista-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .lista-controls .btn {
+                width: 100%;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            table thead th,
+            table tbody td {
+                padding: 10px 12px;
+            }
+
+            .pagination {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .modal {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .logo h1 {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .logo img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .lista-header h2 {
+                font-size: 18px;
+            }
+
+            table thead th,
+            table tbody td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .actions .btn-icon {
+                padding: 2px 6px;
+                font-size: 12px;
+            }
+
+            .modal {
+                padding: 15px;
+            }
+
+            .modal-header h3 {
+                font-size: 18px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+
+            .footer {
+                padding: 20px 0;
+            }
+
+            .footer-info h3 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                <h1>GRÊMIO 1ª CIA</h1>
+                <span>Gestão</span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/">Início</a>
+                <a href="/lista" class="active">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/dashboard" id="navDashboard" style="display: none;">Dashboard</a>
+                <a href="/login" id="navLogin" class="btn-login-header">Entrar</a>
+                <button id="navLogout" class="btn-logout" style="display: none;" onclick="logout()">Sair</button>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">Menu</button>
+        </div>
+    </header>
+
+    <!-- LISTA -->
+    <section class="lista-section">
+        <div class="container">
+            <div class="lista-header">
+                <div>
+                    <h2>Membros <span>Pagantes</span></h2>
+                    <p>Lista de todos os membros que pagaram a mensalidade</p>
+                </div>
+                <div class="lista-controls">
+                    <div class="search-box">
+                        <span class="search-icon">◈</span>
+                        <input type="text" id="searchInput" placeholder="Pesquisar membro..." oninput="filtrarMembros()">
+                    </div>
+                    <button class="btn btn-success" id="btnDownload" onclick="baixarLista()" style="display: none;">Baixar Lista</button>
+                    <button class="btn btn-primary" id="btnAdicionar" onclick="abrirModalAdicionar()" style="display: none;">+ Adicionar Membro</button>
+                </div>
+            </div>
+
+            <!-- Banner para visualizadores -->
+            <div class="viewer-banner" id="viewerBanner">
+                <span class="icon">◈</span>
+                <span>Você está no modo <strong>visualização</strong>. Para adicionar membros ou baixar a lista, <a href="/login">faça login</a> como ADM ou DEV.</span>
+            </div>
+
+            <!-- Tabela -->
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Membro</th>
+                                <th>Pelotão</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaBody">
+                            <tr>
+                                <td colspan="3" style="text-align: center; padding: 40px; color: #666;">
+                                    Carregando membros...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <span class="info" id="totalInfo">Carregando...</span>
+                    <div class="pages">
+                        <button onclick="paginaAnterior()">◀</button>
+                        <button class="active">1</button>
+                        <button onclick="proximaPagina()">▶</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL ADICIONAR -->
+    <div class="modal-overlay" id="modalAdicionar">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Adicionar Membro</h3>
+                <button class="modal-close" onclick="fecharModalAdicionar()">✕</button>
+            </div>
+            <form id="formAdicionar" onsubmit="adicionarMembro(event)">
+                <div class="form-group">
+                    <label for="nomeMembro">Nome Completo</label>
+                    <input type="text" id="nomeMembro" placeholder="Digite o nome do membro" required>
+                </div>
+                <div class="form-group">
+                    <label for="nomeGuerraMembro">Nome de Guerra</label>
+                    <input type="text" id="nomeGuerraMembro" placeholder="Digite o nome de guerra">
+                </div>
+                <div class="form-group">
+                    <label for="pelotaoMembro">Pelotão</label>
+                    <select id="pelotaoMembro" required>
+                        <option value="">Selecione o pelotão</option>
+                        <option value="1° Pelotão">1° Pelotão</option>
+                        <option value="2° Pelotão">2° Pelotão</option>
+                        <option value="3° Pelotão">3° Pelotão</option>
+                        <option value="ENC-MAT">ENC-MAT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="emailMembro">Email (opcional)</label>
+                    <input type="email" id="emailMembro" placeholder="email@exemplo.com">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="fecharModalAdicionar()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar Membro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR -->
+    <div class="modal-overlay" id="modalEditar">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Editar Membro</h3>
+                <button class="modal-close" onclick="fecharModalEditar()">✕</button>
+            </div>
+            <form id="formEditar" onsubmit="salvarEdicao(event)">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editNome">Nome Completo</label>
+                    <input type="text" id="editNome" placeholder="Digite o nome do membro" required>
+                </div>
+                <div class="form-group">
+                    <label for="editNomeGuerra">Nome de Guerra</label>
+                    <input type="text" id="editNomeGuerra" placeholder="Digite o nome de guerra">
+                </div>
+                <div class="form-group">
+                    <label for="editPelotao">Pelotão</label>
+                    <select id="editPelotao" required>
+                        <option value="1° Pelotão">1° Pelotão</option>
+                        <option value="2° Pelotão">2° Pelotão</option>
+                        <option value="3° Pelotão">3° Pelotão</option>
+                        <option value="ENC-MAT">ENC-MAT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email (opcional)</label>
+                    <input type="email" id="editEmail" placeholder="email@exemplo.com">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="fecharModalEditar()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>GRÊMIO 1ª CIA</h3>
+                <p>Espaço de lazer e integração</p>
+            </div>
+            <div class="footer-links">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/dashboard">Dashboard</a>
+            </div>
+            <div class="footer-copy">
+                <p>&copy; 2026 Grêmio 1ª Cia</p>
+                <p>Todos os direitos reservados</p>
+                <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== VARIÁVEIS GLOBAIS =====
+        let membros = [];
+        let filtrados = [];
+        let paginaAtual = 1;
+        const itensPorPagina = 10;
+        let usuarioLogado = null;
+
+        // ===== FUNÇÕES DE USUÁRIO =====
+        function isAdmOuDev() {
+            return usuarioLogado && (usuarioLogado.role === 'adm' || usuarioLogado.role === 'dev');
+        }
+
+        // ===== CARREGAR MEMBROS DA API =====
+        function carregarMembros() {
+            const tbody = document.getElementById('tabelaBody');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 40px; color: #666;">
+                        Carregando membros...
+                    </td>
+                </tr>
+            `;
+
+            fetch('/api/membros')
+                .then(response => response.json())
+                .then(data => {
+                    membros = data;
+                    filtrados = [...membros];
+                    renderizarTabela();
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar membros:', error);
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 40px; color: #e74c3c;">
+                                Erro ao carregar membros. Verifique o servidor.
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+
+        // ===== RENDERIZAR TABELA =====
+        function renderizarTabela() {
+            const inicio = (paginaAtual - 1) * itensPorPagina;
+            const fim = inicio + itensPorPagina;
+            const paginaDados = filtrados.slice(inicio, fim);
+            const tbody = document.getElementById('tabelaBody');
+            const podeEditar = isAdmOuDev();
+
+            if (paginaDados.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 40px; color: #666;">
+                            Nenhum membro encontrado
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('totalInfo').textContent = 'Mostrando 0 membros';
+                return;
+            }
+
+            tbody.innerHTML = paginaDados.map(membro => {
+                const nomeExibicao = membro.nome_guerra ? `${membro.nome} (${membro.nome_guerra})` : membro.nome;
+                const avatarLetra = (membro.nome_guerra || membro.nome).charAt(0).toUpperCase();
+                return `
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <span class="avatar">${avatarLetra}</span>
+                                <div>
+                                    <div class="name">${nomeExibicao}</div>
+                                    <div class="info">${membro.pelotao || 'Sem pelotão'}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${membro.pelotao || 'Sem pelotão'}</td>
+                        <td>
+                            <div class="actions">
+                                ${podeEditar ? `
+                                    <button class="btn-icon edit" onclick="abrirModalEditar(${membro.id})" title="Editar">✎</button>
+                                    <button class="btn-icon delete" onclick="deletarMembro(${membro.id})" title="Excluir">✕</button>
+                                ` : `
+                                    <span style="color: #555; font-size: 12px;">Visualizar</span>
+                                `}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('totalInfo').textContent = 
+                `Mostrando ${inicio + 1} - ${Math.min(fim, filtrados.length)} de ${filtrados.length} membros`;
+        }
+
+        // ===== FILTRAR =====
+        function filtrarMembros() {
+            const termo = document.getElementById('searchInput').value.toLowerCase();
+            filtrados = membros.filter(m => 
+                m.nome.toLowerCase().includes(termo) ||
+                (m.nome_guerra && m.nome_guerra.toLowerCase().includes(termo)) ||
+                (m.pelotao && m.pelotao.toLowerCase().includes(termo))
+            );
+            paginaAtual = 1;
+            renderizarTabela();
+        }
+
+        // ===== PAGINAÇÃO =====
+        function paginaAnterior() {
+            if (paginaAtual > 1) {
+                paginaAtual--;
+                renderizarTabela();
+            }
+        }
+
+        function proximaPagina() {
+            if (paginaAtual < Math.ceil(filtrados.length / itensPorPagina)) {
+                paginaAtual++;
+                renderizarTabela();
+            }
+        }
+
+        // ===== BAIXAR LISTA COMPLETA =====
+        function baixarLista() {
+            if (!isAdmOuDev()) {
+                alert('Você precisa estar logado como ADM ou DEV para baixar a lista.');
+                return;
+            }
+
+            if (membros.length === 0) {
+                alert('Não há membros para baixar.');
+                return;
+            }
+
+            // Agrupar por pelotão
+            const pelotoes = {};
+            membros.forEach(m => {
+                const pelotao = m.pelotao || 'Sem pelotão';
+                if (!pelotoes[pelotao]) {
+                    pelotoes[pelotao] = [];
+                }
+                pelotoes[pelotao].push(m);
+            });
+
+            // Ordenar pelotões
+            const ordemPelotoes = ['1° Pelotão', '2° Pelotão', '3° Pelotão', 'ENC-MAT'];
+            const pelotoesOrdenados = ordemPelotoes.filter(p => pelotoes[p]);
+
+            // Gerar HTML para impressão
+            let html = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Relação de Pagamento - Grêmio 1ª Cia</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 40px; background: #fff; color: #000; }
+                    h1 { text-align: center; color: #8b0000; font-size: 24px; }
+                    .subtitulo { text-align: center; color: #555; margin-bottom: 30px; font-size: 16px; }
+                    .pelotao { 
+                        margin-bottom: 30px; 
+                        border: 1px solid #ccc; 
+                        border-radius: 8px; 
+                        padding: 15px 20px;
+                        page-break-inside: avoid;
+                    }
+                    .pelotao h2 { 
+                        background: #8b0000; 
+                        color: #fff; 
+                        padding: 8px 15px; 
+                        border-radius: 4px; 
+                        margin: -15px -20px 15px -20px;
+                        font-size: 18px;
+                    }
+                    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+                    th { background: #f0f0f0; padding: 10px 12px; text-align: left; border-bottom: 2px solid #8b0000; font-weight: 600; }
+                    td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+                    tr:hover { background: #f9f9f9; }
+                    .status { color: #27ae60; font-weight: 600; }
+                    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #8b0000; font-size: 12px; color: #888; }
+                    @media print { .no-print { display: none; } body { margin: 20px; } .pelotao { page-break-inside: avoid; } }
+                </style>
+            </head>
+            <body>
+                <h1>RELAÇÃO DE PAGAMENTO DO GRÊMIO — 1ª CIA</h1>
+                <p class="subtitulo">Somente os militares que efetuaram o pagamento</p>
+                <p style="text-align: center; color: #888; font-size: 14px; margin-bottom: 30px;">
+                    Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}
+                </p>
+            `;
+
+            pelotoesOrdenados.forEach(pelotao => {
+                const membrosPelotao = pelotoes[pelotao];
+                html += `
+                    <div class="pelotao">
+                        <h2>${pelotao}</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>NOME COMPLETO</th>
+                                    <th>NOME DE GUERRA</th>
+                                    <th>SITUAÇÃO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                membrosPelotao.forEach((m, index) => {
+                    html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${m.nome}</td>
+                            <td>${m.nome_guerra || ''}</td>
+                            <td class="status">PAGO</td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="footer">
+                    <p>_____________________________________________</p>
+                    <p>ST ADAIR - SEÇ CMDO</p>
+                    <p>&copy; 2026 Grêmio 1ª Cia - Todos os direitos reservados</p>
+                </div>
+                <div class="no-print" style="text-align: center; margin-top: 20px;">
+                    <button onclick="window.print()" style="padding: 10px 30px; background: #8b0000; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                        Imprimir / Salvar PDF
+                    </button>
+                    <button onclick="window.close()" style="padding: 10px 30px; background: #555; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-left: 10px;">
+                        Fechar
+                    </button>
+                </div>
+            </body>
+            </html>
+            `;
+
+            const novaJanela = window.open('', '_blank', 'width=900,height=700');
+            novaJanela.document.write(html);
+            novaJanela.document.close();
+        }
+
+        // ===== ADICIONAR MEMBRO =====
+        function abrirModalAdicionar() {
+            if (!isAdmOuDev()) {
+                alert('Você precisa estar logado como ADM ou DEV para adicionar membros.');
+                return;
+            }
+            document.getElementById('modalAdicionar').classList.add('active');
+            document.getElementById('formAdicionar').reset();
+        }
+
+        function fecharModalAdicionar() {
+            document.getElementById('modalAdicionar').classList.remove('active');
+        }
+
+        function adicionarMembro(event) {
+            event.preventDefault();
+
+            if (!isAdmOuDev()) {
+                alert('Você não tem permissão para adicionar membros.');
+                return;
+            }
+
+            const nome = document.getElementById('nomeMembro').value.trim();
+            const nomeGuerra = document.getElementById('nomeGuerraMembro').value.trim();
+            const pelotao = document.getElementById('pelotaoMembro').value;
+            const email = document.getElementById('emailMembro').value.trim();
+
+            if (!nome || !pelotao) {
+                alert('Preencha o nome e selecione o pelotão.');
+                return;
+            }
+
+            const btn = document.querySelector('#formAdicionar button[type="submit"]');
+            btn.textContent = 'Adicionando...';
+            btn.disabled = true;
+
+            fetch('/api/membros', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome: nome,
+                    nome_guerra: nomeGuerra,
+                    pelotao: pelotao,
+                    email: email || ''
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fecharModalAdicionar();
+                    carregarMembros();
+                    alert('Membro adicionado com sucesso!');
+                } else {
+                    alert('Erro ao adicionar membro: ' + (data.error || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            })
+            .finally(() => {
+                btn.textContent = 'Adicionar Membro';
+                btn.disabled = false;
+            });
+        }
+
+        // ===== EDITAR MEMBRO =====
+        function abrirModalEditar(id) {
+            if (!isAdmOuDev()) {
+                alert('Você precisa estar logado como ADM ou DEV para editar membros.');
+                return;
+            }
+
+            const membro = membros.find(m => m.id === id);
+            if (!membro) return;
+
+            document.getElementById('editId').value = id;
+            document.getElementById('editNome').value = membro.nome || '';
+            document.getElementById('editNomeGuerra').value = membro.nome_guerra || '';
+            document.getElementById('editPelotao').value = membro.pelotao || '1° Pelotão';
+            document.getElementById('editEmail').value = membro.email || '';
+            document.getElementById('modalEditar').classList.add('active');
+        }
+
+        function fecharModalEditar() {
+            document.getElementById('modalEditar').classList.remove('active');
+        }
+
+        function salvarEdicao(event) {
+            event.preventDefault();
+
+            if (!isAdmOuDev()) {
+                alert('Você não tem permissão para editar membros.');
+                return;
+            }
+
+            const id = parseInt(document.getElementById('editId').value);
+            const nome = document.getElementById('editNome').value.trim();
+            const nomeGuerra = document.getElementById('editNomeGuerra').value.trim();
+            const pelotao = document.getElementById('editPelotao').value;
+            const email = document.getElementById('editEmail').value.trim();
+
+            if (!nome || !pelotao) {
+                alert('Preencha o nome e selecione o pelotão.');
+                return;
+            }
+
+            const btn = document.querySelector('#formEditar button[type="submit"]');
+            btn.textContent = 'Salvando...';
+            btn.disabled = true;
+
+            fetch(`/api/membros/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome: nome,
+                    nome_guerra: nomeGuerra,
+                    pelotao: pelotao,
+                    email: email || ''
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fecharModalEditar();
+                    carregarMembros();
+                    alert('Membro atualizado com sucesso!');
+                } else {
+                    alert('Erro ao atualizar membro: ' + (data.error || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            })
+            .finally(() => {
+                btn.textContent = 'Salvar Alterações';
+                btn.disabled = false;
+            });
+        }
+
+        // ===== DELETAR MEMBRO =====
+        function deletarMembro(id) {
+            if (!isAdmOuDev()) {
+                alert('Você precisa estar logado como ADM ou DEV para excluir membros.');
+                return;
+            }
+
+            const membro = membros.find(m => m.id === id);
+            if (!membro) return;
+
+            if (!confirm(`Tem certeza que deseja excluir "${membro.nome}"?`)) {
+                return;
+            }
+
+            fetch(`/api/membros/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    carregarMembros();
+                    alert('Membro excluído com sucesso!');
+                } else {
+                    alert('Erro ao excluir membro: ' + (data.error || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            });
+        }
+
+        // ===== LOGOUT =====
+        function logout() {
+            fetch('/api/logout', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer logout:', error);
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                });
+        }
+
+        // ===== INICIALIZAÇÃO =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu Mobile
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('open');
+                });
+            }
+
+            const navLinks = navMenu.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            // Verificar sessão
+            fetch('/api/verificar_sessao')
+                .then(response => response.json())
+                .then(data => {
+                    const navLogin = document.getElementById('navLogin');
+                    const navLogout = document.getElementById('navLogout');
+                    const navDashboard = document.getElementById('navDashboard');
+                    const btnAdicionar = document.getElementById('btnAdicionar');
+                    const btnDownload = document.getElementById('btnDownload');
+                    const viewerBanner = document.getElementById('viewerBanner');
+
+                    if (data.logado) {
+                        usuarioLogado = data.user;
+                        navLogin.style.display = 'none';
+                        navLogout.style.display = 'inline-block';
+                        navDashboard.style.display = 'inline-block';
+                        localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
+
+                        if (data.user.role === 'adm' || data.user.role === 'dev') {
+                            btnAdicionar.style.display = 'inline-block';
+                            btnDownload.style.display = 'inline-block';
+                            viewerBanner.style.display = 'none';
+                        } else {
+                            btnAdicionar.style.display = 'none';
+                            btnDownload.style.display = 'none';
+                            viewerBanner.style.display = 'flex';
+                        }
+                    } else {
+                        usuarioLogado = null;
+                        navLogin.style.display = 'inline-block';
+                        navLogout.style.display = 'none';
+                        navDashboard.style.display = 'none';
+                        btnAdicionar.style.display = 'none';
+                        btnDownload.style.display = 'none';
+                        viewerBanner.style.display = 'flex';
+                        localStorage.removeItem('usuarioLogado');
+                    }
+
+                    // Carregar membros do banco
+                    carregarMembros();
+                })
+                .catch(error => {
+                    console.error('Erro ao verificar sessão:', error);
+                    carregarMembros();
+                });
+        });
+
+        console.log('Lista de Membros - Grêmio 1ª Cia');
+    </script>
+
+</body>
+</html>
