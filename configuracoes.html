@@ -226,6 +226,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
+            min-width: 400px;
         }
 
         .table-wrapper table thead th {
@@ -243,6 +244,7 @@
             padding: 10px 12px;
             color: #ccc;
             border-bottom: 1px solid #1a1a1a;
+            word-break: break-word;
         }
 
         .table-wrapper table tbody tr:hover td {
@@ -258,6 +260,7 @@
             border-radius: 12px;
             font-size: 11px;
             font-weight: 600;
+            display: inline-block;
         }
 
         .badge-role.adm {
@@ -484,6 +487,8 @@
             padding: 8px 12px;
             border-bottom: 1px solid #1a1a1a;
             font-size: 13px;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         .log-item:hover {
@@ -493,6 +498,7 @@
         .log-item .log-usuario {
             color: #fff;
             font-weight: 500;
+            min-width: 80px;
         }
 
         .log-item .log-acao {
@@ -603,13 +609,23 @@
             color: #555;
         }
 
-        /* ===== RESPONSIVO ===== */
+        /* ======================================= */
+        /* ===== RESPONSIVIDADE COMPLETA ===== */
+        /* ======================================= */
+
+        /* Tablets e telas médias */
         @media (max-width: 992px) {
             .config-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .config-card {
+                padding: 20px;
             }
         }
 
+        /* Mobile - tablets pequenos e celulares grandes */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -627,6 +643,7 @@
                 gap: 12px;
                 border-bottom: 2px solid #8b0000;
                 text-align: center;
+                z-index: 99;
             }
 
             .nav-menu.open {
@@ -635,6 +652,12 @@
 
             .nav-menu a {
                 padding: 10px;
+                width: 100%;
+                text-align: center;
+                display: block;
+            }
+
+            .nav-menu .btn-logout {
                 width: 100%;
                 text-align: center;
             }
@@ -648,29 +671,72 @@
                 font-size: 22px;
             }
 
+            .config-header p {
+                font-size: 13px;
+            }
+
+            .user-info {
+                justify-content: center;
+                width: 100%;
+            }
+
             .config-card {
-                padding: 20px;
+                padding: 18px 15px;
+            }
+
+            .config-card .card-header h3 {
+                font-size: 16px;
+            }
+
+            .config-card .card-header .icon {
+                font-size: 20px;
+            }
+
+            .table-wrapper table {
+                font-size: 13px;
+                min-width: 350px;
+            }
+
+            .table-wrapper table thead th,
+            .table-wrapper table tbody td {
+                padding: 8px 10px;
             }
 
             .log-item {
-                flex-wrap: wrap;
-                gap: 5px;
+                font-size: 12px;
+                padding: 6px 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 3px;
+            }
+
+            .log-item .log-usuario {
+                font-size: 13px;
+            }
+
+            .log-item .log-data {
+                font-size: 11px;
             }
 
             .footer-content {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .footer-links {
                 flex-direction: row;
                 justify-content: center;
                 flex-wrap: wrap;
-                gap: 15px;
+                gap: 12px;
             }
 
             .modal {
                 padding: 20px;
                 margin: 10px;
+            }
+
+            .modal-header h3 {
+                font-size: 18px;
             }
 
             .form-actions {
@@ -680,8 +746,24 @@
             .form-actions .btn {
                 width: 100%;
             }
+
+            .form-group input,
+            .form-group select {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .btn-block {
+                padding: 10px;
+            }
         }
 
+        /* Celulares pequenos */
         @media (max-width: 480px) {
             .container {
                 padding: 0 10px;
@@ -705,21 +787,73 @@
                 font-size: 18px;
             }
 
+            .config-header p {
+                font-size: 12px;
+            }
+
             .config-card {
-                padding: 15px;
+                padding: 15px 12px;
+            }
+
+            .config-card .card-header {
+                gap: 8px;
+                padding-bottom: 10px;
             }
 
             .config-card .card-header h3 {
-                font-size: 16px;
+                font-size: 14px;
+            }
+
+            .config-card .card-header .icon {
+                font-size: 18px;
+            }
+
+            .config-card .card-header .badge {
+                font-size: 8px;
+                padding: 1px 8px;
+            }
+
+            .info-text {
+                font-size: 12px;
+                padding: 5px 0;
             }
 
             .table-wrapper table {
                 font-size: 12px;
+                min-width: 300px;
             }
 
             .table-wrapper table thead th,
             .table-wrapper table tbody td {
-                padding: 8px 10px;
+                padding: 6px 8px;
+            }
+
+            .badge-role {
+                font-size: 9px;
+                padding: 1px 8px;
+            }
+
+            .btn-icon {
+                font-size: 12px;
+                padding: 2px 6px;
+            }
+
+            .logs-container {
+                max-height: 200px;
+            }
+
+            .log-item {
+                font-size: 11px;
+                padding: 5px 8px;
+            }
+
+            .log-item .log-usuario {
+                font-size: 12px;
+            }
+
+            .log-item .log-role {
+                font-size: 9px;
+                padding: 1px 8px;
             }
 
             .footer {
@@ -730,12 +864,180 @@
                 font-size: 16px;
             }
 
+            .footer-info p {
+                font-size: 12px;
+            }
+
+            .footer-links a {
+                font-size: 12px;
+            }
+
+            .footer-copy p {
+                font-size: 10px;
+            }
+
             .modal {
                 padding: 15px;
+                margin: 10px;
             }
 
             .modal-header h3 {
-                font-size: 18px;
+                font-size: 16px;
+            }
+
+            .modal-close {
+                font-size: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 12px;
+            }
+
+            .form-group label {
+                font-size: 12px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .btn-block {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .form-actions {
+                gap: 8px;
+            }
+
+            .user-info {
+                font-size: 12px;
+                gap: 5px;
+            }
+
+            .user-info .user-role {
+                font-size: 9px;
+                padding: 1px 8px;
+            }
+        }
+
+        /* Celulares muito pequenos */
+        @media (max-width: 360px) {
+            .logo h1 {
+                font-size: 12px;
+            }
+
+            .logo img {
+                width: 28px;
+                height: 28px;
+            }
+
+            .config-header h2 {
+                font-size: 16px;
+            }
+
+            .config-card {
+                padding: 12px 10px;
+            }
+
+            .config-card .card-header h3 {
+                font-size: 13px;
+            }
+
+            .table-wrapper table {
+                font-size: 11px;
+                min-width: 250px;
+            }
+
+            .table-wrapper table thead th,
+            .table-wrapper table tbody td {
+                padding: 4px 6px;
+            }
+
+            .btn {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+
+            .modal {
+                padding: 12px;
+            }
+
+            .modal-header h3 {
+                font-size: 15px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+
+            .form-group label {
+                font-size: 11px;
+            }
+
+            .log-item {
+                font-size: 10px;
+                padding: 4px 6px;
+            }
+
+            .log-item .log-usuario {
+                font-size: 11px;
+            }
+        }
+
+        /* Telas muito grandes */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1300px;
+            }
+
+            .config-grid {
+                gap: 30px;
+            }
+
+            .config-card {
+                padding: 30px;
+            }
+
+            .config-header h2 {
+                font-size: 32px;
+            }
+
+            .table-wrapper table {
+                font-size: 15px;
+            }
+
+            .table-wrapper table thead th,
+            .table-wrapper table tbody td {
+                padding: 14px 18px;
+            }
+        }
+
+        @media print {
+            .header {
+                position: static;
+            }
+            .nav-menu {
+                display: none !important;
+            }
+            .menu-toggle {
+                display: none !important;
+            }
+            .btn {
+                display: none !important;
+            }
+            .footer {
+                background: #f0f0f0 !important;
+                color: #333 !important;
             }
         }
     </style>
@@ -831,22 +1133,22 @@
                     <span class="icon">ℹ</span>
                     <h3>Sobre o Sistema</h3>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 10px 0;">
+                <div class="sobre-grid">
                     <div>
-                        <p style="color: #888; font-size: 12px;">Sistema</p>
-                        <p style="color: #fff; font-size: 14px;">Grêmio 1ª Cia - Gestão</p>
+                        <p class="label">Sistema</p>
+                        <p class="value">Grêmio 1ª Cia - Gestão</p>
                     </div>
                     <div>
-                        <p style="color: #888; font-size: 12px;">Versão</p>
-                        <p style="color: #fff; font-size: 14px;">1.0.0</p>
+                        <p class="label">Versão</p>
+                        <p class="value">1.0.0</p>
                     </div>
                     <div>
-                        <p style="color: #888; font-size: 12px;">Desenvolvido por</p>
-                        <p style="color: #fff; font-size: 14px;">SD TOMAZ</p>
+                        <p class="label">Desenvolvido por</p>
+                        <p class="value">SD TOMAZ</p>
                     </div>
                     <div>
-                        <p style="color: #888; font-size: 12px;">Email</p>
-                        <p style="color: #fff; font-size: 14px;">limpaplus.sup1@gmail.com</p>
+                        <p class="label">Email</p>
+                        <p class="value">limpaplus.sup1@gmail.com</p>
                     </div>
                 </div>
             </div>
@@ -947,10 +1249,10 @@
                         // Verificar se é DEV
                         if (data.user.role !== 'dev') {
                             document.querySelector('.config-grid').innerHTML = `
-                                <div style="grid-column: 1 / -1; text-align: center; padding: 60px; color: #e74c3c;">
-                                    <span style="font-size: 48px; display: block; margin-bottom: 20px;">⛔</span>
+                                <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #e74c3c;">
+                                    <span style="font-size: 48px; display: block; margin-bottom: 15px;">⛔</span>
                                     <h3>Acesso Negado</h3>
-                                    <p style="color: #888; margin-top: 10px;">Apenas desenvolvedores têm acesso a esta página.</p>
+                                    <p style="color: #888; margin-top: 10px; font-size: 14px;">Apenas desenvolvedores têm acesso a esta página.</p>
                                     <a href="/dashboard" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">Voltar ao Dashboard</a>
                                 </div>
                             `;
@@ -1175,6 +1477,51 @@
 
         console.log('Configurações - Grêmio 1ª Cia');
     </script>
+
+    <style>
+        /* ===== SOBRE GRID ===== */
+        .sobre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .sobre-grid .label {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .sobre-grid .value {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Responsivo para sobre-grid */
+        @media (max-width: 480px) {
+            .sobre-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .sobre-grid .label {
+                font-size: 11px;
+            }
+
+            .sobre-grid .value {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .sobre-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+    </style>
 
 </body>
 </html>
