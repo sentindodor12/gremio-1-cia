@@ -6,77 +6,133 @@
     <title>Lista de Membros - Grêmio 1ª Cia</title>
     
     <style>
-        /* ===== RESET ===== */
+        /* ======================================== */
+        /* ===== RESET E CONFIGURAÇÕES ===== */
+        /* ======================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #8b0000;
+            --primary-hover: #c0392b;
+            --primary-light: #e74c3c;
+            --primary-glow: rgba(139, 0, 0, 0.4);
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --text-white: #ffffff;
+            --text-gray: #aaaaaa;
+            --text-light: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --radius: 14px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
-            color: #e0e0e0;
-            background: #0a0a0a;
+            color: var(--text-light);
+            background: var(--bg-dark);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
         }
 
-        /* ===== HEADER ===== */
+        /* ===== HEADER PREMIUM ===== */
         .header {
-            background: #000000;
-            border-bottom: 2px solid #8b0000;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
             width: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom-color: rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            flex-wrap: wrap;
+            padding: 12px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
+            text-decoration: none;
         }
 
-        .logo img {
+        .logo-icon {
             width: 40px;
             height: 40px;
-            object-fit: contain;
+            position: relative;
         }
 
-        .logo h1 {
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
+        }
+
+        .logo-icon .glow-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text .title {
             font-size: 18px;
             color: #fff;
             letter-spacing: 3px;
             font-weight: 700;
-            white-space: nowrap;
         }
 
-        .logo span {
-            font-size: 10px;
+        .logo-text .sub {
+            font-size: 9px;
             color: #888;
-            margin-left: 5px;
+            letter-spacing: 2px;
             font-weight: 400;
+            text-transform: uppercase;
         }
 
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-menu a {
@@ -84,14 +140,31 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
-            transition: color 0.3s;
-            padding: 5px 10px;
-            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            color: #e74c3c;
+            color: #fff;
         }
 
         .btn-logout {
@@ -99,10 +172,11 @@
             color: #e74c3c !important;
             border: 1px solid #e74c3c;
             padding: 6px 18px !important;
-            border-radius: 4px;
+            border-radius: 8px;
             transition: all 0.3s;
             font-weight: 600 !important;
             cursor: pointer;
+            font-size: 13px;
         }
 
         .btn-logout:hover {
@@ -110,36 +184,33 @@
             color: #fff !important;
         }
 
-        .btn-login-header {
-            background: #8b0000;
-            color: #fff !important;
-            padding: 6px 18px !important;
-            border-radius: 4px;
-            transition: background 0.3s;
-            font-weight: 600 !important;
-            text-decoration: none;
-        }
-
-        .btn-login-header:hover {
-            background: #a93226 !important;
-        }
-
         .menu-toggle {
             display: none;
-            background: none;
-            border: 1px solid #555;
-            padding: 5px 15px;
-            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
             color: #fff;
-            background: #1a1a1a;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-toggle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.1);
         }
 
         /* ===== LISTA ===== */
         .lista-section {
             padding: 30px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .lista-header {
@@ -154,10 +225,14 @@
         .lista-header h2 {
             font-size: 26px;
             color: #fff;
+            font-weight: 700;
         }
 
         .lista-header h2 span {
-            color: #e74c3c;
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .lista-header p {
@@ -167,7 +242,7 @@
 
         .lista-controls {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -175,16 +250,17 @@
         .search-box {
             display: flex;
             align-items: center;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 6px;
-            padding: 0 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 0 14px;
             transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
         .search-box:focus-within {
-            border-color: #8b0000;
-            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.15);
         }
 
         .search-box input {
@@ -210,58 +286,75 @@
             display: inline-block;
             padding: 10px 22px;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 13px;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             border: none;
             text-align: center;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary {
-            background: #8b0000;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: #fff;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
         }
 
         .btn-primary:hover {
-            background: #a93226;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+            box-shadow: 0 6px 25px rgba(139, 0, 0, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
         }
 
         .btn-success {
-            background: #27ae60;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: #fff;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
         }
 
         .btn-success:hover {
-            background: #2ecc71;
             transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(46, 204, 113, 0.5);
+        }
+
+        .btn-success:active {
+            transform: scale(0.96);
         }
 
         .btn-outline {
             background: transparent;
-            color: #e74c3c;
-            border: 1px solid #e74c3c;
+            color: var(--primary-hover);
+            border: 2px solid var(--primary-hover);
+            padding: 8px 18px;
+            font-size: 13px;
+            border-radius: 10px;
         }
 
         .btn-outline:hover {
-            background: #e74c3c;
+            background: var(--primary-hover);
             color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
         }
 
         /* ===== TABELA ===== */
         .table-container {
-            background: #141414;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
         }
 
         .table-container:hover {
-            border-color: #8b0000;
+            border-color: rgba(139, 0, 0, 0.3);
+            box-shadow: var(--shadow);
         }
 
         .table-wrapper {
@@ -276,14 +369,14 @@
         }
 
         table thead {
-            background: #1a1a1a;
-            border-bottom: 2px solid #8b0000;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 2px solid rgba(139, 0, 0, 0.3);
         }
 
         table thead th {
             padding: 14px 16px;
             text-align: left;
-            color: #ccc;
+            color: #888;
             font-weight: 600;
             font-size: 12px;
             text-transform: uppercase;
@@ -292,12 +385,12 @@
         }
 
         table tbody tr {
-            border-bottom: 1px solid #1a1a1a;
-            transition: background 0.2s;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
         }
 
         table tbody tr:hover {
-            background: #1a1a1a;
+            background: rgba(255,255,255,0.03);
         }
 
         table tbody tr:last-child {
@@ -313,7 +406,7 @@
         table tbody td .avatar {
             width: 36px;
             height: 36px;
-            background: #8b0000;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
@@ -321,6 +414,7 @@
             color: #fff;
             font-weight: 600;
             font-size: 14px;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
         }
 
         table tbody td .user-cell {
@@ -342,7 +436,7 @@
 
         .actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .actions .btn-icon {
@@ -351,13 +445,13 @@
             color: #888;
             cursor: pointer;
             padding: 4px 8px;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.3s;
             font-size: 14px;
         }
 
         .actions .btn-icon:hover {
-            background: #2a2a2a;
+            background: rgba(255,255,255,0.05);
             color: #fff;
         }
 
@@ -377,7 +471,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -389,20 +484,21 @@
         }
 
         .modal {
-            background: #141414;
-            border: 1px solid #2a2a2a;
-            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             padding: 30px;
             max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             animation: modalFade 0.3s ease;
+            backdrop-filter: blur(20px);
         }
 
         @keyframes modalFade {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -410,13 +506,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
         }
 
         .modal-header h3 {
             color: #fff;
             font-size: 20px;
+            font-weight: 700;
         }
 
         .modal-close {
@@ -449,9 +546,9 @@
         .form-group select {
             width: 100%;
             padding: 10px 14px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             color: #fff;
             font-size: 14px;
             transition: all 0.3s;
@@ -460,8 +557,8 @@
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #8b0000;
-            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.1);
         }
 
         .form-group input::placeholder {
@@ -480,13 +577,17 @@
             margin-top: 20px;
         }
 
+        .form-actions .btn {
+            min-width: 100px;
+        }
+
         /* ===== PAGINAÇÃO ===== */
         .pagination {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            border-top: 1px solid #1a1a1a;
+            border-top: 1px solid var(--border-color);
             flex-wrap: wrap;
             gap: 10px;
         }
@@ -503,78 +604,48 @@
 
         .pagination .pages button {
             background: transparent;
-            border: 1px solid #2a2a2a;
+            border: 1px solid var(--border-color);
             color: #888;
             padding: 5px 12px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 13px;
         }
 
         .pagination .pages button:hover {
-            border-color: #8b0000;
+            border-color: var(--primary);
             color: #fff;
         }
 
         .pagination .pages button.active {
-            background: #8b0000;
-            border-color: #8b0000;
+            background: var(--primary);
+            border-color: var(--primary);
             color: #fff;
-        }
-
-        /* ===== BANNER VISUALIZAÇÃO ===== */
-        .viewer-banner {
-            background: #1a2a3a;
-            border: 1px solid #2a3a4a;
-            border-radius: 8px;
-            padding: 12px 20px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            color: #88aacc;
-            font-size: 14px;
-        }
-
-        .viewer-banner .icon {
-            font-size: 18px;
-        }
-
-        .viewer-banner strong {
-            color: #fff;
-        }
-
-        .viewer-banner a {
-            color: #e74c3c;
-            text-decoration: none;
-        }
-
-        .viewer-banner a:hover {
-            text-decoration: underline;
         }
 
         /* ===== FOOTER ===== */
         .footer {
             background: #000000;
             color: #666;
-            padding: 30px 0;
-            border-top: 2px solid #8b0000;
-            margin-top: 20px;
+            padding: 40px 0 24px;
+            border-top: 2px solid var(--primary);
+            margin-top: 30px;
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             text-align: center;
         }
 
         .footer-info h3 {
             color: #fff;
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
         }
 
         .footer-info p {
@@ -584,9 +655,9 @@
 
         .footer-links {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .footer-links a {
@@ -597,7 +668,7 @@
         }
 
         .footer-links a:hover {
-            color: #e74c3c;
+            color: var(--primary-hover);
         }
 
         .footer-copy {
@@ -606,7 +677,7 @@
         }
 
         .footer-copy p {
-            margin: 5px 0;
+            margin: 3px 0;
             color: #555;
         }
 
@@ -620,14 +691,16 @@
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 62px;
+                top: 60px;
                 left: 0;
                 width: 100%;
-                background: #000;
-                padding: 20px;
-                gap: 12px;
-                border-bottom: 2px solid #8b0000;
+                background: rgba(0, 0, 0, 0.98);
+                padding: 20px 16px;
+                gap: 14px;
+                border-bottom: 2px solid var(--primary);
                 text-align: center;
+                z-index: 99;
+                backdrop-filter: blur(20px);
             }
 
             .nav-menu.open {
@@ -635,9 +708,14 @@
             }
 
             .nav-menu a {
-                padding: 10px;
+                padding: 12px;
                 width: 100%;
                 text-align: center;
+                font-size: 16px;
+            }
+
+            .nav-menu a::after {
+                display: none;
             }
 
             .lista-header {
@@ -655,6 +733,14 @@
             }
 
             .lista-controls .btn {
+                width: 100%;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
                 width: 100%;
             }
 
@@ -678,7 +764,8 @@
             }
 
             .footer-content {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+                gap: 20px;
             }
 
             .footer-links {
@@ -687,25 +774,34 @@
                 flex-wrap: wrap;
                 gap: 15px;
             }
+
+            .logo-text .title {
+                font-size: 16px;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 0 10px;
+                padding: 0 12px;
             }
 
-            .logo h1 {
+            .logo-text .title {
                 font-size: 14px;
                 letter-spacing: 1px;
             }
 
-            .logo span {
+            .logo-text .sub {
                 display: none;
             }
 
-            .logo img {
-                width: 32px;
-                height: 32px;
+            .logo-icon {
+                width: 30px;
+                height: 30px;
             }
 
             .lista-header h2 {
@@ -715,6 +811,12 @@
             table thead th,
             table tbody td {
                 padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            table tbody td .avatar {
+                width: 30px;
+                height: 30px;
                 font-size: 12px;
             }
 
@@ -737,37 +839,50 @@
 
             .form-actions .btn {
                 width: 100%;
+                min-width: auto;
             }
 
             .footer {
-                padding: 20px 0;
+                padding: 30px 0 20px;
             }
 
             .footer-info h3 {
                 font-size: 16px;
             }
         }
+
+        @media (max-width: 360px) {
+            table thead th,
+            table tbody td {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
+    <!-- HEADER PREMIUM -->
+    <header class="header" id="mainHeader">
         <div class="container header-content">
-            <div class="logo">
-                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                <h1>GRÊMIO 1ª CIA</h1>
-                <span>Gestão</span>
-            </div>
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
             <nav class="nav-menu" id="navMenu">
                 <a href="/">Início</a>
                 <a href="/lista" class="active">Membros</a>
                 <a href="/avaliacao">Sugestões</a>
                 <a href="/dashboard" id="navDashboard" style="display: none;">Dashboard</a>
-                <a href="/login" id="navLogin" class="btn-login-header">Entrar</a>
                 <button id="navLogout" class="btn-logout" style="display: none;" onclick="logout()">Sair</button>
             </nav>
-            <button class="menu-toggle" id="menuToggle">Menu</button>
+            <button class="menu-toggle" id="menuToggle">☰</button>
         </div>
     </header>
 
@@ -785,14 +900,8 @@
                         <input type="text" id="searchInput" placeholder="Pesquisar membro..." oninput="filtrarMembros()">
                     </div>
                     <button class="btn btn-success" id="btnDownload" onclick="baixarLista()" style="display: none;">Baixar Lista</button>
-                    <button class="btn btn-primary" id="btnAdicionar" onclick="abrirModalAdicionar()" style="display: none;">+ Adicionar Membro</button>
+                    <button class="btn btn-primary" id="btnAdicionar" onclick="abrirModalAdicionar()" style="display: none;">+ Adicionar</button>
                 </div>
-            </div>
-
-            <!-- Banner para visualizadores -->
-            <div class="viewer-banner" id="viewerBanner">
-                <span class="icon">◈</span>
-                <span>Você está no modo <strong>visualização</strong>. Para adicionar membros ou baixar a lista, <a href="/login">faça login</a> como ADM ou DEV.</span>
             </div>
 
             <!-- Tabela -->
@@ -859,7 +968,7 @@
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-outline" onclick="fecharModalAdicionar()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Adicionar Membro</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
                 </div>
             </form>
         </div>
@@ -897,7 +1006,7 @@
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-outline" onclick="fecharModalEditar()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
             </form>
         </div>
@@ -905,21 +1014,23 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-info">
-                <h3>GRÊMIO 1ª CIA</h3>
-                <p>Espaço de lazer e integração</p>
-            </div>
-            <div class="footer-links">
-                <a href="/">Início</a>
-                <a href="/lista">Membros</a>
-                <a href="/avaliacao">Sugestões</a>
-                <a href="/dashboard">Dashboard</a>
-            </div>
-            <div class="footer-copy">
-                <p>&copy; 2026 Grêmio 1ª Cia</p>
-                <p>Todos os direitos reservados</p>
-                <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>GRÊMIO 1ª CIA</h3>
+                    <p>Espaço de lazer e integração</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; 2026 Grêmio 1ª Cia</p>
+                    <p>Todos os direitos reservados</p>
+                    <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
+                </div>
             </div>
         </div>
     </footer>
@@ -931,6 +1042,18 @@
         let paginaAtual = 1;
         const itensPorPagina = 10;
         let usuarioLogado = null;
+
+        // ===== HEADER SCROLL EFFECT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
 
         // ===== FUNÇÕES DE USUÁRIO =====
         function isAdmOuDev() {
@@ -1047,131 +1170,52 @@
             }
         }
 
-        // ===== BAIXAR LISTA COMPLETA =====
+        // ===== BAIXAR LISTA COMPLETA COMO PDF (VIA API) =====
         function baixarLista() {
             if (!isAdmOuDev()) {
                 alert('Você precisa estar logado como ADM ou DEV para baixar a lista.');
                 return;
             }
 
-            if (membros.length === 0) {
-                alert('Não há membros para baixar.');
-                return;
-            }
+            const btn = document.getElementById('btnDownload');
+            const textoOriginal = btn.textContent;
+            btn.textContent = 'Gerando PDF...';
+            btn.disabled = true;
 
-            // Agrupar por pelotão
-            const pelotoes = {};
-            membros.forEach(m => {
-                const pelotao = m.pelotao || 'Sem pelotão';
-                if (!pelotoes[pelotao]) {
-                    pelotoes[pelotao] = [];
-                }
-                pelotoes[pelotao].push(m);
-            });
-
-            // Ordenar pelotões
-            const ordemPelotoes = ['1° Pelotão', '2° Pelotão', '3° Pelotão', 'ENC-MAT'];
-            const pelotoesOrdenados = ordemPelotoes.filter(p => pelotoes[p]);
-
-            // Gerar HTML para impressão
-            let html = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>Relação de Pagamento - Grêmio 1ª Cia</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 40px; background: #fff; color: #000; }
-                    h1 { text-align: center; color: #8b0000; font-size: 24px; }
-                    .subtitulo { text-align: center; color: #555; margin-bottom: 30px; font-size: 16px; }
-                    .pelotao { 
-                        margin-bottom: 30px; 
-                        border: 1px solid #ccc; 
-                        border-radius: 8px; 
-                        padding: 15px 20px;
-                        page-break-inside: avoid;
+            fetch('/api/baixar-pdf')
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.error || 'Erro ao gerar PDF');
+                        });
                     }
-                    .pelotao h2 { 
-                        background: #8b0000; 
-                        color: #fff; 
-                        padding: 8px 15px; 
-                        border-radius: 4px; 
-                        margin: -15px -20px 15px -20px;
-                        font-size: 18px;
+                    return response.blob();
+                })
+                .then(blob => {
+                    if (blob.size === 0) {
+                        throw new Error('PDF vazio gerado');
                     }
-                    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-                    th { background: #f0f0f0; padding: 10px 12px; text-align: left; border-bottom: 2px solid #8b0000; font-weight: 600; }
-                    td { padding: 8px 12px; border-bottom: 1px solid #eee; }
-                    tr:hover { background: #f9f9f9; }
-                    .status { color: #27ae60; font-weight: 600; }
-                    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #8b0000; font-size: 12px; color: #888; }
-                    @media print { .no-print { display: none; } body { margin: 20px; } .pelotao { page-break-inside: avoid; } }
-                </style>
-            </head>
-            <body>
-                <h1>RELAÇÃO DE PAGAMENTO DO GRÊMIO — 1ª CIA</h1>
-                <p class="subtitulo">Somente os militares que efetuaram o pagamento</p>
-                <p style="text-align: center; color: #888; font-size: 14px; margin-bottom: 30px;">
-                    Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}
-                </p>
-            `;
-
-            pelotoesOrdenados.forEach(pelotao => {
-                const membrosPelotao = pelotoes[pelotao];
-                html += `
-                    <div class="pelotao">
-                        <h2>${pelotao}</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>N°</th>
-                                    <th>NOME COMPLETO</th>
-                                    <th>NOME DE GUERRA</th>
-                                    <th>SITUAÇÃO</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-
-                membrosPelotao.forEach((m, index) => {
-                    html += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${m.nome}</td>
-                            <td>${m.nome_guerra || ''}</td>
-                            <td class="status">PAGO</td>
-                        </tr>
-                    `;
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `Relacao de Pagamento - Gremio 1ª Cia.pdf`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+                    
+                    btn.textContent = 'PDF Baixado!';
+                    setTimeout(() => {
+                        btn.textContent = textoOriginal;
+                        btn.disabled = false;
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error('Erro ao baixar PDF:', error);
+                    alert('Erro ao baixar o PDF: ' + error.message);
+                    btn.textContent = textoOriginal;
+                    btn.disabled = false;
                 });
-
-                html += `
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            });
-
-            html += `
-                <div class="footer">
-                    <p>_____________________________________________</p>
-                    <p>ST ADAIR - SEÇ CMDO</p>
-                    <p>&copy; 2026 Grêmio 1ª Cia - Todos os direitos reservados</p>
-                </div>
-                <div class="no-print" style="text-align: center; margin-top: 20px;">
-                    <button onclick="window.print()" style="padding: 10px 30px; background: #8b0000; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
-                        Imprimir / Salvar PDF
-                    </button>
-                    <button onclick="window.close()" style="padding: 10px 30px; background: #555; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-left: 10px;">
-                        Fechar
-                    </button>
-                </div>
-            </body>
-            </html>
-            `;
-
-            const novaJanela = window.open('', '_blank', 'width=900,height=700');
-            novaJanela.document.write(html);
-            novaJanela.document.close();
         }
 
         // ===== ADICIONAR MEMBRO =====
@@ -1190,7 +1234,6 @@
 
         function adicionarMembro(event) {
             event.preventDefault();
-
             if (!isAdmOuDev()) {
                 alert('Você não tem permissão para adicionar membros.');
                 return;
@@ -1227,7 +1270,7 @@
                     carregarMembros();
                     alert('Membro adicionado com sucesso!');
                 } else {
-                    alert('Erro ao adicionar membro: ' + (data.error || 'Erro desconhecido'));
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
                 }
             })
             .catch(error => {
@@ -1264,7 +1307,6 @@
 
         function salvarEdicao(event) {
             event.preventDefault();
-
             if (!isAdmOuDev()) {
                 alert('Você não tem permissão para editar membros.');
                 return;
@@ -1302,7 +1344,7 @@
                     carregarMembros();
                     alert('Membro atualizado com sucesso!');
                 } else {
-                    alert('Erro ao atualizar membro: ' + (data.error || 'Erro desconhecido'));
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
                 }
             })
             .catch(error => {
@@ -1338,7 +1380,7 @@
                     carregarMembros();
                     alert('Membro excluído com sucesso!');
                 } else {
-                    alert('Erro ao excluir membro: ' + (data.error || 'Erro desconhecido'));
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
                 }
             })
             .catch(error => {
@@ -1364,7 +1406,6 @@
 
         // ===== INICIALIZAÇÃO =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Menu Mobile
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
 
@@ -1383,7 +1424,6 @@
                 });
             });
 
-            // Verificar sessão
             fetch('/api/verificar_sessao')
                 .then(response => response.json())
                 .then(data => {
@@ -1392,11 +1432,10 @@
                     const navDashboard = document.getElementById('navDashboard');
                     const btnAdicionar = document.getElementById('btnAdicionar');
                     const btnDownload = document.getElementById('btnDownload');
-                    const viewerBanner = document.getElementById('viewerBanner');
 
                     if (data.logado) {
                         usuarioLogado = data.user;
-                        navLogin.style.display = 'none';
+                        if (navLogin) navLogin.style.display = 'none';
                         navLogout.style.display = 'inline-block';
                         navDashboard.style.display = 'inline-block';
                         localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
@@ -1404,24 +1443,20 @@
                         if (data.user.role === 'adm' || data.user.role === 'dev') {
                             btnAdicionar.style.display = 'inline-block';
                             btnDownload.style.display = 'inline-block';
-                            viewerBanner.style.display = 'none';
                         } else {
                             btnAdicionar.style.display = 'none';
                             btnDownload.style.display = 'none';
-                            viewerBanner.style.display = 'flex';
                         }
                     } else {
                         usuarioLogado = null;
-                        navLogin.style.display = 'inline-block';
+                        if (navLogin) navLogin.style.display = 'none';
                         navLogout.style.display = 'none';
                         navDashboard.style.display = 'none';
                         btnAdicionar.style.display = 'none';
                         btnDownload.style.display = 'none';
-                        viewerBanner.style.display = 'flex';
                         localStorage.removeItem('usuarioLogado');
                     }
 
-                    // Carregar membros do banco
                     carregarMembros();
                 })
                 .catch(error => {

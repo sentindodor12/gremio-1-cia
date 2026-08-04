@@ -6,77 +6,135 @@
     <title>Sugestões - Grêmio 1ª Cia</title>
     
     <style>
-        /* ===== RESET ===== */
+        /* ======================================== */
+        /* ===== RESET E CONFIGURAÇÕES ===== */
+        /* ======================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #8b0000;
+            --primary-hover: #c0392b;
+            --primary-light: #e74c3c;
+            --primary-glow: rgba(139, 0, 0, 0.4);
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --text-white: #ffffff;
+            --text-gray: #aaaaaa;
+            --text-light: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --radius: 14px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
-            color: #e0e0e0;
-            background: #0a0a0a;
+            color: var(--text-light);
+            background: var(--bg-dark);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
         }
 
-        /* ===== HEADER ===== */
+        /* ======================================== */
+        /* ===== HEADER PREMIUM ===== */
+        /* ======================================== */
         .header {
-            background: #000000;
-            border-bottom: 2px solid #8b0000;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
             width: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom-color: rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            flex-wrap: wrap;
+            padding: 12px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
+            text-decoration: none;
         }
 
-        .logo img {
+        .logo-icon {
             width: 40px;
             height: 40px;
-            object-fit: contain;
+            position: relative;
         }
 
-        .logo h1 {
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
+        }
+
+        .logo-icon .glow-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text .title {
             font-size: 18px;
             color: #fff;
             letter-spacing: 3px;
             font-weight: 700;
-            white-space: nowrap;
         }
 
-        .logo span {
-            font-size: 10px;
+        .logo-text .sub {
+            font-size: 9px;
             color: #888;
-            margin-left: 5px;
+            letter-spacing: 2px;
             font-weight: 400;
+            text-transform: uppercase;
         }
 
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-menu a {
@@ -84,14 +142,31 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
-            transition: color 0.3s;
-            padding: 5px 10px;
-            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            color: #e74c3c;
+            color: #fff;
         }
 
         .btn-logout {
@@ -99,10 +174,11 @@
             color: #e74c3c !important;
             border: 1px solid #e74c3c;
             padding: 6px 18px !important;
-            border-radius: 4px;
+            border-radius: 8px;
             transition: all 0.3s;
             font-weight: 600 !important;
             cursor: pointer;
+            font-size: 13px;
         }
 
         .btn-logout:hover {
@@ -110,36 +186,35 @@
             color: #fff !important;
         }
 
-        .btn-login-header {
-            background: #8b0000;
-            color: #fff !important;
-            padding: 6px 18px !important;
-            border-radius: 4px;
-            transition: background 0.3s;
-            font-weight: 600 !important;
-            text-decoration: none;
-        }
-
-        .btn-login-header:hover {
-            background: #a93226 !important;
-        }
-
         .menu-toggle {
             display: none;
-            background: none;
-            border: 1px solid #555;
-            padding: 5px 15px;
-            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
             color: #fff;
-            background: #1a1a1a;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
+        .menu-toggle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        /* ======================================== */
         /* ===== AVALIACAO ===== */
+        /* ======================================== */
         .avaliacao-section {
             padding: 30px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .avaliacao-header {
@@ -150,10 +225,14 @@
         .avaliacao-header h2 {
             font-size: 28px;
             color: #fff;
+            font-weight: 700;
         }
 
         .avaliacao-header h2 span {
-            color: #e74c3c;
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .avaliacao-header p {
@@ -164,9 +243,16 @@
 
         .avaliacao-header .line {
             width: 60px;
-            height: 2px;
-            background: #8b0000;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
             margin: 10px auto 0;
+            border-radius: 2px;
+            animation: lineExpand 1s ease-out;
+        }
+
+        @keyframes lineExpand {
+            0% { width: 0; opacity: 0; }
+            100% { width: 60px; opacity: 1; }
         }
 
         /* ===== FORMULARIO ===== */
@@ -176,15 +262,17 @@
         }
 
         .form-box {
-            background: #141414;
-            border: 1px solid #1a1a1a;
-            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             padding: 35px 40px;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
         }
 
         .form-box:hover {
-            border-color: #8b0000;
+            border-color: rgba(139, 0, 0, 0.3);
+            box-shadow: var(--shadow);
         }
 
         .form-group {
@@ -202,16 +290,16 @@
         }
 
         .form-group label .required {
-            color: #e74c3c;
+            color: var(--primary-hover);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
             padding: 12px 15px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
             color: #fff;
             font-size: 14px;
             transition: all 0.3s;
@@ -221,8 +309,8 @@
 
         .form-group input:focus,
         .form-group textarea:focus {
-            border-color: #8b0000;
-            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.1);
         }
 
         .form-group input::placeholder,
@@ -241,29 +329,31 @@
             gap: 20px;
         }
 
+        /* ===== BUTTONS ===== */
         .btn {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 14px 30px;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             border: none;
             text-align: center;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary {
-            background: #8b0000;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: #fff;
             width: 100%;
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.35);
         }
 
         .btn-primary:hover {
-            background: #a93226;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(139, 0, 0, 0.5);
         }
 
         .btn-primary:disabled {
@@ -272,58 +362,37 @@
             transform: none;
         }
 
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
         .btn-outline {
             background: transparent;
-            color: #e74c3c;
-            border: 1px solid #e74c3c;
+            color: var(--primary-hover);
+            border: 2px solid var(--primary-hover);
+            padding: 8px 18px;
+            font-size: 13px;
+            border-radius: 10px;
         }
 
         .btn-outline:hover {
-            background: #e74c3c;
+            background: var(--primary-hover);
             color: #fff;
-        }
-
-        /* ===== MENSAGENS ===== */
-        .message {
-            padding: 12px 18px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .message.success {
-            display: block;
-            background: #1a3a2a;
-            border: 1px solid #2ecc71;
-            color: #2ecc71;
-        }
-
-        .message.error {
-            display: block;
-            background: #3a1a1a;
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
-        }
-
-        .message.info {
-            display: block;
-            background: #1a2a3a;
-            border: 1px solid #3498db;
-            color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
         }
 
         /* ===== LOADER ===== */
         .btn-loader {
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border: 2px solid rgba(255,255,255,0.3);
             border-top: 2px solid #fff;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             vertical-align: middle;
-            margin-right: 8px;
+            margin-right: 10px;
         }
 
         @keyframes spin {
@@ -338,23 +407,27 @@
 
         .sugestoes-list h3 {
             color: #fff;
-            font-size: 20px;
+            font-size: 22px;
+            font-weight: 700;
             margin-bottom: 20px;
-            border-bottom: 1px solid #1a1a1a;
-            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
         }
 
         .sugestao-item {
-            background: #141414;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
-            padding: 18px 20px;
-            margin-bottom: 12px;
-            transition: all 0.3s;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .sugestao-item:hover {
-            border-color: #8b0000;
+            border-color: rgba(139, 0, 0, 0.3);
+            transform: translateX(4px);
+            box-shadow: var(--shadow);
         }
 
         .sugestao-item .sugestao-header {
@@ -369,7 +442,7 @@
         .sugestao-item .sugestao-header .nome {
             color: #fff;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         .sugestao-item .sugestao-header .data {
@@ -379,31 +452,31 @@
 
         .sugestao-item .sugestao-header .pelotao {
             color: #888;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .sugestao-item .sugestao-texto {
             color: #ccc;
             font-size: 14px;
-            line-height: 1.6;
-            margin-top: 5px;
+            line-height: 1.7;
+            margin-top: 6px;
             padding-left: 5px;
-            border-left: 3px solid #8b0000;
-            padding-left: 12px;
+            border-left: 3px solid var(--primary);
+            padding-left: 14px;
         }
 
         .sugestao-item .sugestao-actions {
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             gap: 10px;
         }
 
         .btn-danger-sm {
-            background: #c0392b;
-            color: #fff;
-            border: none;
-            padding: 4px 14px;
-            border-radius: 4px;
+            background: rgba(192, 57, 43, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(192, 57, 43, 0.3);
+            padding: 5px 16px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
@@ -411,30 +484,33 @@
         }
 
         .btn-danger-sm:hover {
-            background: #e74c3c;
+            background: #c0392b;
+            color: #fff;
+            border-color: #c0392b;
         }
 
         /* ===== FOOTER ===== */
         .footer {
             background: #000000;
             color: #666;
-            padding: 30px 0;
-            border-top: 2px solid #8b0000;
+            padding: 40px 0 24px;
+            border-top: 2px solid var(--primary);
             margin-top: 30px;
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             text-align: center;
         }
 
         .footer-info h3 {
             color: #fff;
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
         }
 
         .footer-info p {
@@ -444,9 +520,9 @@
 
         .footer-links {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .footer-links a {
@@ -457,7 +533,7 @@
         }
 
         .footer-links a:hover {
-            color: #e74c3c;
+            color: var(--primary-hover);
         }
 
         .footer-copy {
@@ -466,11 +542,14 @@
         }
 
         .footer-copy p {
-            margin: 5px 0;
+            margin: 3px 0;
             color: #555;
         }
 
+        /* ======================================== */
         /* ===== RESPONSIVO ===== */
+        /* ======================================== */
+
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -480,14 +559,16 @@
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 62px;
+                top: 60px;
                 left: 0;
                 width: 100%;
-                background: #000;
-                padding: 20px;
-                gap: 12px;
-                border-bottom: 2px solid #8b0000;
+                background: rgba(0, 0, 0, 0.98);
+                padding: 20px 16px;
+                gap: 14px;
+                border-bottom: 2px solid var(--primary);
                 text-align: center;
+                z-index: 99;
+                backdrop-filter: blur(20px);
             }
 
             .nav-menu.open {
@@ -495,9 +576,14 @@
             }
 
             .nav-menu a {
-                padding: 10px;
+                padding: 12px;
                 width: 100%;
                 text-align: center;
+                font-size: 16px;
+            }
+
+            .nav-menu a::after {
+                display: none;
             }
 
             .form-box {
@@ -510,7 +596,7 @@
             }
 
             .avaliacao-header h2 {
-                font-size: 22px;
+                font-size: 24px;
             }
 
             .sugestao-item .sugestao-header {
@@ -518,8 +604,13 @@
                 align-items: flex-start;
             }
 
+            .sugestao-item {
+                padding: 16px 18px;
+            }
+
             .footer-content {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+                gap: 20px;
             }
 
             .footer-links {
@@ -528,29 +619,38 @@
                 flex-wrap: wrap;
                 gap: 15px;
             }
+
+            .logo-text .title {
+                font-size: 16px;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 0 10px;
+                padding: 0 12px;
             }
 
-            .logo h1 {
+            .logo-text .title {
                 font-size: 14px;
                 letter-spacing: 1px;
             }
 
-            .logo span {
+            .logo-text .sub {
                 display: none;
             }
 
-            .logo img {
-                width: 32px;
-                height: 32px;
+            .logo-icon {
+                width: 30px;
+                height: 30px;
             }
 
             .form-box {
-                padding: 20px 15px;
+                padding: 20px 16px;
             }
 
             .avaliacao-header h2 {
@@ -568,12 +668,12 @@
             }
 
             .btn {
-                padding: 10px 20px;
-                font-size: 13px;
+                padding: 12px 20px;
+                font-size: 14px;
             }
 
             .sugestao-item {
-                padding: 14px 15px;
+                padding: 14px 14px;
             }
 
             .sugestao-item .sugestao-texto {
@@ -581,34 +681,106 @@
             }
 
             .footer {
-                padding: 20px 0;
+                padding: 30px 0 20px;
             }
 
             .footer-info h3 {
                 font-size: 16px;
             }
         }
+
+        @media (max-width: 360px) {
+            .form-box {
+                padding: 16px 12px;
+            }
+
+            .form-group label {
+                font-size: 11px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .btn {
+                font-size: 13px;
+                padding: 10px 16px;
+            }
+
+            .sugestao-item .sugestao-header .nome {
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                padding: 0 32px;
+            }
+
+            .avaliacao-section {
+                padding: 40px 0;
+            }
+
+            .avaliacao-header h2 {
+                font-size: 32px;
+            }
+
+            .form-box {
+                padding: 40px 45px;
+            }
+
+            .logo-text .title {
+                font-size: 20px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+            }
+
+            .sugestoes-list h3 {
+                font-size: 24px;
+            }
+        }
+
+        @media print {
+            .header {
+                position: static;
+            }
+            .nav-menu { display: none !important; }
+            .menu-toggle { display: none !important; }
+            .btn { display: none !important; }
+            .footer { background: #f0f0f0 !important; color: #333 !important; }
+            .form-box { border: 1px solid #ccc !important; }
+            .sugestao-item { border: 1px solid #ccc !important; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
+    <!-- HEADER PREMIUM -->
+    <header class="header" id="mainHeader">
         <div class="container header-content">
-            <div class="logo">
-                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                <h1>GRÊMIO 1ª CIA</h1>
-                <span>Gestão</span>
-            </div>
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
             <nav class="nav-menu" id="navMenu">
                 <a href="/">Início</a>
                 <a href="/lista">Membros</a>
                 <a href="/avaliacao" class="active">Sugestões</a>
                 <a href="/dashboard" id="navDashboard" style="display: none;">Dashboard</a>
-                <a href="/login" id="navLogin" class="btn-login-header">Entrar</a>
                 <button id="navLogout" class="btn-logout" style="display: none;" onclick="logout()">Sair</button>
             </nav>
-            <button class="menu-toggle" id="menuToggle">Menu</button>
+            <button class="menu-toggle" id="menuToggle">☰</button>
         </div>
     </header>
 
@@ -623,17 +795,6 @@
 
             <div class="form-container">
                 <div class="form-box">
-                    <!-- Mensagens -->
-                    <div id="messageSuccess" class="message success">
-                        ✅ Sugestão enviada com sucesso! Um email de confirmação foi enviado para você.
-                    </div>
-                    <div id="messageError" class="message error">
-                        ❌ Erro ao enviar sugestão. Tente novamente.
-                    </div>
-                    <div id="messageInfo" class="message info">
-                        ℹ️ Preencha todos os campos obrigatórios.
-                    </div>
-
                     <form id="formSugestao" onsubmit="enviarSugestao(event)">
                         <div class="form-row">
                             <div class="form-group">
@@ -662,7 +823,7 @@
 
                 <!-- Lista de Sugestões (apenas ADM/DEV) -->
                 <div class="sugestoes-list" id="sugestoesList" style="display: none;">
-                    <h3>📋 Sugestões Recebidas</h3>
+                    <h3>Sugestões Recebidas</h3>
                     <div id="sugestoesContainer">
                         <div style="text-align: center; padding: 30px; color: #666;">
                             Carregando sugestões...
@@ -675,26 +836,40 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-info">
-                <h3>GRÊMIO 1ª CIA</h3>
-                <p>Espaço de lazer e integração</p>
-            </div>
-            <div class="footer-links">
-                <a href="/">Início</a>
-                <a href="/lista">Membros</a>
-                <a href="/avaliacao">Sugestões</a>
-                <a href="/dashboard">Dashboard</a>
-            </div>
-            <div class="footer-copy">
-                <p>&copy; 2026 Grêmio 1ª Cia</p>
-                <p>Todos os direitos reservados</p>
-                <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>GRÊMIO 1ª CIA</h3>
+                    <p>Espaço de lazer e integração</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; 2026 Grêmio 1ª Cia</p>
+                    <p>Todos os direitos reservados</p>
+                    <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // ===== HEADER SCROLL EFFECT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+
         // ===== VERIFICAR USUÁRIO =====
         function getUsuario() {
             const data = localStorage.getItem('usuarioLogado');
@@ -733,6 +908,13 @@
                 });
             });
 
+            document.addEventListener('click', function(event) {
+                const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
+                if (!isClickInside && window.innerWidth <= 768) {
+                    navMenu.classList.remove('open');
+                }
+            });
+
             // Verificar sessão via API
             fetch('/api/verificar_sessao')
                 .then(response => response.json())
@@ -742,20 +924,17 @@
                     const navDashboard = document.getElementById('navDashboard');
 
                     if (data.logado) {
-                        navLogin.style.display = 'none';
+                        if (navLogin) navLogin.style.display = 'none';
                         navLogout.style.display = 'inline-block';
                         navDashboard.style.display = 'inline-block';
-
-                        // Salvar usuário na sessão local
                         localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
 
-                        // Mostrar lista de sugestões para ADM/DEV
                         if (data.user.role === 'adm' || data.user.role === 'dev') {
                             document.getElementById('sugestoesList').style.display = 'block';
                             carregarSugestoes();
                         }
                     } else {
-                        navLogin.style.display = 'inline-block';
+                        if (navLogin) navLogin.style.display = 'none';
                         navLogout.style.display = 'none';
                         navDashboard.style.display = 'none';
                         localStorage.removeItem('usuarioLogado');
@@ -777,7 +956,7 @@
                     console.error('Erro ao carregar sugestões:', error);
                     document.getElementById('sugestoesContainer').innerHTML = `
                         <div style="text-align: center; padding: 30px; color: #e74c3c;">
-                            ❌ Erro ao carregar sugestões
+                            Erro ao carregar sugestões
                         </div>
                     `;
                 });
@@ -797,7 +976,6 @@
             }
 
             container.innerHTML = sugestoes.map(s => {
-                // Formatar data
                 let dataFormatada = s.data;
                 try {
                     const dataObj = new Date(s.data);
@@ -832,67 +1010,42 @@
             const pelotao = document.getElementById('pelotao').value.trim();
             const texto = document.getElementById('sugestao').value.trim();
 
-            // Esconder mensagens anteriores
-            document.getElementById('messageSuccess').style.display = 'none';
-            document.getElementById('messageError').style.display = 'none';
-            document.getElementById('messageInfo').style.display = 'none';
-
-            // Validar
+            // Validação silenciosa - apenas alertas
             if (!gmail || !nome || !pelotao || !texto) {
-                document.getElementById('messageInfo').style.display = 'block';
-                document.getElementById('messageInfo').textContent = 'Preencha todos os campos obrigatórios.';
+                alert('Preencha todos os campos obrigatórios.');
                 return;
             }
 
             if (!gmail.includes('@') || !gmail.includes('.')) {
-                document.getElementById('messageInfo').style.display = 'block';
-                document.getElementById('messageInfo').textContent = 'Por favor, insira um email válido.';
+                alert('Por favor, insira um email válido.');
                 return;
             }
 
-            // Desabilitar botão e mostrar loading
             const btn = document.getElementById('btnEnviar');
             btn.innerHTML = '<span class="btn-loader"></span> Enviando...';
             btn.disabled = true;
 
-            // Enviar para API
             fetch('/api/sugestoes', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    gmail: gmail,
-                    nome: nome,
-                    pelotao: pelotao,
-                    texto: texto
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ gmail, nome, pelotao, texto })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Sucesso
-                    document.getElementById('messageSuccess').style.display = 'block';
+                    alert('Sugestão enviada com sucesso! Um email de confirmação foi enviado para você.');
                     document.getElementById('formSugestao').reset();
 
-                    // Recarregar lista se for ADM/DEV
                     if (isAdmOuDev()) {
                         carregarSugestoes();
                     }
-
-                    // Esconder mensagem após 5 segundos
-                    setTimeout(() => {
-                        document.getElementById('messageSuccess').style.display = 'none';
-                    }, 5000);
                 } else {
-                    document.getElementById('messageError').style.display = 'block';
-                    document.getElementById('messageError').textContent = data.error || 'Erro ao enviar sugestão.';
+                    alert('Erro ao enviar sugestão: ' + (data.error || 'Tente novamente.'));
                 }
             })
             .catch(error => {
                 console.error('Erro:', error);
-                document.getElementById('messageError').style.display = 'block';
-                document.getElementById('messageError').textContent = 'Erro de conexão com o servidor.';
+                alert('Erro de conexão com o servidor.');
             })
             .finally(() => {
                 btn.innerHTML = 'Enviar Sugestão';
@@ -911,21 +1064,19 @@
                 return;
             }
 
-            fetch(`/api/sugestoes/${id}`, {
-                method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    carregarSugestoes();
-                } else {
-                    alert('Erro ao excluir sugestão: ' + (data.error || 'Erro desconhecido'));
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro de conexão com o servidor.');
-            });
+            fetch(`/api/sugestoes/${id}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        carregarSugestoes();
+                    } else {
+                        alert('Erro ao excluir sugestão: ' + (data.error || 'Erro desconhecido'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro de conexão com o servidor.');
+                });
         }
 
         // ===== LOGOUT =====
@@ -945,7 +1096,7 @@
                 });
         }
 
-        console.log('📝 Sugestões - Grêmio 1ª Cia');
+        console.log('Sugestões - Grêmio 1ª Cia');
     </script>
 
 </body>

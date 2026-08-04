@@ -6,175 +6,342 @@
     <title>Grêmio 1ª Cia</title>
     
     <style>
-        /* ===== RESET ===== */
+        /* ======================================== */
+        /* ===== RESET E CONFIGURAÇÕES ===== */
+        /* ======================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #8b0000;
+            --primary-hover: #c0392b;
+            --primary-light: #e74c3c;
+            --primary-glow: rgba(139, 0, 0, 0.5);
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --text-white: #ffffff;
+            --text-gray: #aaaaaa;
+            --text-light: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --radius: 16px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
         html {
             scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
-            color: #e0e0e0;
-            background: #0a0a0a;
+            color: var(--text-light);
+            background: var(--bg-dark);
             min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
         }
 
-        /* ===== SPLASH SCREEN ===== */
+        /* ======================================== */
+        /* ===== SPLASH SCREEN PREMIUM ===== */
+        /* ======================================== */
         #splashScreen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000000;
+            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
+            perspective: 1200px;
         }
 
         .splash-content {
             text-align: center;
-            animation: splashAnimation 3s ease forwards;
             padding: 20px;
-        }
-
-        .splash-logo {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            animation: splashEntrance 3s ease forwards;
         }
 
-        .splash-logo img {
-            width: 160px;
-            max-width: 60%;
-            height: auto;
-            object-fit: contain;
-            animation: logoEntrance 0.8s ease-out forwards;
-            filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.3));
-        }
-
-        .splash-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 6px;
-            animation: titleFade 1s ease-out 0.3s forwards;
-            opacity: 0;
-            margin-top: 5px;
-        }
-
-        .splash-subtitle {
-            font-size: 14px;
-            color: #888;
-            letter-spacing: 4px;
-            animation: titleFade 1s ease-out 0.6s forwards;
-            opacity: 0;
-        }
-
-        .loader {
-            margin-top: 25px;
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top: 3px solid #8b0000;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        @keyframes splashAnimation {
-            0% { transform: scale(1.05); opacity: 0; }
+        @keyframes splashEntrance {
+            0% { transform: scale(1.1); opacity: 0; }
             20% { transform: scale(1); opacity: 1; }
             80% { transform: scale(1); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes logoEntrance {
-            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
-            60% { transform: scale(1.05) rotate(2deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        /* Círculo de fundo da logo */
+        .splash-logo-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
         }
 
-        @keyframes titleFade {
-            0% { transform: translateY(15px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        .splash-logo-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: logoPulse 2s ease-in-out infinite;
         }
 
-        @keyframes spin {
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 0.2; }
+        }
+
+        /* Anéis orbitais */
+        .orbit-ring {
+            position: absolute;
+            border: 1px solid rgba(139, 0, 0, 0.15);
+            border-radius: 50%;
+            animation: orbitSpin 8s linear infinite;
+        }
+
+        .orbit-ring:nth-child(1) {
+            width: 170px;
+            height: 170px;
+            animation-duration: 6s;
+        }
+
+        .orbit-ring:nth-child(2) {
+            width: 210px;
+            height: 210px;
+            animation-duration: 10s;
+            animation-direction: reverse;
+            border-color: rgba(139, 0, 0, 0.08);
+        }
+
+        .orbit-ring:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            animation-duration: 14s;
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+
+        @keyframes orbitSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .splash-logo {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            animation: logo3DIn 1.2s ease-out forwards;
+            transform: rotateX(-20deg) rotateY(10deg) scale(0.7);
+            opacity: 0;
         }
 
-        /* ===== HEADER ===== */
+        @keyframes logo3DIn {
+            0% { transform: rotateX(-40deg) rotateY(30deg) scale(0.5) translateZ(-100px); opacity: 0; }
+            60% { transform: rotateX(5deg) rotateY(-5deg) scale(1.05); opacity: 1; }
+            100% { transform: rotateX(0deg) rotateY(0deg) scale(1); opacity: 1; }
+        }
+
+        .splash-logo img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 60px rgba(139, 0, 0, 0.4));
+            animation: logoGlow 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            0% { filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.2)); }
+            100% { filter: drop-shadow(0 0 80px rgba(139, 0, 0, 0.6)); }
+        }
+
+        .splash-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 8px;
+            animation: title3DIn 1s ease-out 0.4s forwards;
+            opacity: 0;
+            transform: translateZ(-50px);
+            text-shadow: 0 0 40px rgba(139, 0, 0, 0.3);
+        }
+
+        @keyframes title3DIn {
+            0% { transform: translateZ(-50px); opacity: 0; }
+            100% { transform: translateZ(0); opacity: 1; }
+        }
+
+        .splash-subtitle {
+            font-size: 13px;
+            color: #888;
+            letter-spacing: 5px;
+            animation: title3DIn 1s ease-out 0.7s forwards;
+            opacity: 0;
+            transform: translateZ(-30px);
+        }
+
+        /* Loader 3D Premium */
+        .loader-3d {
+            margin-top: 30px;
+            width: 50px;
+            height: 50px;
+            position: relative;
+            animation: loaderFloat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loaderFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .loader-3d .ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            animation: ringSpin 1.2s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+        }
+
+        .loader-3d .ring:nth-child(1) {
+            border-top-color: var(--primary);
+            animation-duration: 1s;
+        }
+
+        .loader-3d .ring:nth-child(2) {
+            border-right-color: var(--primary-hover);
+            animation-duration: 1.4s;
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+        }
+
+        .loader-3d .ring:nth-child(3) {
+            border-bottom-color: #fff;
+            animation-duration: 1.8s;
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+        }
+
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ======================================== */
+        /* ===== HEADER PREMIUM ===== */
+        /* ======================================== */
         .header {
-            background: #000000;
-            border-bottom: 2px solid #8b0000;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
             width: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom-color: rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            flex-wrap: wrap;
+            padding: 12px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
+            text-decoration: none;
         }
 
-        .logo img {
+        .logo-icon {
             width: 40px;
             height: 40px;
-            object-fit: contain;
+            position: relative;
         }
 
-        .logo h1 {
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
+        }
+
+        .logo-icon .glow-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text .title {
             font-size: 18px;
             color: #fff;
             letter-spacing: 3px;
             font-weight: 700;
-            white-space: nowrap;
         }
 
-        .logo span {
-            font-size: 10px;
+        .logo-text .sub {
+            font-size: 9px;
             color: #888;
-            margin-left: 5px;
+            letter-spacing: 2px;
             font-weight: 400;
+            text-transform: uppercase;
         }
 
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-menu a {
@@ -182,97 +349,169 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
-            transition: color 0.3s;
-            padding: 5px 10px;
-            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            color: #e74c3c;
-        }
-
-        .btn-login {
-            background: #8b0000;
-            color: #fff !important;
-            padding: 8px 22px !important;
-            border-radius: 4px;
-            transition: background 0.3s;
-            font-weight: 600 !important;
-        }
-
-        .btn-login:hover {
-            background: #a93226 !important;
+            color: #fff;
         }
 
         .menu-toggle {
             display: none;
-            background: none;
-            border: 1px solid #555;
-            padding: 5px 15px;
-            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
             color: #fff;
-            background: #1a1a1a;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
+        .menu-toggle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        /* ======================================== */
         /* ===== HERO ===== */
+        /* ======================================== */
         .hero {
             position: relative;
-            min-height: 450px;
-            background: #000000;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 30px 0;
+            padding: 100px 0 50px;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 30% 20%, #1a0a0a 0%, #000000 70%);
+            perspective: 1000px;
+        }
+
+        /* Partículas de fundo */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(139, 0, 0, 0.3);
+            border-radius: 50%;
+            animation: particleFloat 15s infinite linear;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 18s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 14s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 16s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 3s; animation-duration: 20s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 13s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 2.5s; animation-duration: 17s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 4.5s; animation-duration: 15s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 1.5s; animation-duration: 19s; }
+        .particle:nth-child(10) { left: 15%; animation-delay: 3.5s; animation-duration: 11s; }
+        .particle:nth-child(11) { left: 45%; animation-delay: 0.5s; animation-duration: 22s; }
+        .particle:nth-child(12) { left: 75%; animation-delay: 5.5s; animation-duration: 14s; }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(139, 0, 0, 0.08) 0%, transparent 60%);
+            animation: heroOrbit 15s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes heroOrbit {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-3%, -5%) rotate(5deg); }
+            100% { transform: translate(3%, 5%) rotate(-5deg); }
         }
 
         .hero-content {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 30px 0;
-            gap: 25px;
+            gap: 20px;
             width: 100%;
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        .hero-text {
-            max-width: 700px;
-            text-align: center;
-            width: 100%;
-            padding: 0 10px;
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .hero-text h2 {
-            font-size: 36px;
-            margin-bottom: 10px;
-            line-height: 1.2;
-            color: #fff;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(139, 0, 0, 0.12);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: var(--primary-hover);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
         }
 
-        .hero-text h2 span {
-            color: #e74c3c;
+        .hero-badge .pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulseDot 1.5s ease-in-out infinite;
         }
 
-        .hero-text p {
-            font-size: 16px;
-            color: #aaa;
-            margin-bottom: 25px;
-            line-height: 1.8;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.6); }
         }
 
         .hero-image {
@@ -280,176 +519,330 @@
             justify-content: center;
             align-items: center;
             width: 100%;
+            transform-style: preserve-3d;
+            animation: float3D 4s ease-in-out infinite;
+        }
+
+        @keyframes float3D {
+            0% { transform: rotateY(0deg) translateY(0); }
+            50% { transform: rotateY(5deg) translateY(-10px); }
+            100% { transform: rotateY(0deg) translateY(0); }
         }
 
         .hero-image img {
-            max-width: 200px;
+            max-width: 160px;
             width: 100%;
             height: auto;
             object-fit: contain;
-            filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.2));
+            filter: drop-shadow(0 0 60px rgba(139, 0, 0, 0.3));
         }
 
+        .hero-text {
+            max-width: 100%;
+            padding: 0 4px;
+        }
+
+        .hero-text h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.15;
+            color: #fff;
+            text-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        .hero-text h2 .highlight {
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text h2 .glow {
+            display: inline-block;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 20px rgba(139, 0, 0, 0.2); }
+            100% { text-shadow: 0 0 50px rgba(139, 0, 0, 0.5); }
+        }
+
+        .hero-text p {
+            font-size: 15px;
+            color: #aaa;
+            margin-bottom: 16px;
+            line-height: 1.7;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .hero-buttons .btn {
+            width: 100%;
+            text-align: center;
+            padding: 14px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-buttons .btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: btnShine 3s ease-in-out infinite;
+            transform: rotate(25deg);
+        }
+
+        @keyframes btnShine {
+            0% { transform: translateX(-100%) rotate(25deg); }
+            100% { transform: translateX(100%) rotate(25deg); }
+        }
+
+        /* Hero Grid */
         .hero-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 8px;
             background: rgba(255,255,255,0.03);
-            padding: 18px;
-            border-radius: 10px;
+            padding: 14px 16px;
+            border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.05);
-            max-width: 500px;
             width: 100%;
+            max-width: 500px;
             margin: 0 auto;
+            backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
+            perspective: 500px;
         }
 
         .hero-grid .item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            padding: 10px 8px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 6px;
-            transition: all 0.3s;
+            gap: 3px;
+            padding: 10px 4px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .hero-grid .item:hover {
+            transform: translateY(-3px) scale(1.05);
             background: rgba(139, 0, 0, 0.15);
-            transform: translateY(-2px);
+        }
+
+        .hero-grid .item:active {
+            transform: scale(0.95);
         }
 
         .hero-grid .item .icon {
             font-size: 22px;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        .hero-grid .item:nth-child(1) .icon { animation-delay: 0s; }
+        .hero-grid .item:nth-child(2) .icon { animation-delay: 0.4s; }
+        .hero-grid .item:nth-child(3) .icon { animation-delay: 0.8s; }
+        .hero-grid .item:nth-child(4) .icon { animation-delay: 1.2s; }
+        .hero-grid .item:nth-child(5) .icon { animation-delay: 0.2s; }
+        .hero-grid .item:nth-child(6) .icon { animation-delay: 0.6s; }
+        .hero-grid .item:nth-child(7) .icon { animation-delay: 1.0s; }
+        .hero-grid .item:nth-child(8) .icon { animation-delay: 1.4s; }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .hero-grid .item .label {
-            font-size: 9px;
+            font-size: 8px;
             color: #888;
-            font-weight: 500;
+            font-weight: 600;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
+        /* ======================================== */
         /* ===== BUTTONS ===== */
+        /* ======================================== */
         .btn {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 14px 28px;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             border: none;
             text-align: center;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
-            background: #8b0000;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: #fff;
+            box-shadow: 0 4px 25px rgba(139, 0, 0, 0.4);
         }
 
         .btn-primary:hover {
-            background: #a93226;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 40px rgba(139, 0, 0, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
         }
 
         .btn-secondary {
-            background: transparent;
+            background: rgba(255,255,255,0.05);
             color: #fff;
-            border: 2px solid #555;
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: #fff;
-            color: #000;
-            transform: translateY(-2px);
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.96);
         }
 
         .btn-outline {
             background: transparent;
-            color: #e74c3c;
-            border: 2px solid #e74c3c;
-            padding: 8px 20px;
-            font-size: 13px;
+            color: var(--primary-hover);
+            border: 2px solid var(--primary-hover);
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 12px;
         }
 
         .btn-outline:hover {
-            background: #e74c3c;
+            background: var(--primary-hover);
             color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
         }
 
-        /* ===== ATIVIDADES ===== */
-        .atividades {
-            padding: 60px 0;
-            background: #0d0d0d;
-            border-top: 1px solid #1a1a1a;
-            border-bottom: 1px solid #1a1a1a;
+        .btn-outline:active {
+            transform: scale(0.96);
+        }
+
+        /* ======================================== */
+        /* ===== SECTIONS ===== */
+        /* ======================================== */
+        .section-padding {
+            padding: 50px 0;
+        }
+
+        .section-dark {
+            background: linear-gradient(180deg, #0d0d0d 0%, #080808 100%);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-darker {
+            background: var(--bg-dark);
         }
 
         .section-title {
             text-align: center;
-            font-size: 28px;
+            font-size: 26px;
+            font-weight: 700;
             color: #fff;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .section-subtitle {
             text-align: center;
             color: #888;
-            font-size: 15px;
-            margin-bottom: 40px;
+            font-size: 14px;
+            margin-bottom: 32px;
         }
 
         .section-title:after {
             content: '';
             display: block;
             width: 60px;
-            height: 2px;
-            background: #8b0000;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
             margin: 10px auto 0;
+            border-radius: 2px;
+            animation: lineExpand 1s ease-out;
         }
 
+        @keyframes lineExpand {
+            0% { width: 0; opacity: 0; }
+            100% { width: 60px; opacity: 1; }
+        }
+
+        /* ======================================== */
+        /* ===== ATIVIDADES ===== */
+        /* ======================================== */
         .atividades-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
         }
 
         .atividade-card {
-            background: #141414;
-            padding: 25px 15px;
-            border-radius: 8px;
+            background: var(--bg-card);
+            padding: 20px 12px;
+            border-radius: var(--radius);
             text-align: center;
-            transition: all 0.3s;
-            border: 1px solid #1a1a1a;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .atividade-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-color: #8b0000;
+            transform: translateY(-6px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(139, 0, 0, 0.15);
+        }
+
+        .atividade-card:active {
+            transform: scale(0.96);
         }
 
         .atividade-card .icon {
-            font-size: 34px;
-            margin-bottom: 10px;
+            font-size: 30px;
+            margin-bottom: 8px;
             display: block;
         }
 
         .atividade-card h3 {
-            font-size: 15px;
+            font-size: 13px;
             color: #fff;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             font-weight: 600;
         }
 
         .atividade-card p {
             color: #666;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .atividade-card .status {
@@ -457,73 +850,70 @@
             margin-top: 8px;
             padding: 3px 14px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-        }
-
-        .status-disponivel {
-            background: #1a3a2a;
+            background: rgba(76, 175, 80, 0.15);
             color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.2);
         }
 
+        /* ======================================== */
         /* ===== FEATURES ===== */
-        .features {
-            padding: 60px 0;
-            background: #0a0a0a;
-        }
-
+        /* ======================================== */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
         .feature-card {
-            background: #141414;
-            padding: 30px;
-            border-radius: 8px;
+            background: var(--bg-card);
+            padding: 28px 20px;
+            border-radius: var(--radius);
             text-align: center;
-            border: 1px solid #1a1a1a;
-            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: #8b0000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .feature-card:active {
+            transform: scale(0.98);
         }
 
         .feature-card .icon {
             font-size: 32px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: block;
         }
 
         .feature-card h3 {
             font-size: 18px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #fff;
         }
 
         .feature-card p {
             color: #888;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             font-size: 14px;
+            line-height: 1.6;
         }
 
+        /* ======================================== */
         /* ===== SCHEDULE ===== */
-        .schedule-section {
-            padding: 60px 0;
-            background: #0d0d0d;
-            border-top: 1px solid #1a1a1a;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
+        /* ======================================== */
         .schedule-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            max-width: 800px;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -531,11 +921,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            background: #141414;
-            border-radius: 8px;
-            border: 1px solid #1a1a1a;
-            border-left: 4px solid #8b0000;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .schedule-item:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .schedule-item:active {
+            transform: scale(0.98);
         }
 
         .schedule-item .day {
@@ -545,7 +946,7 @@
         }
 
         .schedule-item .time {
-            color: #e74c3c;
+            color: var(--primary-hover);
             font-weight: 600;
             font-size: 14px;
         }
@@ -555,93 +956,287 @@
             font-size: 12px;
         }
 
+        /* ======================================== */
         /* ===== FOOTER ===== */
+        /* ======================================== */
         .footer {
             background: #000000;
             color: #666;
-            padding: 40px 0;
-            border-top: 2px solid #8b0000;
+            padding: 40px 0 24px;
+            border-top: 2px solid var(--primary);
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             text-align: center;
         }
 
         .footer-info h3 {
             color: #fff;
             font-size: 20px;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
         }
 
         .footer-info p {
-            font-size: 14px;
+            font-size: 13px;
             color: #888;
         }
 
         .footer-links {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .footer-links a {
             color: #888;
             text-decoration: none;
             transition: color 0.3s;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .footer-links a:hover {
-            color: #e74c3c;
+            color: var(--primary-hover);
         }
 
         .footer-copy {
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .footer-copy p {
-            margin: 5px 0;
+            margin: 3px 0;
             color: #555;
         }
 
+        /* ======================================== */
+        /* ===== SCROLL ANIMATIONS ===== */
+        /* ======================================== */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ======================================== */
         /* ===== RESPONSIVO ===== */
-        @media (max-width: 992px) {
+        /* ======================================== */
+
+        @media (min-width: 600px) {
+            .atividades-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+            }
+
             .hero-grid {
                 grid-template-columns: repeat(4, 1fr);
-                gap: 8px;
-                padding: 12px;
-                max-width: 450px;
-            }
-
-            .hero-grid .item {
-                padding: 8px 6px;
-            }
-
-            .hero-grid .item .icon {
-                font-size: 20px;
-            }
-
-            .hero-image img {
-                max-width: 170px;
+                gap: 10px;
+                padding: 16px 20px;
             }
 
             .hero-text h2 {
-                font-size: 30px;
+                font-size: 38px;
+            }
+
+            .hero-image img {
+                max-width: 180px;
+            }
+
+            .hero-buttons {
+                flex-direction: row;
+                max-width: 420px;
+            }
+
+            .hero-buttons .btn {
+                width: auto;
+                padding: 14px 32px;
+            }
+
+            .schedule-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-badge {
+                font-size: 13px;
+                padding: 8px 28px;
+            }
+
+            .splash-title {
+                font-size: 32px;
+            }
+
+            .splash-logo img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .splash-logo-wrapper {
+                width: 240px;
+                height: 240px;
+            }
+
+            .orbit-ring:nth-child(1) { width: 200px; height: 200px; }
+            .orbit-ring:nth-child(2) { width: 250px; height: 250px; }
+            .orbit-ring:nth-child(3) { width: 300px; height: 300px; }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                padding: 0 32px;
+            }
+
+            .hero {
+                min-height: 90vh;
+                padding: 80px 0;
+            }
+
+            .hero-text h2 {
+                font-size: 48px;
+            }
+
+            .hero-text p {
+                font-size: 18px;
+            }
+
+            .hero-image img {
+                max-width: 220px;
+            }
+
+            .hero-grid {
+                max-width: 560px;
+                padding: 20px 24px;
+                gap: 12px;
+            }
+
+            .hero-grid .item .icon {
+                font-size: 26px;
+            }
+
+            .hero-grid .item .label {
+                font-size: 10px;
             }
 
             .atividades-grid {
                 grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+            }
+
+            .atividade-card {
+                padding: 28px 16px;
+            }
+
+            .atividade-card .icon {
+                font-size: 38px;
+            }
+
+            .atividade-card h3 {
+                font-size: 16px;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
             }
 
             .schedule-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 820px;
             }
+
+            .section-padding {
+                padding: 80px 0;
+            }
+
+            .section-title {
+                font-size: 34px;
+            }
+
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+
+            .header-content {
+                padding: 14px 0;
+            }
+
+            .logo-text .title {
+                font-size: 20px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1300px;
+            }
+
+            .hero-text h2 {
+                font-size: 56px;
+            }
+
+            .hero-text p {
+                font-size: 20px;
+            }
+
+            .hero-grid {
+                max-width: 660px;
+                padding: 24px 32px;
+                gap: 16px;
+            }
+
+            .hero-grid .item .icon {
+                font-size: 30px;
+            }
+
+            .hero-grid .item .label {
+                font-size: 11px;
+            }
+
+            .hero-image img {
+                max-width: 260px;
+            }
+
+            .atividades-grid {
+                gap: 28px;
+            }
+
+            .section-title {
+                font-size: 38px;
+            }
+
+            .splash-title {
+                font-size: 38px;
+            }
+
+            .splash-logo img {
+                width: 140px;
+                height: 140px;
+            }
+
+            .splash-logo-wrapper {
+                width: 280px;
+                height: 280px;
+            }
+
+            .orbit-ring:nth-child(1) { width: 230px; height: 230px; }
+            .orbit-ring:nth-child(2) { width: 290px; height: 290px; }
+            .orbit-ring:nth-child(3) { width: 350px; height: 350px; }
         }
 
         @media (max-width: 768px) {
@@ -653,14 +1248,16 @@
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 62px;
+                top: 60px;
                 left: 0;
                 width: 100%;
-                background: #000;
-                padding: 20px;
-                gap: 12px;
-                border-bottom: 2px solid #8b0000;
+                background: rgba(0, 0, 0, 0.98);
+                padding: 20px 16px;
+                gap: 14px;
+                border-bottom: 2px solid var(--primary);
                 text-align: center;
+                z-index: 99;
+                backdrop-filter: blur(20px);
             }
 
             .nav-menu.open {
@@ -668,19 +1265,19 @@
             }
 
             .nav-menu a {
-                padding: 10px;
+                padding: 12px;
                 width: 100%;
                 text-align: center;
+                font-size: 16px;
+            }
+
+            .nav-menu a::after {
+                display: none;
             }
 
             .hero {
+                padding: 60px 0 30px;
                 min-height: auto;
-                padding: 20px 0;
-            }
-
-            .hero-content {
-                padding: 20px 0;
-                gap: 20px;
             }
 
             .hero-text h2 {
@@ -689,130 +1286,6 @@
 
             .hero-text p {
                 font-size: 14px;
-                padding: 0 10px;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                max-width: 280px;
-                margin: 0 auto;
-            }
-
-            .hero-buttons .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .hero-image img {
-                max-width: 140px;
-            }
-
-            .hero-grid {
-                grid-template-columns: repeat(4, 1fr);
-                max-width: 400px;
-                padding: 12px;
-                gap: 8px;
-            }
-
-            .hero-grid .item .icon {
-                font-size: 18px;
-            }
-
-            .hero-grid .item .label {
-                font-size: 8px;
-            }
-
-            .atividades-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 15px;
-            }
-
-            .atividade-card {
-                padding: 20px 12px;
-            }
-
-            .atividade-card .icon {
-                font-size: 28px;
-            }
-
-            .atividade-card h3 {
-                font-size: 14px;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .schedule-grid {
-                grid-template-columns: 1fr;
-                max-width: 500px;
-            }
-
-            .schedule-item {
-                padding: 12px 16px;
-                flex-direction: column;
-                text-align: center;
-                gap: 5px;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-links {
-                flex-direction: row;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 15px;
-            }
-
-            .splash-title {
-                font-size: 22px;
-                letter-spacing: 3px;
-            }
-
-            .splash-logo img {
-                width: 120px;
-                max-width: 50%;
-            }
-
-            .section-title {
-                font-size: 24px;
-            }
-
-            .section-subtitle {
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 10px;
-            }
-
-            .logo h1 {
-                font-size: 14px;
-                letter-spacing: 1px;
-            }
-
-            .logo span {
-                display: none;
-            }
-
-            .logo img {
-                width: 32px;
-                height: 32px;
-            }
-
-            .hero-text h2 {
-                font-size: 22px;
-            }
-
-            .hero-text p {
-                font-size: 13px;
-                padding: 0 5px;
             }
 
             .hero-image img {
@@ -820,133 +1293,64 @@
             }
 
             .hero-grid {
-                grid-template-columns: repeat(4, 1fr);
+                max-width: 380px;
+                padding: 12px;
                 gap: 6px;
-                padding: 10px;
-                max-width: 320px;
             }
 
             .hero-grid .item {
-                padding: 6px 4px;
+                padding: 8px 4px;
             }
 
             .hero-grid .item .icon {
-                font-size: 16px;
+                font-size: 18px;
             }
 
             .hero-grid .item .label {
                 font-size: 7px;
             }
 
-            .atividades-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .atividade-card {
-                padding: 15px 10px;
-            }
-
-            .atividade-card .icon {
-                font-size: 26px;
-            }
-
-            .atividade-card h3 {
-                font-size: 13px;
-            }
-
-            .atividade-card p {
-                font-size: 11px;
-            }
-
-            .atividade-card .status {
+            .hero-badge {
                 font-size: 10px;
-                padding: 2px 12px;
+                padding: 6px 16px;
             }
 
-            .btn {
-                padding: 10px 20px;
-                font-size: 12px;
-            }
-
-            .section-title {
-                font-size: 20px;
-            }
-
-            .section-subtitle {
-                font-size: 13px;
+            .hero-badge .pulse {
+                width: 6px;
+                height: 6px;
             }
 
             .splash-title {
-                font-size: 18px;
-                letter-spacing: 2px;
-            }
-
-            .splash-subtitle {
-                font-size: 11px;
-                letter-spacing: 2px;
+                font-size: 20px;
+                letter-spacing: 4px;
             }
 
             .splash-logo img {
-                width: 100px;
-                max-width: 50%;
+                width: 80px;
+                height: 80px;
             }
 
-            .loader {
-                width: 30px;
-                height: 30px;
+            .splash-logo-wrapper {
+                width: 160px;
+                height: 160px;
             }
 
-            .schedule-item {
-                padding: 10px 12px;
-            }
+            .orbit-ring:nth-child(1) { width: 130px; height: 130px; }
+            .orbit-ring:nth-child(2) { width: 170px; height: 170px; }
+            .orbit-ring:nth-child(3) { width: 210px; height: 210px; }
 
-            .schedule-item .day {
-                font-size: 13px;
-            }
-
-            .schedule-item .time {
-                font-size: 13px;
-            }
-
-            .feature-card {
-                padding: 20px;
-            }
-
-            .feature-card h3 {
-                font-size: 16px;
-            }
-
-            .feature-card p {
-                font-size: 13px;
-            }
-
-            .footer {
-                padding: 30px 0;
-            }
-
-            .footer-info h3 {
-                font-size: 18px;
-            }
-
-            .footer-info p {
-                font-size: 13px;
-            }
-
-            .footer-copy p {
-                font-size: 11px;
+            .loader-3d {
+                width: 40px;
+                height: 40px;
             }
         }
 
-        @media (max-width: 360px) {
+        @media (max-width: 400px) {
             .hero-grid {
                 grid-template-columns: repeat(2, 1fr);
                 max-width: 280px;
                 gap: 8px;
-            }
-
-            .hero-grid .item {
-                padding: 8px 6px;
+                padding: 12px;
             }
 
             .hero-grid .item .icon {
@@ -954,7 +1358,7 @@
             }
 
             .hero-grid .item .label {
-                font-size: 9px;
+                font-size: 8px;
             }
 
             .atividades-grid {
@@ -962,63 +1366,47 @@
                 gap: 10px;
             }
 
-            .hero-text h2 {
-                font-size: 20px;
+            .atividade-card {
+                padding: 14px 8px;
             }
 
-            .logo h1 {
-                font-size: 12px;
-            }
-
-            .logo img {
-                width: 28px;
-                height: 28px;
-            }
-        }
-
-        @media (min-width: 1400px) {
-            .container {
-                max-width: 1300px;
+            .atividade-card .icon {
+                font-size: 24px;
             }
 
             .hero-text h2 {
-                font-size: 42px;
+                font-size: 22px;
             }
 
-            .hero-text p {
+            .schedule-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 4px;
+                padding: 12px 14px;
+            }
+
+            .splash-title {
                 font-size: 18px;
+                letter-spacing: 3px;
             }
 
-            .hero-grid {
-                max-width: 600px;
-                padding: 25px;
-                gap: 15px;
+            .splash-logo-wrapper {
+                width: 130px;
+                height: 130px;
             }
 
-            .hero-grid .item .icon {
-                font-size: 28px;
+            .orbit-ring:nth-child(1) { width: 100px; height: 100px; }
+            .orbit-ring:nth-child(2) { width: 140px; height: 140px; }
+            .orbit-ring:nth-child(3) { width: 180px; height: 180px; }
+
+            .splash-logo img {
+                width: 65px;
+                height: 65px;
             }
 
-            .hero-grid .item .label {
-                font-size: 11px;
-            }
-
-            .hero-image img {
-                max-width: 250px;
-            }
-
-            .atividades-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 25px;
-            }
-
-            .section-title {
-                font-size: 34px;
-            }
-
-            .schedule-grid {
-                grid-template-columns: repeat(4, 1fr);
-                max-width: 900px;
+            .loader-3d {
+                width: 32px;
+                height: 32px;
             }
         }
 
@@ -1026,160 +1414,218 @@
             .header {
                 position: static;
             }
-            .nav-menu {
-                display: none !important;
-            }
-            .menu-toggle {
-                display: none !important;
-            }
-            .hero {
-                background: #fff !important;
-                color: #000 !important;
-            }
-            .hero-text h2 {
-                color: #000 !important;
-            }
-            .hero-text p {
-                color: #333 !important;
-            }
-            .btn {
-                display: none !important;
-            }
-            .footer {
-                background: #f0f0f0 !important;
-                color: #333 !important;
-            }
+            .nav-menu { display: none !important; }
+            .menu-toggle { display: none !important; }
+            .hero { background: #fff !important; color: #000 !important; }
+            .hero-text h2 { color: #000 !important; }
+            .hero-text p { color: #333 !important; }
+            .btn { display: none !important; }
+            .footer { background: #f0f0f0 !important; color: #333 !important; }
+            .particles { display: none !important; }
+            #splashScreen { display: none !important; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== SPLASH SCREEN ===== -->
+    <!-- ===== SPLASH SCREEN PREMIUM ===== -->
     <div id="splashScreen">
         <div class="splash-content">
-            <div class="splash-logo">
-                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                <div class="splash-title">GRÊMIO 1ª CIA</div>
-                <div class="splash-subtitle">Sistema de Gestão</div>
+            <div class="splash-logo-wrapper">
+                <!-- Anéis orbitais -->
+                <div class="orbit-ring"></div>
+                <div class="orbit-ring"></div>
+                <div class="orbit-ring"></div>
+                <!-- Logo -->
+                <div class="splash-logo">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="splash-title">GRÊMIO 1ª CIA</div>
+                    <div class="splash-subtitle">Sistema de Gestão</div>
+                </div>
             </div>
-            <div class="loader"></div>
+            <div class="loader-3d">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+            </div>
         </div>
     </div>
 
     <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <div id="mainContent" style="display: none;">
 
-        <!-- HEADER -->
-        <header class="header">
+        <!-- HEADER PREMIUM -->
+        <header class="header" id="mainHeader">
             <div class="container header-content">
-                <div class="logo">
-                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                    <h1>GRÊMIO 1ª CIA</h1>
-                    <span>Gestão</span>
-                </div>
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                        <div class="glow-ring"></div>
+                    </div>
+                    <div class="logo-text">
+                        <span class="title">GRÊMIO 1ª CIA</span>
+                        <span class="sub">Sistema de Gestão</span>
+                    </div>
+                </a>
                 <nav class="nav-menu" id="navMenu">
                     <a href="/" class="active">Início</a>
                     <a href="/lista">Membros</a>
                     <a href="/avaliacao">Sugestões</a>
-                    <a href="/login" class="btn-login">Entrar</a>
                 </nav>
-                <button class="menu-toggle" id="menuToggle">Menu</button>
+                <button class="menu-toggle" id="menuToggle">☰</button>
             </div>
         </header>
 
         <!-- HERO -->
         <section class="hero">
+            <div class="particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+
             <div class="container hero-content">
+                <div class="hero-badge">
+                    <span class="pulse"></span>
+                    1ª Companhia • Espaço de Lazer
+                </div>
+
                 <div class="hero-image">
                     <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
                 </div>
+
                 <div class="hero-text">
-                    <h2>Bem-vindo ao <span>Grêmio 1ª Cia</span></h2>
+                    <h2>
+                        Bem-vindo ao <br>
+                        <span class="highlight glow">Grêmio 1ª Cia</span>
+                    </h2>
                     <p>
-                        O espaço de lazer da 1ª Companhia. Aqui você encontra diversas atividades 
-                        para relaxar e se divertir. Participe, sugira melhorias e faça parte 
-                        da nossa comunidade.
+                        O espaço de lazer da 1ª Companhia. Atividades para relaxar, se divertir 
+                        e fazer parte da nossa comunidade.
                     </p>
                     <div class="hero-buttons">
-                        <a href="/login" class="btn btn-primary">Acessar Sistema</a>
+                        <a href="/lista" class="btn btn-primary">Ver Membros</a>
                         <a href="/avaliacao" class="btn btn-secondary">Dar Sugestão</a>
+                    </div>
+                </div>
+
+                <div class="hero-grid">
+                    <div class="item">
+                        <span class="icon">🎯</span>
+                        <span class="label">TABULERO</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon">🃏</span>
+                        <span class="label">BARALHO</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon">🏓</span>
+                        <span class="label">PING PONG</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon">🎱</span>
+                        <span class="label">SINUCA</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon">⚽</span>
+                        <span class="label">PEBOLIM</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon">🎯</span>
+                        <span class="label">DARDO</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon">🕹️</span>
+                        <span class="label">FLIPERAMA</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon">🎮</span>
+                        <span class="label">VIDEO GAME</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ATIVIDADES -->
-        <section class="atividades">
+        <section class="section-padding section-dark">
             <div class="container">
-                <h2 class="section-title">Atividades Disponíveis</h2>
-                <p class="section-subtitle">Confira todas as opções de lazer do Grêmio</p>
+                <h2 class="section-title scroll-animate">Atividades Disponíveis</h2>
+                <p class="section-subtitle scroll-animate">Confira todas as opções de lazer do Grêmio</p>
                 <div class="atividades-grid">
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">🎯</span>
                         <h3>TABULERO</h3>
                         <p>Jogos de tabuleiro</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">🃏</span>
                         <h3>BARALHO</h3>
                         <p>Cartas para jogos</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">🏓</span>
                         <h3>PING PONG</h3>
                         <p>Mesa com raquetes</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">🎱</span>
                         <h3>SINUCA</h3>
                         <p>Mesa profissional</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">⚽</span>
                         <h3>PEBOLIM</h3>
                         <p>Futebol de mesa</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">🎯</span>
                         <h3>DARDO</h3>
                         <p>Alvo com dardos</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">🕹️</span>
                         <h3>FLIPERAMA</h3>
                         <p>Máquinas retrô</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
-                    <div class="atividade-card">
+                    <div class="atividade-card scroll-animate">
                         <span class="icon">🎮</span>
                         <h3>VIDEO GAME</h3>
                         <p>Console com jogos</p>
-                        <span class="status status-disponivel">Disponível</span>
+                        <span class="status">Disponível</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- FUNCIONALIDADES -->
-        <section class="features">
+        <section class="section-padding section-darker">
             <div class="container">
-                <h2 class="section-title">Funcionalidades do Sistema</h2>
-                <p class="section-subtitle">Gerencie o Grêmio de forma eficiente</p>
+                <h2 class="section-title scroll-animate">Funcionalidades do Sistema</h2>
+                <p class="section-subtitle scroll-animate">Gerencie o Grêmio de forma eficiente</p>
                 <div class="features-grid">
-                    <div class="feature-card">
+                    <div class="feature-card scroll-animate">
                         <span class="icon">👥</span>
                         <h3>Lista de Membros</h3>
                         <p>Visualize todos os participantes, pesquise por nomes e acompanhe quem frequenta o Grêmio.</p>
                         <a href="/lista" class="btn btn-outline">Ver Lista</a>
                     </div>
-
-                    <div class="feature-card">
+                    <div class="feature-card scroll-animate">
                         <span class="icon">💡</span>
                         <h3>Sugestões</h3>
                         <p>Envie ideias para melhorar o espaço, sugerir novos jogos ou equipamentos para o Grêmio.</p>
@@ -1189,13 +1635,13 @@
             </div>
         </section>
 
-        <!-- HORÁRIO DE FUNCIONAMENTO -->
-        <section class="schedule-section">
+        <!-- HORÁRIO -->
+        <section class="section-padding section-dark">
             <div class="container">
-                <h2 class="section-title">Horário de Funcionamento</h2>
-                <p class="section-subtitle">Confira os horários do Grêmio 1ª Cia</p>
+                <h2 class="section-title scroll-animate">Horário de Funcionamento</h2>
+                <p class="section-subtitle scroll-animate">Confira os horários do Grêmio 1ª Cia</p>
                 <div class="schedule-grid">
-                    <div class="schedule-item">
+                    <div class="schedule-item scroll-animate">
                         <span class="day">Segunda a Quinta</span>
                         <div>
                             <span class="time">11:30 - 12:30</span>
@@ -1203,11 +1649,11 @@
                             <span class="time">16:30 - 22:00</span>
                         </div>
                     </div>
-                    <div class="schedule-item">
+                    <div class="schedule-item scroll-animate">
                         <span class="day">Sexta</span>
                         <span class="time">12:00 - 22:00</span>
                     </div>
-                    <div class="schedule-item">
+                    <div class="schedule-item scroll-animate">
                         <span class="day">Finais de Semana e Feriados</span>
                         <span class="time">08:00 - 22:00</span>
                     </div>
@@ -1217,21 +1663,22 @@
 
         <!-- FOOTER -->
         <footer class="footer">
-            <div class="container footer-content">
-                <div class="footer-info">
-                    <h3>GRÊMIO 1ª CIA</h3>
-                    <p>Espaço de lazer e integração</p>
-                </div>
-                <div class="footer-links">
-                    <a href="/">Início</a>
-                    <a href="/lista">Membros</a>
-                    <a href="/avaliacao">Sugestões</a>
-                    <a href="/login">Login</a>
-                </div>
-                <div class="footer-copy">
-                    <p>&copy; 2026 Grêmio 1ª Cia</p>
-                    <p>Todos os direitos reservados</p>
-                    <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <h3>GRÊMIO 1ª CIA</h3>
+                        <p>Espaço de lazer e integração</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="/">Início</a>
+                        <a href="/lista">Membros</a>
+                        <a href="/avaliacao">Sugestões</a>
+                    </div>
+                    <div class="footer-copy">
+                        <p>&copy; 2026 Grêmio 1ª Cia</p>
+                        <p>Todos os direitos reservados</p>
+                        <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -1245,14 +1692,44 @@
                 const mainContent = document.getElementById('mainContent');
                 
                 splash.style.opacity = '0';
-                splash.style.transition = 'opacity 0.5s ease';
+                splash.style.transition = 'opacity 0.8s ease';
                 
                 setTimeout(function() {
                     splash.style.display = 'none';
                     mainContent.style.display = 'block';
-                    mainContent.style.animation = 'fadeIn 0.5s ease';
-                }, 500);
-            }, 3000);
+                    mainContent.style.animation = 'fadeInUp 0.8s ease-out';
+                    initScrollAnimations();
+                }, 600);
+            }, 3200);
+        });
+
+        // ===== SCROLL ANIMATIONS =====
+        function initScrollAnimations() {
+            const elements = document.querySelectorAll('.scroll-animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // ===== HEADER SCROLL EFFECT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            let lastScroll = 0;
+
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                if (currentScroll > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                lastScroll = currentScroll;
+            });
         });
 
         // ===== MENU MOBILE =====
@@ -1274,9 +1751,39 @@
                     }
                 });
             });
+
+            document.addEventListener('click', function(event) {
+                const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
+                if (!isClickInside && window.innerWidth <= 768) {
+                    navMenu.classList.remove('open');
+                }
+            });
         });
 
-        console.log('Grêmio 1ª Cia - Sistema carregado com sucesso!');
+        // ===== TILT EFFECT NO HERO GRID =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const grid = document.querySelector('.hero-grid');
+            if (!grid) return;
+
+            grid.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                
+                this.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) perspective(500px)`;
+            });
+
+            grid.addEventListener('mouseleave', function() {
+                this.style.transform = 'rotateX(0deg) rotateY(0deg) perspective(500px)';
+                this.style.transition = 'transform 0.6s ease';
+            });
+        });
+
+        console.log('🎯 Grêmio 1ª Cia - Sistema carregado com sucesso!');
     </script>
 
 </body>

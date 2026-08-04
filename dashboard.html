@@ -6,77 +6,135 @@
     <title>Dashboard - Grêmio 1ª Cia</title>
     
     <style>
-        /* ===== RESET ===== */
+        /* ======================================== */
+        /* ===== RESET E CONFIGURAÇÕES ===== */
+        /* ======================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #8b0000;
+            --primary-hover: #c0392b;
+            --primary-light: #e74c3c;
+            --primary-glow: rgba(139, 0, 0, 0.4);
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --text-white: #ffffff;
+            --text-gray: #aaaaaa;
+            --text-light: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --radius: 14px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
-            color: #e0e0e0;
-            background: #0a0a0a;
+            color: var(--text-light);
+            background: var(--bg-dark);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
         }
 
-        /* ===== HEADER ===== */
+        /* ======================================== */
+        /* ===== HEADER PREMIUM ===== */
+        /* ======================================== */
         .header {
-            background: #000000;
-            border-bottom: 2px solid #8b0000;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
             width: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom-color: rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            flex-wrap: wrap;
+            padding: 12px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
+            text-decoration: none;
         }
 
-        .logo img {
+        .logo-icon {
             width: 40px;
             height: 40px;
-            object-fit: contain;
+            position: relative;
         }
 
-        .logo h1 {
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
+        }
+
+        .logo-icon .glow-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text .title {
             font-size: 18px;
             color: #fff;
             letter-spacing: 3px;
             font-weight: 700;
-            white-space: nowrap;
         }
 
-        .logo span {
-            font-size: 10px;
+        .logo-text .sub {
+            font-size: 9px;
             color: #888;
-            margin-left: 5px;
+            letter-spacing: 2px;
             font-weight: 400;
+            text-transform: uppercase;
         }
 
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-menu a {
@@ -84,14 +142,31 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
-            transition: color 0.3s;
-            padding: 5px 10px;
-            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            color: #e74c3c;
+            color: #fff;
         }
 
         .btn-logout {
@@ -99,10 +174,11 @@
             color: #e74c3c !important;
             border: 1px solid #e74c3c;
             padding: 6px 18px !important;
-            border-radius: 4px;
+            border-radius: 8px;
             transition: all 0.3s;
             font-weight: 600 !important;
             cursor: pointer;
+            font-size: 13px;
         }
 
         .btn-logout:hover {
@@ -112,15 +188,20 @@
 
         .menu-toggle {
             display: none;
-            background: none;
-            border: 1px solid #555;
-            padding: 5px 15px;
-            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
             color: #fff;
-            background: #1a1a1a;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-toggle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.1);
         }
 
         .user-info {
@@ -132,18 +213,31 @@
         }
 
         .user-info .user-role {
-            background: #8b0000;
+            background: var(--primary);
             color: #fff;
-            padding: 2px 10px;
+            padding: 2px 12px;
             border-radius: 12px;
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
         }
 
+        /* ======================================== */
         /* ===== DASHBOARD ===== */
+        /* ======================================== */
         .dashboard {
             padding: 30px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .dashboard-header {
@@ -158,10 +252,14 @@
         .dashboard-header h2 {
             font-size: 28px;
             color: #fff;
+            font-weight: 700;
         }
 
         .dashboard-header h2 span {
-            color: #e74c3c;
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .dashboard-header p {
@@ -169,7 +267,9 @@
             font-size: 14px;
         }
 
+        /* ======================================== */
         /* ===== STATS ===== */
+        /* ======================================== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -178,30 +278,52 @@
         }
 
         .stat-card {
-            background: #141414;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             padding: 20px 25px;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(139, 0, 0, 0.03), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
         }
 
         .stat-card:hover {
-            border-color: #8b0000;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border-color: rgba(139, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
         }
 
         .stat-card .stat-icon {
-            font-size: 24px;
+            font-size: 13px;
             font-weight: 300;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .stat-card .stat-number {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: #fff;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .stat-card .stat-label {
@@ -224,7 +346,9 @@
             color: #e74c3c;
         }
 
+        /* ======================================== */
         /* ===== DASHBOARD GRID ===== */
+        /* ======================================== */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -233,15 +357,17 @@
         }
 
         .dashboard-card {
-            background: #141414;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             padding: 20px;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
         }
 
         .dashboard-card:hover {
-            border-color: #8b0000;
+            border-color: rgba(139, 0, 0, 0.3);
+            box-shadow: var(--shadow);
         }
 
         .dashboard-card .card-header {
@@ -249,7 +375,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
         }
 
@@ -260,7 +386,7 @@
         }
 
         .dashboard-card .card-header a {
-            color: #e74c3c;
+            color: var(--primary-hover);
             text-decoration: none;
             font-size: 13px;
             transition: color 0.3s;
@@ -271,13 +397,23 @@
             text-decoration: underline;
         }
 
+        /* ======================================== */
         /* ===== ATIVIDADES ===== */
+        /* ======================================== */
         .atividade-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s ease;
+        }
+
+        .atividade-item:hover {
+            background: rgba(255,255,255,0.02);
+            border-radius: 6px;
+            padding-left: 8px;
+            padding-right: 8px;
         }
 
         .atividade-item:last-child {
@@ -299,6 +435,7 @@
         .atividade-item .info .name {
             color: #fff;
             font-size: 14px;
+            font-weight: 500;
         }
 
         .atividade-item .info .detail {
@@ -307,34 +444,52 @@
         }
 
         .atividade-item .status-badge {
-            padding: 3px 12px;
-            border-radius: 12px;
+            padding: 4px 14px;
+            border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .status-badge.disponivel {
-            background: #1a3a2a;
+            background: rgba(46, 204, 113, 0.15);
             color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.2);
         }
 
         .status-badge.ocupado {
-            background: #3a1a1a;
+            background: rgba(231, 76, 60, 0.15);
             color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
         }
 
         .status-badge.manutencao {
-            background: #3a2a1a;
+            background: rgba(241, 196, 15, 0.15);
             color: #f39c12;
+            border: 1px solid rgba(241, 196, 15, 0.2);
         }
 
+        .atividade-item:hover .status-badge {
+            transform: scale(1.05);
+        }
+
+        /* ======================================== */
         /* ===== MEMBROS RECENTES ===== */
+        /* ======================================== */
         .membro-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .membro-item:hover {
+            background: rgba(255,255,255,0.02);
+            border-radius: 6px;
+            padding-left: 8px;
+            padding-right: 8px;
         }
 
         .membro-item:last-child {
@@ -350,7 +505,7 @@
         .membro-item .avatar {
             width: 32px;
             height: 32px;
-            background: #8b0000;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -358,11 +513,19 @@
             color: #fff;
             font-weight: 600;
             font-size: 14px;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .membro-item:hover .avatar {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3);
         }
 
         .membro-item .name {
             color: #fff;
             font-size: 14px;
+            font-weight: 500;
         }
 
         .membro-item .date {
@@ -370,7 +533,9 @@
             font-size: 12px;
         }
 
+        /* ======================================== */
         /* ===== AÇÕES RÁPIDAS ===== */
+        /* ======================================== */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -378,28 +543,40 @@
         }
 
         .quick-action {
-            background: #1a1a1a;
-            border: 1px solid #1a1a1a;
-            border-radius: 6px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
             padding: 15px 10px;
             text-align: center;
             text-decoration: none;
             color: #ccc;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .quick-action:hover {
-            border-color: #8b0000;
-            transform: translateY(-3px);
-            background: #222;
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            background: rgba(139, 0, 0, 0.08);
             color: #fff;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .quick-action:active {
+            transform: scale(0.95);
         }
 
         .quick-action .icon {
-            font-size: 22px;
+            font-size: 24px;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             color: #888;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action:hover .icon {
+            color: var(--primary-hover);
+            transform: scale(1.1);
         }
 
         .quick-action .label {
@@ -407,61 +584,30 @@
             font-weight: 500;
         }
 
-        /* ===== BOTÕES ===== */
-        .btn {
-            display: inline-block;
-            padding: 10px 25px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 13px;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: #8b0000;
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: #a93226;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #e74c3c;
-            border: 1px solid #e74c3c;
-        }
-
-        .btn-outline:hover {
-            background: #e74c3c;
-            color: #fff;
-        }
-
+        /* ======================================== */
         /* ===== FOOTER ===== */
+        /* ======================================== */
         .footer {
             background: #000000;
             color: #666;
-            padding: 30px 0;
-            border-top: 2px solid #8b0000;
-            margin-top: 20px;
+            padding: 40px 0 24px;
+            border-top: 2px solid var(--primary);
+            margin-top: 30px;
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             text-align: center;
         }
 
         .footer-info h3 {
             color: #fff;
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
         }
 
         .footer-info p {
@@ -471,9 +617,9 @@
 
         .footer-links {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .footer-links a {
@@ -484,7 +630,7 @@
         }
 
         .footer-links a:hover {
-            color: #e74c3c;
+            color: var(--primary-hover);
         }
 
         .footer-copy {
@@ -493,11 +639,14 @@
         }
 
         .footer-copy p {
-            margin: 5px 0;
+            margin: 3px 0;
             color: #555;
         }
 
+        /* ======================================== */
         /* ===== RESPONSIVO ===== */
+        /* ======================================== */
+
         @media (max-width: 992px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
@@ -513,14 +662,16 @@
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 62px;
+                top: 60px;
                 left: 0;
                 width: 100%;
-                background: #000;
-                padding: 20px;
-                gap: 12px;
-                border-bottom: 2px solid #8b0000;
+                background: rgba(0, 0, 0, 0.98);
+                padding: 20px 16px;
+                gap: 14px;
+                border-bottom: 2px solid var(--primary);
                 text-align: center;
+                z-index: 99;
+                backdrop-filter: blur(20px);
             }
 
             .nav-menu.open {
@@ -528,9 +679,14 @@
             }
 
             .nav-menu a {
-                padding: 10px;
+                padding: 12px;
                 width: 100%;
                 text-align: center;
+                font-size: 16px;
+            }
+
+            .nav-menu a::after {
+                display: none;
             }
 
             .dashboard-header {
@@ -551,7 +707,8 @@
             }
 
             .footer-content {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+                gap: 20px;
             }
 
             .footer-links {
@@ -560,25 +717,34 @@
                 flex-wrap: wrap;
                 gap: 15px;
             }
+
+            .logo-text .title {
+                font-size: 16px;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 0 10px;
+                padding: 0 12px;
             }
 
-            .logo h1 {
+            .logo-text .title {
                 font-size: 14px;
                 letter-spacing: 1px;
             }
 
-            .logo span {
+            .logo-text .sub {
                 display: none;
             }
 
-            .logo img {
-                width: 32px;
-                height: 32px;
+            .logo-icon {
+                width: 30px;
+                height: 30px;
             }
 
             .stats-grid {
@@ -608,7 +774,7 @@
             }
 
             .quick-action .icon {
-                font-size: 18px;
+                font-size: 20px;
             }
 
             .quick-action .label {
@@ -620,7 +786,7 @@
             }
 
             .footer {
-                padding: 20px 0;
+                padding: 30px 0 20px;
             }
 
             .footer-info h3 {
@@ -650,18 +816,62 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+
+        @media (min-width: 992px) {
+            .container {
+                padding: 0 32px;
+            }
+
+            .dashboard {
+                padding: 40px 0;
+            }
+
+            .dashboard-header h2 {
+                font-size: 32px;
+            }
+
+            .stat-card .stat-number {
+                font-size: 36px;
+            }
+
+            .logo-text .title {
+                font-size: 20px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        @media print {
+            .header {
+                position: static;
+            }
+            .nav-menu { display: none !important; }
+            .menu-toggle { display: none !important; }
+            .btn { display: none !important; }
+            .footer { background: #f0f0f0 !important; color: #333 !important; }
+            .dashboard-card { border: 1px solid #ccc !important; }
+            .stat-card { border: 1px solid #ccc !important; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
+    <!-- HEADER PREMIUM -->
+    <header class="header" id="mainHeader">
         <div class="container header-content">
-            <div class="logo">
-                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                <h1>GRÊMIO 1ª CIA</h1>
-                <span>Gestão</span>
-            </div>
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
             <nav class="nav-menu" id="navMenu">
                 <a href="/">Início</a>
                 <a href="/lista">Membros</a>
@@ -670,7 +880,7 @@
                 <a href="/configuracoes" id="navConfig" style="display: none;">Configurações</a>
                 <button class="btn-logout" onclick="logout()">Sair</button>
             </nav>
-            <button class="menu-toggle" id="menuToggle">Menu</button>
+            <button class="menu-toggle" id="menuToggle">☰</button>
         </div>
     </header>
 
@@ -705,7 +915,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">Atividades</div>
-                    <div class="stat-number" id="totalAtividades">0</div>
+                    <div class="stat-number" id="totalAtividades">8</div>
                     <div class="stat-label">Atividades Ativas</div>
                     <span class="stat-change up">8 atividades</span>
                 </div>
@@ -728,7 +938,7 @@
                     <div id="atividadesList">
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">🎯</span>
                                 <div>
                                     <div class="name">Tabulero</div>
                                     <div class="detail">Jogos de tabuleiro</div>
@@ -738,7 +948,7 @@
                         </div>
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">🃏</span>
                                 <div>
                                     <div class="name">Baralho</div>
                                     <div class="detail">Cartas para jogos</div>
@@ -748,7 +958,7 @@
                         </div>
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">🏓</span>
                                 <div>
                                     <div class="name">Ping Pong</div>
                                     <div class="detail">Mesa com raquetes</div>
@@ -758,17 +968,17 @@
                         </div>
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">🎱</span>
                                 <div>
                                     <div class="name">Sinuca</div>
                                     <div class="detail">Mesa profissional</div>
                                 </div>
                             </div>
-                            <span class="status-badge ocupado">Em uso</span>
+                            <span class="status-badge disponivel">Disponível</span>
                         </div>
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">⚽</span>
                                 <div>
                                     <div class="name">Pebolim</div>
                                     <div class="detail">Futebol de mesa</div>
@@ -778,17 +988,17 @@
                         </div>
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">🎯</span>
                                 <div>
                                     <div class="name">Dardo</div>
                                     <div class="detail">Alvo com dardos</div>
                                 </div>
                             </div>
-                            <span class="status-badge manutencao">Manutenção</span>
+                            <span class="status-badge disponivel">Disponível</span>
                         </div>
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">🕹️</span>
                                 <div>
                                     <div class="name">Fliperama</div>
                                     <div class="detail">Máquinas retrô</div>
@@ -798,13 +1008,13 @@
                         </div>
                         <div class="atividade-item">
                             <div class="info">
-                                <span class="icon">■</span>
+                                <span class="icon">🎮</span>
                                 <div>
                                     <div class="name">Video Game</div>
                                     <div class="detail">Console com jogos</div>
                                 </div>
                             </div>
-                            <span class="status-badge ocupado">Em uso</span>
+                            <span class="status-badge disponivel">Disponível</span>
                         </div>
                     </div>
                 </div>
@@ -835,7 +1045,7 @@
                                 <span class="label">Adicionar Membro</span>
                             </a>
                             <a href="/avaliacao" class="quick-action">
-                                <span class="icon">*</span>
+                                <span class="icon">✎</span>
                                 <span class="label">Nova Sugestão</span>
                             </a>
                             <a href="/lista" class="quick-action">
@@ -855,26 +1065,40 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-info">
-                <h3>GRÊMIO 1ª CIA</h3>
-                <p>Espaço de lazer e integração</p>
-            </div>
-            <div class="footer-links">
-                <a href="/">Início</a>
-                <a href="/lista">Membros</a>
-                <a href="/avaliacao">Sugestões</a>
-                <a href="/dashboard">Dashboard</a>
-            </div>
-            <div class="footer-copy">
-                <p>&copy; 2026 Grêmio 1ª Cia</p>
-                <p>Todos os direitos reservados</p>
-                <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>GRÊMIO 1ª CIA</h3>
+                    <p>Espaço de lazer e integração</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; 2026 Grêmio 1ª Cia</p>
+                    <p>Todos os direitos reservados</p>
+                    <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // ===== HEADER SCROLL EFFECT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+
         // ===== VARIÁVEIS =====
         let usuarioLogado = null;
 
@@ -896,6 +1120,13 @@
                         navMenu.classList.remove('open');
                     }
                 });
+            });
+
+            document.addEventListener('click', function(event) {
+                const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
+                if (!isClickInside && window.innerWidth <= 768) {
+                    navMenu.classList.remove('open');
+                }
             });
 
             // Verificar sessão via API
@@ -937,11 +1168,8 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('totalMembros').textContent = data.length;
-                    
-                    // Atualizar estatística
                     document.querySelector('.stat-card:first-child .stat-change').textContent = `↑ ${data.length} membros`;
                     
-                    // Mostrar últimos 5 membros
                     const recentesContainer = document.getElementById('membrosRecentes');
                     if (data.length === 0) {
                         recentesContainer.innerHTML = `
@@ -988,13 +1216,8 @@
                     document.getElementById('totalAvaliacoes').textContent = '0';
                 });
 
-            // Atividades (fixas)
-            const atividades = [
-                'Tabulero', 'Baralho', 'Ping Pong', 
-                'Sinuca', 'Pebolim', 'Dardo', 
-                'Fliperama', 'Video Game'
-            ];
-            document.getElementById('totalAtividades').textContent = atividades.length;
+            // Atividades fixas - todas disponíveis
+            document.getElementById('totalAtividades').textContent = '8';
 
             // Buscar logs para acessos hoje
             fetch('/api/logs')

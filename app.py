@@ -1,11 +1,18 @@
-from flask import Flask, render_template, request, jsonify, session, send_from_directory
+from flask import Flask, render_template, request, jsonify, session, send_from_directory, send_file
 from flask_cors import CORS
 from flask_mail import Mail, Message
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import cm
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
 import sqlite3
 import os
 from datetime import datetime
 import bcrypt
 import secrets
+import io
 
 app = Flask(__name__, 
             template_folder='.', 
@@ -102,90 +109,6 @@ def init_db():
             INSERT INTO usuarios (nome, email, senha, role)
             VALUES (?, ?, ?, ?)
         ''', ('Desenvolvedor', 'dev@gremio.com', senha_dev, 'dev'))
-    
-    # Inserir membros padrão com nome_guerra
-    cursor.execute('SELECT COUNT(*) FROM membros')
-    count_membros = cursor.fetchone()[0]
-    
-    if count_membros == 0:
-        membros_padrao = [
-            # 1° Pelotão
-            ('Paulo Ryan de Oliveira Tomaz', 'TOMAZ', '1° Pelotão', ''),
-            ('Carlos Eduardo Cardoso Curcino', 'CARDOSO', '1° Pelotão', ''),
-            ('Elias Gabriel da Silva Luciano', 'ELIAS', '1° Pelotão', ''),
-            ('Matheus Rutina Kowalski', 'KOWALSKI', '1° Pelotão', ''),
-            ('Gustavo Luis de Sousa da Costa', 'S COSTA', '1° Pelotão', ''),
-            ('Vinicius Henrique Sampaio Costa', 'SAMPAIO', '1° Pelotão', ''),
-            ('Kauã Rodrigues dos Santos', 'R SANTOS', '1° Pelotão', ''),
-            ('Julio Cesar Bohn Nobre Costa e Silva', 'CESAR', '1° Pelotão', ''),
-            ('Lucas Ribeiro Gomes', 'RIBEIRO', '1° Pelotão', ''),
-            ('Victor Hugo Magalhães Soares', 'MAGALHÃES', '1° Pelotão', ''),
-            ('Felipe Lucas Gonçalves Silva', 'L GONÇALVES', '1° Pelotão', ''),
-            ('Gabriel Carvalho Leite', 'G. LEITE', '1° Pelotão', ''),
-            ('João Gabriel Rodrigues dos Santos', 'GABRIEL', '1° Pelotão', ''),
-            ('Jose Henrique Ribeiro Alves', 'JOSE', '1° Pelotão', ''),
-            ('Enzo Sá dos Passos', 'PASSOS', '1° Pelotão', ''),
-            ('Glauter Rian Coimbra Rabelo', 'GLAUTER', '1° Pelotão', ''),
-            
-            # 2° Pelotão
-            ('João Bernardo Alves Santos Silva', 'SANTOS SILVA', '2° Pelotão', ''),
-            ('Cauã Felipe Targino dos Santos', 'TARGINO', '2° Pelotão', ''),
-            ('Benjamim Gabriel Gonçalves Carvalho de Lima', 'BENJAMIM', '2° Pelotão', ''),
-            ('Marcos Vinicius Alves Ribeiro da Silva', 'M. ALVES', '2° Pelotão', ''),
-            ('Davi Lores Bernardes', 'DAVI LORES', '2° Pelotão', ''),
-            ('Luiz Henrique Boaventura Coutinho', 'BOAVENTURA', '2° Pelotão', ''),
-            ('Matheus Thiago Lourena Mendes', 'MENDES', '2° Pelotão', ''),
-            ('Luiz Fernando Ferreira Bezerra', 'BEZERRA', '2° Pelotão', ''),
-            ('Gabriel Borges Lopes', 'LOPES', '2° Pelotão', ''),
-            ('Carlos Eduardo Espíndola Macêdo', 'ESPINDOLA', '2° Pelotão', ''),
-            ('Eduardo Kevenn Fernandes Pereira', 'KEVENN', '2° Pelotão', ''),
-            ('Ryan Douglas Gomes de Melo', 'GOMES', '2° Pelotão', ''),
-            ('Matheus de Souza Silva', 'SILVA', '2° Pelotão', ''),
-            ('Marcos Samuel de Sousa Duarte', 'SOUSA', '2° Pelotão', ''),
-            ('Davi Gomes Pires', 'D. GOMES', '2° Pelotão', ''),
-            ('Fabrício Pereira do Carmo', 'DO CARMO', '2° Pelotão', ''),
-            ('Guilherme Faria Santana', 'SANTANA', '2° Pelotão', ''),
-            ('Luis Enrique Salviano dos Santos', 'SALVIANO', '2° Pelotão', ''),
-            ('Thiago Alves Oliveira', 'AL T.ALVES', '2° Pelotão', ''),
-            ('Allisson Araújo Lima', 'ALLISSON', '2° Pelotão', ''),
-            ('Lucas Silva Primo', 'L. PRIMO', '2° Pelotão', ''),
-            ('Ryan Cristhian de Oliveira Franca', 'EP CRISTHIAN', '2° Pelotão', ''),
-            
-            # 3° Pelotão
-            ('Marcelo Costa Ribeiro', 'COSTA', '3° Pelotão', ''),
-            ('Erick Ramalho de Oliveira', 'ERICK', '3° Pelotão', ''),
-            ('Fernando Santos Silva', 'FERNANDO', '3° Pelotão', ''),
-            ('Hadrian Divino Aquino de Sousa', 'DIVINO', '3° Pelotão', ''),
-            ('Miguel da Silva Rodrigues', 'MIGUEL', '3° Pelotão', ''),
-            ('Anthony Pierre Silva Nascimento', 'PIERRE', '3° Pelotão', ''),
-            ('Victor Xavier Carvalho dos Santos', 'XAVIER', '3° Pelotão', ''),
-            ('João Gabriel Souza de Paula', 'JOÃO', '3° Pelotão', ''),
-            ('Leandro Lucas Lima dos Santos', 'L SANTOS', '3° Pelotão', ''),
-            ('Bruno Durangue da Silva', 'BRUNO', '3° Pelotão', ''),
-            ('Luan Silva dos Anjos', 'ANJOS', '3° Pelotão', ''),
-            ('Vinicius Rodrigues Costas', 'VINICIUS', '3° Pelotão', ''),
-            ('Thiago de Jesus dos Santos Lima', 'DE JESUS', '3° Pelotão', ''),
-            ('Ítalo Alef Ramos da Conceição', 'CONCEIÇÃO', '3° Pelotão', ''),
-            ('Ytalo Vinicius Meireles e Souza', 'MEIRELES', '3° Pelotão', ''),
-            ('Daniel Sousa Ferreira', 'DANIEL', '3° Pelotão', ''),
-            ('Victor Gabriel Lopes do Carmo', 'VICTOR', '3° Pelotão', ''),
-            ('Marcos Vinicius Santos Rodrigues', 'MARCOS VINICIUS', '3° Pelotão', ''),
-            ('Marcos Gabriel Rodrigues da Silva', 'MARCOS', '3° Pelotão', ''),
-            ('Wallace Barreto Alcantara', 'BARRETO', '3° Pelotão', ''),
-            ('Wendel Santos de Lima', 'WENDEL', '3° Pelotão', ''),
-            ('Igor Patrick Martins de Oliveira', 'PATRICK', '3° Pelotão', ''),
-            
-            # ENC-MAT
-            ('Kelvyn Samuel Bagnhuk de Melo', 'EP BAGNHUK', 'ENC-MAT', ''),
-            ('Vinicios Soares Batista', 'EP SOARES', 'ENC-MAT', ''),
-            ('Isaack Lopes de Oliveira', 'EP LOPES', 'ENC-MAT', ''),
-            ('Adair Cardoso de Andrade', 'ST ADAIR', 'ENC-MAT', ''),
-            ('Thiago Ayrton Gomes da Silva', 'CB AYRTON', 'ENC-MAT', '')
-        ]
-        cursor.executemany('''
-            INSERT INTO membros (nome, nome_guerra, pelotao, email)
-            VALUES (?, ?, ?, ?)
-        ''', membros_padrao)
     
     conn.commit()
     conn.close()
@@ -297,8 +220,19 @@ def api_get_membros():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM membros ORDER BY id')
-    membros = [dict(row) for row in cursor.fetchall()]
+    rows = cursor.fetchall()
     conn.close()
+    
+    membros = []
+    for row in rows:
+        membros.append({
+            'id': row[0],
+            'nome': row[1],
+            'nome_guerra': row[2] if row[2] else '',
+            'pelotao': row[3] if row[3] else '',
+            'email': row[4] if row[4] else ''
+        })
+    
     return jsonify(membros)
 
 @app.route('/api/membros', methods=['POST'])
@@ -329,8 +263,16 @@ def api_add_membro():
     
     novo_id = cursor.lastrowid
     cursor.execute('SELECT * FROM membros WHERE id = ?', (novo_id,))
-    novo_membro = dict(cursor.fetchone())
+    row = cursor.fetchone()
     conn.close()
+    
+    novo_membro = {
+        'id': row[0],
+        'nome': row[1],
+        'nome_guerra': row[2] if row[2] else '',
+        'pelotao': row[3] if row[3] else '',
+        'email': row[4] if row[4] else ''
+    }
 
     return jsonify({'success': True, 'membro': novo_membro})
 
@@ -348,9 +290,9 @@ def api_edit_membro(id):
     cursor = conn.cursor()
     
     cursor.execute('SELECT * FROM membros WHERE id = ?', (id,))
-    membro = cursor.fetchone()
+    row = cursor.fetchone()
     
-    if not membro:
+    if not row:
         conn.close()
         return jsonify({'error': 'Membro nao encontrado'}), 404
 
@@ -377,8 +319,16 @@ def api_edit_membro(id):
         conn.commit()
     
     cursor.execute('SELECT * FROM membros WHERE id = ?', (id,))
-    membro_atualizado = dict(cursor.fetchone())
+    row = cursor.fetchone()
     conn.close()
+    
+    membro_atualizado = {
+        'id': row[0],
+        'nome': row[1],
+        'nome_guerra': row[2] if row[2] else '',
+        'pelotao': row[3] if row[3] else '',
+        'email': row[4] if row[4] else ''
+    }
 
     return jsonify({'success': True, 'membro': membro_atualizado})
 
@@ -395,9 +345,9 @@ def api_delete_membro(id):
     cursor = conn.cursor()
     
     cursor.execute('SELECT * FROM membros WHERE id = ?', (id,))
-    membro = cursor.fetchone()
+    row = cursor.fetchone()
     
-    if not membro:
+    if not row:
         conn.close()
         return jsonify({'error': 'Membro nao encontrado'}), 404
 
@@ -413,8 +363,20 @@ def api_get_sugestoes():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM sugestoes ORDER BY id DESC')
-    sugestoes = [dict(row) for row in cursor.fetchall()]
+    rows = cursor.fetchall()
     conn.close()
+    
+    sugestoes = []
+    for row in rows:
+        sugestoes.append({
+            'id': row[0],
+            'gmail': row[1],
+            'nome': row[2],
+            'pelotao': row[3],
+            'texto': row[4],
+            'data': row[5]
+        })
+    
     return jsonify(sugestoes)
 
 @app.route('/api/sugestoes', methods=['POST'])
@@ -438,10 +400,19 @@ def api_add_sugestao():
     
     novo_id = cursor.lastrowid
     cursor.execute('SELECT * FROM sugestoes WHERE id = ?', (novo_id,))
-    nova_sugestao = dict(cursor.fetchone())
+    row = cursor.fetchone()
     conn.close()
+    
+    nova_sugestao = {
+        'id': row[0],
+        'gmail': row[1],
+        'nome': row[2],
+        'pelotao': row[3],
+        'texto': row[4],
+        'data': row[5]
+    }
 
-    # ===== ENVIAR EMAIL DE CONFIRMAÇÃO =====
+    # Enviar email de confirmação
     try:
         msg = Message(
             subject='Sugestao Recebida - Gremio 1ª Cia',
@@ -451,37 +422,26 @@ def api_add_sugestao():
             <html>
             <head>
                 <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Sugestao Recebida</title>
             </head>
             <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #0a0a0a;">
                 <div style="max-width: 600px; margin: 20px auto; background: #0a0a0a; border-radius: 10px; border: 2px solid #8b0000; padding: 0; overflow: hidden;">
-                    
-                    <!-- HEADER COM LOGO -->
                     <div style="background: #000000; padding: 20px; text-align: center; border-bottom: 2px solid #8b0000;">
-                        <img src="1cia.png" alt="Gremio 1ª Cia" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 5px;">
                         <h1 style="color: #fff; margin: 0; letter-spacing: 3px; font-size: 24px;">GREMIO 1ª CIA</h1>
                         <p style="color: #888; margin: 5px 0 0 0; font-size: 12px;">Sistema de Gestao</p>
                     </div>
-                    
-                    <!-- CONTEUDO -->
                     <div style="padding: 30px 25px; background: #0a0a0a;">
                         <h2 style="color: #e74c3c; margin: 0 0 10px 0; font-size: 22px;">Sugestao Recebida com Sucesso!</h2>
-                        
                         <p style="color: #ccc; font-size: 15px; line-height: 1.6;">
                             Olá <strong style="color: #fff;">{nome}</strong>,
                         </p>
                         <p style="color: #ccc; font-size: 15px; line-height: 1.6;">
                             Recebemos sua sugestao e agradecemos por contribuir para melhorar o <strong style="color: #fff;">Gremio 1ª Cia</strong>!
                         </p>
-                        
-                        <!-- SUGESTAO -->
                         <div style="background: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #8b0000;">
                             <p style="color: #888; font-size: 11px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">Sua sugestao:</p>
                             <p style="color: #fff; font-size: 14px; margin: 0; line-height: 1.5;">{texto}</p>
                         </div>
-                        
-                        <!-- HORARIO DE FUNCIONAMENTO -->
                         <div style="background: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin: 15px 0;">
                             <h3 style="color: #fff; font-size: 15px; margin: 0 0 10px 0; text-align: center;">HORARIO DE FUNCIONAMENTO</h3>
                             <div style="border-bottom: 1px solid #2a2a2a; padding: 8px 0; display: flex; justify-content: space-between; color: #ccc; font-size: 13px;">
@@ -497,19 +457,10 @@ def api_add_sugestao():
                                 <span style="color: #e74c3c; font-weight: bold;">08:00 - 22:00</span>
                             </div>
                         </div>
-                        
-                        <p style="color: #888; font-size: 13px; text-align: center; margin: 15px 0 0 0;">
-                            Fique por dentro do horario de funcionamento do Gremio!
-                        </p>
                     </div>
-                    
-                    <!-- FOOTER -->
                     <div style="background: #000000; padding: 15px 20px; text-align: center; border-top: 1px solid #1a1a1a;">
                         <p style="color: #555; font-size: 11px; margin: 0;">
                             &copy; 2026 Gremio 1ª Cia - Todos os direitos reservados
-                        </p>
-                        <p style="color: #444; font-size: 10px; margin: 3px 0 0 0;">
-                            Desenvolvido para a 1ª Companhia
                         </p>
                     </div>
                 </div>
@@ -537,9 +488,9 @@ def api_delete_sugestao(id):
     cursor = conn.cursor()
     
     cursor.execute('SELECT * FROM sugestoes WHERE id = ?', (id,))
-    sugestao = cursor.fetchone()
+    row = cursor.fetchone()
     
-    if not sugestao:
+    if not row:
         conn.close()
         return jsonify({'error': 'Sugestao nao encontrada'}), 404
 
@@ -561,8 +512,18 @@ def api_get_usuarios():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute('SELECT id, nome, email, role FROM usuarios')
-    usuarios = [dict(row) for row in cursor.fetchall()]
+    rows = cursor.fetchall()
     conn.close()
+    
+    usuarios = []
+    for row in rows:
+        usuarios.append({
+            'id': row[0],
+            'nome': row[1],
+            'email': row[2],
+            'role': row[3]
+        })
+    
     return jsonify(usuarios)
 
 @app.route('/api/usuarios', methods=['POST'])
@@ -600,8 +561,15 @@ def api_add_usuario():
     
     novo_id = cursor.lastrowid
     cursor.execute('SELECT id, nome, email, role FROM usuarios WHERE id = ?', (novo_id,))
-    novo_usuario = dict(cursor.fetchone())
+    row = cursor.fetchone()
     conn.close()
+    
+    novo_usuario = {
+        'id': row[0],
+        'nome': row[1],
+        'email': row[2],
+        'role': row[3]
+    }
 
     return jsonify({'success': True, 'usuario': novo_usuario})
 
@@ -617,13 +585,13 @@ def api_delete_usuario(id):
     cursor = conn.cursor()
     
     cursor.execute('SELECT * FROM usuarios WHERE id = ?', (id,))
-    user = cursor.fetchone()
+    row = cursor.fetchone()
     
-    if not user:
+    if not row:
         conn.close()
         return jsonify({'error': 'Usuario nao encontrado'}), 404
 
-    if user['id'] == session['user_id']:
+    if row[0] == session['user_id']:
         conn.close()
         return jsonify({'error': 'Nao e possivel excluir o proprio usuario'}), 400
 
@@ -645,9 +613,227 @@ def api_get_logs():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM logs ORDER BY id DESC LIMIT 100')
-    logs = [dict(row) for row in cursor.fetchall()]
+    rows = cursor.fetchall()
     conn.close()
+    
+    logs = []
+    for row in rows:
+        logs.append({
+            'id': row[0],
+            'usuario': row[1],
+            'email': row[2],
+            'role': row[3],
+            'acao': row[4],
+            'data': row[5]
+        })
+    
     return jsonify(logs)
+
+# ===== API - BAIXAR PDF DINÂMICO =====
+@app.route('/api/baixar-pdf', methods=['GET'])
+def api_baixar_pdf():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Nao autorizado'}), 401
+    
+    user_role = session.get('user_role')
+    if user_role not in ['adm', 'dev']:
+        return jsonify({'error': 'Permissao negada'}), 403
+
+    try:
+        # Buscar TODOS os membros do banco de dados
+        conn = sqlite3.connect('gremio.db')
+        cursor = conn.cursor()
+        
+        # Verificar se a tabela membros existe
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='membros'")
+        if not cursor.fetchone():
+            conn.close()
+            return jsonify({'error': 'Tabela membros nao encontrada'}), 404
+        
+        # Buscar todos os membros
+        cursor.execute('SELECT * FROM membros ORDER BY pelotao, nome')
+        rows = cursor.fetchall()
+        conn.close()
+
+        if not rows:
+            return jsonify({'error': 'Nenhum membro encontrado no banco de dados'}), 404
+
+        # Converter para lista de dicionários
+        membros = []
+        for row in rows:
+            membros.append({
+                'id': row[0],
+                'nome': row[1],
+                'nome_guerra': row[2] if row[2] else '-',
+                'pelotao': row[3] if row[3] else 'Sem pelotão',
+                'email': row[4] if row[4] else ''
+            })
+
+        # Criar PDF em memória
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=A4,
+            rightMargin=2*cm,
+            leftMargin=2*cm,
+            topMargin=2*cm,
+            bottomMargin=2*cm
+        )
+
+        # Estilos
+        styles = getSampleStyleSheet()
+        
+        titulo_style = ParagraphStyle(
+            'Titulo',
+            parent=styles['Heading1'],
+            alignment=TA_CENTER,
+            fontSize=20,
+            textColor=colors.HexColor('#8b0000'),
+            fontName='Helvetica-Bold',
+            spaceAfter=8
+        )
+        
+        subtitulo_style = ParagraphStyle(
+            'Subtitulo',
+            parent=styles['Normal'],
+            alignment=TA_CENTER,
+            fontSize=12,
+            textColor=colors.HexColor('#555555'),
+            spaceAfter=5
+        )
+        
+        data_style = ParagraphStyle(
+            'Data',
+            parent=styles['Normal'],
+            alignment=TA_CENTER,
+            fontSize=11,
+            textColor=colors.HexColor('#888888'),
+            spaceAfter=25
+        )
+        
+        cabecalho_style = ParagraphStyle(
+            'Cabecalho',
+            parent=styles['Normal'],
+            alignment=TA_LEFT,
+            fontSize=10,
+            textColor=colors.HexColor('#ffffff'),
+            fontName='Helvetica-Bold'
+        )
+        
+        celula_style = ParagraphStyle(
+            'Celula',
+            parent=styles['Normal'],
+            alignment=TA_LEFT,
+            fontSize=10,
+            textColor=colors.HexColor('#000000')
+        )
+        
+        pelotao_style = ParagraphStyle(
+            'Pelotao',
+            parent=styles['Heading2'],
+            alignment=TA_LEFT,
+            fontSize=14,
+            textColor=colors.HexColor('#ffffff'),
+            fontName='Helvetica-Bold',
+            spaceAfter=10,
+            spaceBefore=20
+        )
+        
+        rodape_style = ParagraphStyle(
+            'Rodape',
+            parent=styles['Normal'],
+            alignment=TA_CENTER,
+            fontSize=10,
+            textColor=colors.HexColor('#888888'),
+            spaceBefore=20
+        )
+
+        elementos = []
+
+        # Título
+        elementos.append(Paragraph('RELAÇÃO DE PAGAMENTO DO GRÊMIO — 1ª CIA', titulo_style))
+        elementos.append(Paragraph('Somente os militares que efetuaram o pagamento', subtitulo_style))
+        elementos.append(Paragraph(
+            f'Gerado em: {datetime.now().strftime("%d/%m/%Y")} às {datetime.now().strftime("%H:%M")}',
+            data_style
+        ))
+
+        # Agrupar por pelotão
+        pelotoes = {}
+        for membro in membros:
+            pelotao = membro['pelotao']
+            if pelotao not in pelotoes:
+                pelotoes[pelotao] = []
+            pelotoes[pelotao].append(membro)
+
+        # Ordenar pelotões
+        ordem_pelotoes = ['1° Pelotão', '2° Pelotão', '3° Pelotão', 'ENC-MAT']
+        pelotoes_ordenados = [p for p in ordem_pelotoes if p in pelotoes]
+
+        for pelotao in pelotoes_ordenados:
+            membros_pelotao = pelotoes[pelotao]
+            
+            # Título do pelotão
+            elementos.append(Paragraph(pelotao, pelotao_style))
+            
+            # Dados da tabela
+            data = []
+            data.append([
+                Paragraph('N°', cabecalho_style),
+                Paragraph('NOME COMPLETO', cabecalho_style),
+                Paragraph('NOME DE GUERRA', cabecalho_style),
+                Paragraph('SITUAÇÃO', cabecalho_style)
+            ])
+            
+            for idx, m in enumerate(membros_pelotao, 1):
+                data.append([
+                    Paragraph(str(idx), celula_style),
+                    Paragraph(m['nome'], celula_style),
+                    Paragraph(m['nome_guerra'], celula_style),
+                    Paragraph('PAGO', celula_style)
+                ])
+            
+            # Criar tabela
+            table = Table(data, colWidths=[0.8*cm, 7*cm, 5*cm, 2.5*cm])
+            table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#8b0000')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 10),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                ('TOPPADDING', (0, 0), (-1, 0), 8),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f9f9f9')]),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('FONTSIZE', (0, 1), (-1, -1), 9),
+            ]))
+            elementos.append(table)
+            elementos.append(Spacer(1, 0.5*cm))
+        
+        # Rodapé
+        elementos.append(Paragraph('_____________________________________________', rodape_style))
+        elementos.append(Paragraph('ST ADAIR - SEÇ CMDO', rodape_style))
+        elementos.append(Paragraph('&copy; 2026 Grêmio 1ª Cia - Todos os direitos reservados', rodape_style))
+
+        # Gerar PDF
+        doc.build(elementos)
+        buffer.seek(0)
+
+        # Retornar PDF
+        return send_file(
+            buffer,
+            as_attachment=True,
+            download_name=f'Relacao de Pagamento - Gremio 1ª Cia.pdf',
+            mimetype='application/pdf'
+        )
+        
+    except Exception as e:
+        print(f'Erro ao gerar PDF: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Erro ao gerar PDF: {str(e)}'}), 500
 
 # ===== INICIAR SERVIDOR =====
 if __name__ == '__main__':

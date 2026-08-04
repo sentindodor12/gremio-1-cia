@@ -6,77 +6,135 @@
     <title>Configurações - Grêmio 1ª Cia</title>
     
     <style>
-        /* ===== RESET ===== */
+        /* ======================================== */
+        /* ===== RESET E CONFIGURAÇÕES ===== */
+        /* ======================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #8b0000;
+            --primary-hover: #c0392b;
+            --primary-light: #e74c3c;
+            --primary-glow: rgba(139, 0, 0, 0.4);
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --text-white: #ffffff;
+            --text-gray: #aaaaaa;
+            --text-light: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --radius: 14px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             line-height: 1.6;
-            color: #e0e0e0;
-            background: #0a0a0a;
+            color: var(--text-light);
+            background: var(--bg-dark);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 16px;
         }
 
-        /* ===== HEADER ===== */
+        /* ======================================== */
+        /* ===== HEADER PREMIUM ===== */
+        /* ======================================== */
         .header {
-            background: #000000;
-            border-bottom: 2px solid #8b0000;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
             width: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom-color: rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            flex-wrap: wrap;
+            padding: 12px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
+            text-decoration: none;
         }
 
-        .logo img {
+        .logo-icon {
             width: 40px;
             height: 40px;
-            object-fit: contain;
+            position: relative;
         }
 
-        .logo h1 {
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
+        }
+
+        .logo-icon .glow-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text .title {
             font-size: 18px;
             color: #fff;
             letter-spacing: 3px;
             font-weight: 700;
-            white-space: nowrap;
         }
 
-        .logo span {
-            font-size: 10px;
+        .logo-text .sub {
+            font-size: 9px;
             color: #888;
-            margin-left: 5px;
+            letter-spacing: 2px;
             font-weight: 400;
+            text-transform: uppercase;
         }
 
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-menu a {
@@ -84,14 +142,31 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
-            transition: color 0.3s;
-            padding: 5px 10px;
-            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            color: #e74c3c;
+            color: #fff;
         }
 
         .btn-logout {
@@ -99,10 +174,11 @@
             color: #e74c3c !important;
             border: 1px solid #e74c3c;
             padding: 6px 18px !important;
-            border-radius: 4px;
+            border-radius: 8px;
             transition: all 0.3s;
             font-weight: 600 !important;
             cursor: pointer;
+            font-size: 13px;
         }
 
         .btn-logout:hover {
@@ -112,15 +188,20 @@
 
         .menu-toggle {
             display: none;
-            background: none;
-            border: 1px solid #555;
-            padding: 5px 15px;
-            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
             color: #fff;
-            background: #1a1a1a;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-toggle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.1);
         }
 
         .user-info {
@@ -132,18 +213,26 @@
         }
 
         .user-info .user-role {
-            background: #8b0000;
+            background: var(--primary);
             color: #fff;
-            padding: 2px 10px;
+            padding: 2px 12px;
             border-radius: 12px;
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
         }
 
+        /* ======================================== */
         /* ===== CONFIGURAÇÕES ===== */
+        /* ======================================== */
         .config-section {
             padding: 30px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .config-header {
@@ -158,10 +247,14 @@
         .config-header h2 {
             font-size: 28px;
             color: #fff;
+            font-weight: 700;
         }
 
         .config-header h2 span {
-            color: #e74c3c;
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .config-header p {
@@ -176,15 +269,17 @@
         }
 
         .config-card {
-            background: #141414;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             padding: 25px;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
         }
 
         .config-card:hover {
-            border-color: #8b0000;
+            border-color: rgba(139, 0, 0, 0.3);
+            box-shadow: var(--shadow);
         }
 
         .config-card .card-header {
@@ -192,31 +287,138 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 15px;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 12px;
         }
 
         .config-card .card-header .icon {
             font-size: 24px;
-            color: #e74c3c;
+            color: var(--primary-hover);
         }
 
         .config-card .card-header h3 {
             color: #fff;
             font-size: 18px;
+            font-weight: 600;
         }
 
         .config-card .card-header .badge {
-            background: #8b0000;
+            background: var(--primary);
             color: #fff;
-            padding: 2px 10px;
+            padding: 2px 12px;
             border-radius: 12px;
             font-size: 10px;
             font-weight: 600;
             margin-left: auto;
         }
 
+        .info-text {
+            color: #888;
+            font-size: 13px;
+            padding: 6px 0;
+        }
+
+        /* ======================================== */
+        /* ===== BOTÕES ===== */
+        /* ======================================== */
+        .btn {
+            display: inline-block;
+            padding: 10px 22px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(139, 0, 0, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(46, 204, 113, 0.5);
+        }
+
+        .btn-success:active {
+            transform: scale(0.96);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-hover);
+            border: 2px solid var(--primary-hover);
+            padding: 8px 18px;
+            font-size: 13px;
+            border-radius: 10px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-hover);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-sm {
+            padding: 5px 14px;
+            font-size: 12px;
+        }
+
+        .btn-icon {
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-icon:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
+
+        .btn-icon.delete:hover {
+            color: #e74c3c;
+        }
+
+        /* ======================================== */
         /* ===== TABELA DE USUÁRIOS ===== */
+        /* ======================================== */
         .table-wrapper {
             overflow-x: auto;
             margin-top: 10px;
@@ -226,7 +428,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
-            min-width: 400px;
+            min-width: 350px;
         }
 
         .table-wrapper table thead th {
@@ -237,18 +439,17 @@
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .table-wrapper table tbody td {
             padding: 10px 12px;
             color: #ccc;
-            border-bottom: 1px solid #1a1a1a;
-            word-break: break-word;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .table-wrapper table tbody tr:hover td {
-            background: #1a1a1a;
+            background: rgba(255,255,255,0.02);
         }
 
         .table-wrapper table tbody tr:last-child td {
@@ -260,95 +461,105 @@
             border-radius: 12px;
             font-size: 11px;
             font-weight: 600;
-            display: inline-block;
         }
 
         .badge-role.adm {
-            background: #1a3a2a;
+            background: rgba(46, 204, 113, 0.15);
             color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.2);
         }
 
         .badge-role.dev {
-            background: #2a1a3a;
+            background: rgba(155, 89, 182, 0.15);
             color: #9b59b6;
+            border: 1px solid rgba(155, 89, 182, 0.2);
         }
 
         .badge-role.user {
-            background: #1a2a3a;
+            background: rgba(52, 152, 219, 0.15);
             color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.2);
         }
 
-        .btn-icon {
-            background: transparent;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: all 0.3s;
-            font-size: 14px;
+        /* ======================================== */
+        /* ===== LOGS ===== */
+        /* ======================================== */
+        .logs-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
         }
 
-        .btn-icon:hover {
-            background: #2a2a2a;
-            color: #fff;
+        .logs-container::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .btn-icon.delete:hover {
-            color: #e74c3c;
+        .logs-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.02);
+            border-radius: 3px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 8px 18px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 600;
+        .logs-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .log-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
             font-size: 13px;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            text-align: center;
+            transition: background 0.2s ease;
         }
 
-        .btn-primary {
-            background: #8b0000;
+        .log-item:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .log-item .log-usuario {
             color: #fff;
+            font-weight: 500;
         }
 
-        .btn-primary:hover {
-            background: #a93226;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+        .log-item .log-acao {
+            color: #888;
         }
 
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #e74c3c;
-            border: 1px solid #e74c3c;
-        }
-
-        .btn-outline:hover {
-            background: #e74c3c;
-            color: #fff;
-        }
-
-        .btn-sm {
-            padding: 5px 14px;
+        .log-item .log-data {
+            color: #555;
             font-size: 12px;
         }
 
-        .btn-block {
-            width: 100%;
+        .log-item .log-role {
+            padding: 1px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
         }
 
+        .log-item .log-role.adm {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .log-item .log-role.dev {
+            background: rgba(155, 89, 182, 0.15);
+            color: #9b59b6;
+            border: 1px solid rgba(155, 89, 182, 0.2);
+        }
+
+        .log-item .log-role.user {
+            background: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        /* ======================================== */
         /* ===== MODAL ===== */
+        /* ======================================== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -356,7 +567,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -368,20 +580,21 @@
         }
 
         .modal {
-            background: #141414;
-            border: 1px solid #2a2a2a;
-            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
             padding: 30px;
             max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             animation: modalFade 0.3s ease;
+            backdrop-filter: blur(20px);
         }
 
         @keyframes modalFade {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -389,13 +602,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
         }
 
         .modal-header h3 {
             color: #fff;
             font-size: 20px;
+            font-weight: 700;
         }
 
         .modal-close {
@@ -428,9 +642,9 @@
         .form-group select {
             width: 100%;
             padding: 10px 14px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             color: #fff;
             font-size: 14px;
             transition: all 0.3s;
@@ -439,8 +653,8 @@
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #8b0000;
-            box-shadow: 0 0 10px rgba(139, 0, 0, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.1);
         }
 
         .form-group input::placeholder {
@@ -459,121 +673,56 @@
             margin-top: 20px;
         }
 
-        /* ===== LOGS ===== */
-        .logs-container {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 10px;
+        .form-actions .btn {
+            min-width: 100px;
         }
 
-        .logs-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .logs-container::-webkit-scrollbar-track {
-            background: #1a1a1a;
-            border-radius: 3px;
-        }
-
-        .logs-container::-webkit-scrollbar-thumb {
-            background: #8b0000;
-            border-radius: 3px;
-        }
-
-        .log-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            border-bottom: 1px solid #1a1a1a;
-            font-size: 13px;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .log-item:hover {
-            background: #1a1a1a;
-        }
-
-        .log-item .log-usuario {
-            color: #fff;
-            font-weight: 500;
-            min-width: 80px;
-        }
-
-        .log-item .log-acao {
-            color: #888;
-        }
-
-        .log-item .log-data {
-            color: #555;
-            font-size: 12px;
-        }
-
-        .log-item .log-role {
-            padding: 1px 10px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        .log-item .log-role.adm {
-            background: #1a3a2a;
-            color: #2ecc71;
-        }
-
-        .log-item .log-role.dev {
-            background: #2a1a3a;
-            color: #9b59b6;
-        }
-
-        .log-item .log-role.user {
-            background: #1a2a3a;
-            color: #3498db;
-        }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-        }
-
-        .empty-state .icon {
-            font-size: 40px;
-            display: block;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        /* ===== INFO ===== */
-        .info-text {
-            color: #888;
-            font-size: 13px;
+        /* ======================================== */
+        /* ===== SOBRE O SISTEMA ===== */
+        /* ======================================== */
+        .sobre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
             padding: 10px 0;
         }
 
+        .sobre-grid .label {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .sobre-grid .value {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* ======================================== */
         /* ===== FOOTER ===== */
+        /* ======================================== */
         .footer {
             background: #000000;
             color: #666;
-            padding: 30px 0;
-            border-top: 2px solid #8b0000;
+            padding: 40px 0 24px;
+            border-top: 2px solid var(--primary);
             margin-top: 30px;
         }
 
         .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
             text-align: center;
         }
 
         .footer-info h3 {
             color: #fff;
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
         }
 
         .footer-info p {
@@ -583,9 +732,9 @@
 
         .footer-links {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .footer-links a {
@@ -596,7 +745,7 @@
         }
 
         .footer-links a:hover {
-            color: #e74c3c;
+            color: var(--primary-hover);
         }
 
         .footer-copy {
@@ -605,27 +754,20 @@
         }
 
         .footer-copy p {
-            margin: 5px 0;
+            margin: 3px 0;
             color: #555;
         }
 
-        /* ======================================= */
-        /* ===== RESPONSIVIDADE COMPLETA ===== */
-        /* ======================================= */
+        /* ======================================== */
+        /* ===== RESPONSIVO ===== */
+        /* ======================================== */
 
-        /* Tablets e telas médias */
         @media (max-width: 992px) {
             .config-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .config-card {
-                padding: 20px;
             }
         }
 
-        /* Mobile - tablets pequenos e celulares grandes */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -635,15 +777,16 @@
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 62px;
+                top: 60px;
                 left: 0;
                 width: 100%;
-                background: #000;
-                padding: 20px;
-                gap: 12px;
-                border-bottom: 2px solid #8b0000;
+                background: rgba(0, 0, 0, 0.98);
+                padding: 20px 16px;
+                gap: 14px;
+                border-bottom: 2px solid var(--primary);
                 text-align: center;
                 z-index: 99;
+                backdrop-filter: blur(20px);
             }
 
             .nav-menu.open {
@@ -651,15 +794,14 @@
             }
 
             .nav-menu a {
-                padding: 10px;
+                padding: 12px;
                 width: 100%;
                 text-align: center;
-                display: block;
+                font-size: 16px;
             }
 
-            .nav-menu .btn-logout {
-                width: 100%;
-                text-align: center;
+            .nav-menu a::after {
+                display: none;
             }
 
             .config-header {
@@ -671,55 +813,17 @@
                 font-size: 22px;
             }
 
-            .config-header p {
-                font-size: 13px;
-            }
-
-            .user-info {
-                justify-content: center;
-                width: 100%;
-            }
-
             .config-card {
-                padding: 18px 15px;
-            }
-
-            .config-card .card-header h3 {
-                font-size: 16px;
-            }
-
-            .config-card .card-header .icon {
-                font-size: 20px;
-            }
-
-            .table-wrapper table {
-                font-size: 13px;
-                min-width: 350px;
-            }
-
-            .table-wrapper table thead th,
-            .table-wrapper table tbody td {
-                padding: 8px 10px;
+                padding: 20px;
             }
 
             .log-item {
-                font-size: 12px;
-                padding: 6px 10px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 3px;
-            }
-
-            .log-item .log-usuario {
-                font-size: 13px;
-            }
-
-            .log-item .log-data {
-                font-size: 11px;
+                flex-wrap: wrap;
+                gap: 5px;
             }
 
             .footer-content {
-                grid-template-columns: 1fr;
+                flex-direction: column;
                 gap: 20px;
             }
 
@@ -727,16 +831,12 @@
                 flex-direction: row;
                 justify-content: center;
                 flex-wrap: wrap;
-                gap: 12px;
+                gap: 15px;
             }
 
             .modal {
                 padding: 20px;
                 margin: 10px;
-            }
-
-            .modal-header h3 {
-                font-size: 18px;
             }
 
             .form-actions {
@@ -747,278 +847,121 @@
                 width: 100%;
             }
 
-            .form-group input,
-            .form-group select {
-                padding: 8px 12px;
-                font-size: 13px;
+            .logo-text .title {
+                font-size: 16px;
             }
 
-            .btn {
-                padding: 8px 16px;
-                font-size: 12px;
+            .logo-icon {
+                width: 34px;
+                height: 34px;
             }
 
-            .btn-block {
-                padding: 10px;
+            .sobre-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
-        /* Celulares pequenos */
         @media (max-width: 480px) {
             .container {
-                padding: 0 10px;
+                padding: 0 12px;
             }
 
-            .logo h1 {
+            .logo-text .title {
                 font-size: 14px;
                 letter-spacing: 1px;
             }
 
-            .logo span {
+            .logo-text .sub {
                 display: none;
             }
 
-            .logo img {
-                width: 32px;
-                height: 32px;
+            .logo-icon {
+                width: 30px;
+                height: 30px;
             }
 
             .config-header h2 {
                 font-size: 18px;
             }
 
-            .config-header p {
-                font-size: 12px;
-            }
-
             .config-card {
-                padding: 15px 12px;
-            }
-
-            .config-card .card-header {
-                gap: 8px;
-                padding-bottom: 10px;
+                padding: 15px;
             }
 
             .config-card .card-header h3 {
-                font-size: 14px;
-            }
-
-            .config-card .card-header .icon {
-                font-size: 18px;
-            }
-
-            .config-card .card-header .badge {
-                font-size: 8px;
-                padding: 1px 8px;
-            }
-
-            .info-text {
-                font-size: 12px;
-                padding: 5px 0;
+                font-size: 16px;
             }
 
             .table-wrapper table {
                 font-size: 12px;
-                min-width: 300px;
+                min-width: 280px;
             }
 
             .table-wrapper table thead th,
             .table-wrapper table tbody td {
-                padding: 6px 8px;
-            }
-
-            .badge-role {
-                font-size: 9px;
-                padding: 1px 8px;
-            }
-
-            .btn-icon {
-                font-size: 12px;
-                padding: 2px 6px;
-            }
-
-            .logs-container {
-                max-height: 200px;
-            }
-
-            .log-item {
-                font-size: 11px;
-                padding: 5px 8px;
-            }
-
-            .log-item .log-usuario {
-                font-size: 12px;
-            }
-
-            .log-item .log-role {
-                font-size: 9px;
-                padding: 1px 8px;
+                padding: 8px 10px;
             }
 
             .footer {
-                padding: 20px 0;
+                padding: 30px 0 20px;
             }
 
             .footer-info h3 {
                 font-size: 16px;
             }
 
-            .footer-info p {
-                font-size: 12px;
-            }
-
-            .footer-links a {
-                font-size: 12px;
-            }
-
-            .footer-copy p {
-                font-size: 10px;
-            }
-
             .modal {
                 padding: 15px;
-                margin: 10px;
             }
 
             .modal-header h3 {
-                font-size: 16px;
+                font-size: 18px;
             }
 
-            .modal-close {
-                font-size: 20px;
+            .sobre-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
             }
 
-            .form-group {
-                margin-bottom: 12px;
+            .sobre-grid .label {
+                font-size: 11px;
             }
 
-            .form-group label {
-                font-size: 12px;
-            }
-
-            .form-group input,
-            .form-group select {
-                padding: 8px 10px;
-                font-size: 12px;
-            }
-
-            .btn {
-                padding: 8px 14px;
-                font-size: 12px;
-            }
-
-            .btn-block {
-                padding: 8px;
-                font-size: 12px;
-            }
-
-            .form-actions {
-                gap: 8px;
-            }
-
-            .user-info {
-                font-size: 12px;
-                gap: 5px;
-            }
-
-            .user-info .user-role {
-                font-size: 9px;
-                padding: 1px 8px;
-            }
-        }
-
-        /* Celulares muito pequenos */
-        @media (max-width: 360px) {
-            .logo h1 {
-                font-size: 12px;
-            }
-
-            .logo img {
-                width: 28px;
-                height: 28px;
-            }
-
-            .config-header h2 {
-                font-size: 16px;
-            }
-
-            .config-card {
-                padding: 12px 10px;
-            }
-
-            .config-card .card-header h3 {
+            .sobre-grid .value {
                 font-size: 13px;
             }
+        }
 
-            .table-wrapper table {
-                font-size: 11px;
-                min-width: 250px;
-            }
-
-            .table-wrapper table thead th,
-            .table-wrapper table tbody td {
-                padding: 4px 6px;
-            }
-
-            .btn {
-                font-size: 11px;
-                padding: 6px 12px;
-            }
-
-            .modal {
-                padding: 12px;
-            }
-
-            .modal-header h3 {
-                font-size: 15px;
-            }
-
-            .form-group input,
-            .form-group select {
-                padding: 6px 8px;
-                font-size: 11px;
-            }
-
-            .form-group label {
-                font-size: 11px;
-            }
-
-            .log-item {
-                font-size: 10px;
-                padding: 4px 6px;
-            }
-
-            .log-item .log-usuario {
-                font-size: 11px;
+        @media (max-width: 360px) {
+            .sobre-grid {
+                grid-template-columns: 1fr;
             }
         }
 
-        /* Telas muito grandes */
-        @media (min-width: 1400px) {
+        @media (min-width: 992px) {
             .container {
-                max-width: 1300px;
+                padding: 0 32px;
             }
 
-            .config-grid {
-                gap: 30px;
-            }
-
-            .config-card {
-                padding: 30px;
+            .config-section {
+                padding: 40px 0;
             }
 
             .config-header h2 {
                 font-size: 32px;
             }
 
-            .table-wrapper table {
-                font-size: 15px;
+            .config-card {
+                padding: 30px;
             }
 
-            .table-wrapper table thead th,
-            .table-wrapper table tbody td {
-                padding: 14px 18px;
+            .logo-text .title {
+                font-size: 20px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
             }
         }
 
@@ -1026,32 +969,29 @@
             .header {
                 position: static;
             }
-            .nav-menu {
-                display: none !important;
-            }
-            .menu-toggle {
-                display: none !important;
-            }
-            .btn {
-                display: none !important;
-            }
-            .footer {
-                background: #f0f0f0 !important;
-                color: #333 !important;
-            }
+            .nav-menu { display: none !important; }
+            .menu-toggle { display: none !important; }
+            .btn { display: none !important; }
+            .footer { background: #f0f0f0 !important; color: #333 !important; }
+            .config-card { border: 1px solid #ccc !important; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
+    <!-- HEADER PREMIUM -->
+    <header class="header" id="mainHeader">
         <div class="container header-content">
-            <div class="logo">
-                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                <h1>GRÊMIO 1ª CIA</h1>
-                <span>Gestão</span>
-            </div>
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
             <nav class="nav-menu" id="navMenu">
                 <a href="/">Início</a>
                 <a href="/lista">Membros</a>
@@ -1060,7 +1000,7 @@
                 <a href="/configuracoes" class="active">Configurações</a>
                 <button class="btn-logout" onclick="logout()">Sair</button>
             </nav>
-            <button class="menu-toggle" id="menuToggle">Menu</button>
+            <button class="menu-toggle" id="menuToggle">☰</button>
         </div>
     </header>
 
@@ -1070,7 +1010,7 @@
             <div class="config-header">
                 <div>
                     <h2>Configurações <span>do Sistema</span></h2>
-                    <p>Gerencie usuários e visualize logs do sistema</p>
+                    <p>Gerencie usuários, visualize logs e faça backup do sistema</p>
                 </div>
                 <div class="user-info">
                     <span id="userName">Usuário</span>
@@ -1127,28 +1067,47 @@
                 </div>
             </div>
 
-            <!-- Informações do Sistema -->
-            <div class="config-card" style="margin-top: 25px;">
-                <div class="card-header">
-                    <span class="icon">ℹ</span>
-                    <h3>Sobre o Sistema</h3>
+            <!-- Backup e Informações -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px;">
+                <!-- Backup do Sistema -->
+                <div class="config-card">
+                    <div class="card-header">
+                        <span class="icon">💾</span>
+                        <h3>Backup do Sistema</h3>
+                        <span class="badge">DEV</span>
+                    </div>
+                    <p class="info-text">Baixe uma cópia de segurança do banco de dados.</p>
+                    <button class="btn btn-success btn-block" onclick="baixarBackup()" style="margin-top: 10px;">
+                        ⬇ Baixar Backup (gremio.db)
+                    </button>
+                    <p style="color: #555; font-size: 12px; margin-top: 10px; text-align: center;">
+                        O backup inclui todos os dados do sistema.
+                    </p>
                 </div>
-                <div class="sobre-grid">
-                    <div>
-                        <p class="label">Sistema</p>
-                        <p class="value">Grêmio 1ª Cia - Gestão</p>
+
+                <!-- Informações do Sistema -->
+                <div class="config-card">
+                    <div class="card-header">
+                        <span class="icon">ℹ</span>
+                        <h3>Sobre o Sistema</h3>
                     </div>
-                    <div>
-                        <p class="label">Versão</p>
-                        <p class="value">1.0.0</p>
-                    </div>
-                    <div>
-                        <p class="label">Desenvolvido por</p>
-                        <p class="value">SD TOMAZ</p>
-                    </div>
-                    <div>
-                        <p class="label">Email</p>
-                        <p class="value">limpaplus.sup1@gmail.com</p>
+                    <div class="sobre-grid">
+                        <div>
+                            <p class="label">Sistema</p>
+                            <p class="value">Grêmio 1ª Cia - Gestão</p>
+                        </div>
+                        <div>
+                            <p class="label">Versão</p>
+                            <p class="value">1.0.0</p>
+                        </div>
+                        <div>
+                            <p class="label">Desenvolvido por</p>
+                            <p class="value">SD TOMAZ</p>
+                        </div>
+                        <div>
+                            <p class="label">Email</p>
+                            <p class="value">limpaplus.sup1@gmail.com</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1193,27 +1152,41 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-info">
-                <h3>GRÊMIO 1ª CIA</h3>
-                <p>Espaço de lazer e integração</p>
-            </div>
-            <div class="footer-links">
-                <a href="/">Início</a>
-                <a href="/lista">Membros</a>
-                <a href="/avaliacao">Sugestões</a>
-                <a href="/dashboard">Dashboard</a>
-                <a href="/configuracoes">Configurações</a>
-            </div>
-            <div class="footer-copy">
-                <p>&copy; 2026 Grêmio 1ª Cia</p>
-                <p>Todos os direitos reservados</p>
-                <p style="margin-top: 5px;">Desenvolvido para a 1ª Companhia</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>GRÊMIO 1ª CIA</h3>
+                    <p>Espaço de lazer e integração</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/configuracoes">Configurações</a>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; 2026 Grêmio 1ª Cia</p>
+                    <p>Todos os direitos reservados</p>
+                    <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // ===== HEADER SCROLL EFFECT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+
         // ===== VARIÁVEIS =====
         let usuarioLogado = null;
 
@@ -1237,6 +1210,13 @@
                 });
             });
 
+            document.addEventListener('click', function(event) {
+                const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
+                if (!isClickInside && window.innerWidth <= 768) {
+                    navMenu.classList.remove('open');
+                }
+            });
+
             // Verificar sessão
             fetch('/api/verificar_sessao')
                 .then(response => response.json())
@@ -1246,20 +1226,19 @@
                         document.getElementById('userName').textContent = data.user.nome || data.user.email.split('@')[0];
                         document.getElementById('userRole').textContent = data.user.role.toUpperCase();
 
-                        // Verificar se é DEV
                         if (data.user.role !== 'dev') {
                             document.querySelector('.config-grid').innerHTML = `
-                                <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #e74c3c;">
+                                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #e74c3c;">
                                     <span style="font-size: 48px; display: block; margin-bottom: 15px;">⛔</span>
                                     <h3>Acesso Negado</h3>
                                     <p style="color: #888; margin-top: 10px; font-size: 14px;">Apenas desenvolvedores têm acesso a esta página.</p>
                                     <a href="/dashboard" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">Voltar ao Dashboard</a>
                                 </div>
                             `;
+                            document.querySelector('.config-grid').style.gridTemplateColumns = '1fr';
                             return;
                         }
 
-                        // Carregar dados
                         carregarUsuarios();
                         carregarLogs();
                     } else {
@@ -1383,6 +1362,46 @@
                 });
         }
 
+        // ===== BAIXAR BACKUP =====
+        function baixarBackup() {
+            if (!usuarioLogado || usuarioLogado.role !== 'dev') {
+                alert('Apenas desenvolvedores podem baixar o backup.');
+                return;
+            }
+
+            const btn = document.querySelector('.btn-success');
+            btn.textContent = '⏳ Baixando...';
+            btn.disabled = true;
+
+            fetch('/api/backup')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao baixar backup');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `backup_gremio_${new Date().toISOString().slice(0,10)}.db`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    
+                    btn.textContent = '⬇ Baixar Backup (gremio.db)';
+                    btn.disabled = false;
+                    alert('Backup baixado com sucesso!');
+                })
+                .catch(error => {
+                    console.error('Erro ao baixar backup:', error);
+                    alert('Erro ao baixar backup. Tente novamente.');
+                    btn.textContent = '⬇ Baixar Backup (gremio.db)';
+                    btn.disabled = false;
+                });
+        }
+
         // ===== MODAL USUÁRIO =====
         function abrirModalUsuario() {
             document.getElementById('modalUsuario').classList.add('active');
@@ -1477,51 +1496,6 @@
 
         console.log('Configurações - Grêmio 1ª Cia');
     </script>
-
-    <style>
-        /* ===== SOBRE GRID ===== */
-        .sobre-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 10px 0;
-        }
-
-        .sobre-grid .label {
-            color: #888;
-            font-size: 12px;
-            margin-bottom: 2px;
-        }
-
-        .sobre-grid .value {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* Responsivo para sobre-grid */
-        @media (max-width: 480px) {
-            .sobre-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .sobre-grid .label {
-                font-size: 11px;
-            }
-
-            .sobre-grid .value {
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .sobre-grid {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-        }
-    </style>
 
 </body>
 </html>
