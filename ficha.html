@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Ficha de Entrada/Saída - Grêmio 1ª Cia</title>
+
+    <style>
+        /* ===== RESET ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #8b0000;
+            --primary-hover: #c0392b;
+            --primary-light: #e74c3c;
+            --primary-glow: rgba(139, 0, 0, 0.4);
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --text-white: #ffffff;
+            --text-gray: #aaaaaa;
+            --text-light: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --radius: 14px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: var(--bg-dark);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom-color: rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
+        }
+
+        .logo-icon .glow-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text .title {
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .logo-text .sub {
+            font-size: 9px;
+            color: #888;
+            letter-spacing: 2px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #fff;
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: #e74c3c !important;
+            border: 1px solid #e74c3c;
+            padding: 6px 18px !important;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 600 !important;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-logout:hover {
+            background: #e74c3c;
+            color: #fff !important;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-toggle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        /* ===== FICHA ===== */
+        .ficha-section {
+            padding: 30px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .ficha-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .ficha-header h2 {
+            font-size: 28px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .ficha-header h2 span {
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ficha-header p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .ficha-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .ficha-card:hover {
+            border-color: rgba(139, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+        }
+
+        .ficha-card .card-title {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* ===== CAMPOS ===== */
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #aaa;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+            border-color: var(--primary-hover);
+            outline: none;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.15);
+        }
+
+        .campo input::placeholder {
+            color: #555;
+        }
+
+        .campo select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        /* ===== TOGGLE ASSINATURA ===== */
+        .toggle-assinatura {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .toggle-assinatura button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            color: #888;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .toggle-assinatura button.ativo {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.2);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
+        }
+
+        .toggle-assinatura button:hover:not(.ativo) {
+            border-color: rgba(139, 0, 0, 0.4);
+            color: #ccc;
+        }
+
+        /* ===== ASSINATURA ===== */
+        .assinatura-box {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid var(--border-color);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .assinatura-box canvas {
+            display: block;
+            width: 100%;
+            height: 200px;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        .btn-limpar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-limpar:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+        }
+
+        .btn-limpar:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== AÇÕES ===== */
+        .acoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-acao {
+            padding: 18px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: inherit;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-acao:active {
+            transform: scale(0.96);
+        }
+
+        .btn-acao:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-entrada {
+            background: linear-gradient(135deg, #1e7e34, #28a745);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-entrada:hover:not(:disabled) {
+            box-shadow: 0 6px 30px rgba(40, 167, 69, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-saida {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .btn-saida:hover:not(:disabled) {
+            box-shadow: 0 6px 30px rgba(139, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* ===== MENSAGEM ===== */
+        .msg {
+            text-align: center;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            display: none;
+            animation: aparecer 0.4s ease-out;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg.sucesso {
+            background: rgba(40, 167, 69, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            display: block;
+        }
+
+        .msg.erro {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            display: block;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #000000;
+            color: #666;
+            padding: 40px 0 24px;
+            border-top: 2px solid var(--primary);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .footer-info h3 {
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+        }
+
+        .footer-info p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-hover);
+        }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .footer-copy p {
+            margin: 3px 0;
+            color: #555;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.98);
+                padding: 20px 16px;
+                gap: 14px;
+                border-bottom: 2px solid var(--primary);
+                text-align: center;
+                z-index: 101;
+                backdrop-filter: blur(20px);
+            }
+
+            .nav-menu.open { display: flex; }
+
+            .nav-menu a {
+                padding: 12px;
+                width: 100%;
+                text-align: center;
+                font-size: 16px;
+            }
+
+            .nav-menu a::after { display: none; }
+
+            .ficha-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .ficha-header h2 { font-size: 22px; }
+
+            .ficha-card { padding: 20px; }
+
+            .logo-text .title { font-size: 16px; }
+            .logo-icon { width: 34px; height: 34px; }
+
+            .footer-content { gap: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 12px; }
+
+            .logo-text .title {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .logo-text .sub { display: none; }
+
+            .logo-icon { width: 30px; height: 30px; }
+
+            .ficha-header h2 { font-size: 20px; }
+
+            .ficha-card { padding: 16px; }
+
+            .acoes {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-acao {
+                padding: 16px;
+                font-size: 14px;
+            }
+
+            .footer { padding: 30px 0 20px; }
+            .footer-info h3 { font-size: 16px; }
+        }
+
+        @media print {
+            .header { position: static; }
+            .nav-menu { display: none !important; }
+            .menu-toggle { display: none !important; }
+            .btn-acao { display: none !important; }
+            .btn-limpar { display: none !important; }
+            .toggle-assinatura { display: none !important; }
+            .footer { background: #f0f0f0 !important; color: #333 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header" id="mainHeader">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/ficha" class="active">Ficha</a>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </header>
+
+    <!-- FICHA -->
+    <section class="ficha-section">
+        <div class="container">
+            <div class="ficha-header">
+                <div>
+                    <h2>Ficha de <span>Entrada e Saída</span></h2>
+                    <p>Registre sua entrada ou saída do Grêmio 1ª Cia</p>
+                </div>
+            </div>
+
+            <div class="ficha-card">
+                <div class="card-title">Registrar Movimento</div>
+
+                <!-- NOME DE GUERRA -->
+                <div class="campo">
+                    <label for="nomeGuerra">Nome de Guerra *</label>
+                    <input type="text" id="nomeGuerra" placeholder="Ex: Silva" autocomplete="off" autocapitalize="words">
+                </div>
+
+                <!-- PELOTÃO -->
+                <div class="campo">
+                    <label for="pelotao">Pelotão *</label>
+                    <select id="pelotao">
+                        <option value="">Selecione...</option>
+                        <option value="1º Pelotão">1º Pelotão</option>
+                        <option value="2º Pelotão">2º Pelotão</option>
+                        <option value="3º Pelotão">3º Pelotão</option>
+                        <option value="Furriel">Furriel</option>
+                        <option value="Sargentia">Sargentia</option>
+                        <option value="Enc-Mat">Enc-Mat</option>
+                    </select>
+                </div>
+
+                <!-- ASSINATURA -->
+                <div class="campo">
+                    <label>Assinatura *</label>
+                    <div class="toggle-assinatura">
+                        <button id="btnModoDedo" class="ativo" onclick="mudarModo('dedo')">Assinar com o dedo</button>
+                        <button id="btnModoTexto" onclick="mudarModo('texto')">Digitar nome</button>
+                    </div>
+
+                    <!-- Modo desenho -->
+                    <div id="areaDedo" class="assinatura-box">
+                        <canvas id="canvasAssinatura"></canvas>
+                        <button class="btn-limpar" onclick="limparAssinatura()">Limpar</button>
+                    </div>
+
+                    <!-- Modo texto -->
+                    <div id="areaTexto" style="display:none;">
+                        <input type="text" id="assinaturaTexto" placeholder="Digite seu nome de guerra" autocapitalize="words" style="width:100%; padding:14px 16px; font-size:15px; border-radius:10px; border:1px solid var(--border-color); background:rgba(0,0,0,0.4); color:#fff; font-family:inherit;">
+                    </div>
+                </div>
+
+                <!-- BOTÕES -->
+                <div class="acoes">
+                    <button class="btn-acao btn-entrada" id="btnEntrada" onclick="registrar('entrada')">
+                        REGISTRAR ENTRADA
+                    </button>
+                    <button class="btn-acao btn-saida" id="btnSaida" onclick="registrar('saida')">
+                        REGISTRAR SAÍDA
+                    </button>
+                </div>
+
+                <!-- MENSAGEM -->
+                <div id="msg" class="msg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>GRÊMIO 1ª CIA</h3>
+                    <p>Espaço de lazer e integração</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/ficha">Ficha</a>
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; 2026 Grêmio 1ª Cia</p>
+                    <p>Todos os direitos reservados</p>
+                    <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== HEADER SCROLL =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+        });
+
+        // ===== MENU MOBILE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('open');
+                });
+            }
+
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) navMenu.classList.remove('open');
+                });
+            });
+
+            document.addEventListener('click', function(event) {
+                const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
+                if (!isClickInside && window.innerWidth <= 768) navMenu.classList.remove('open');
+            });
+        });
+
+        // ===== CANVAS DE ASSINATURA =====
+        const canvas = document.getElementById('canvasAssinatura');
+        const ctx = canvas.getContext('2d');
+        let desenhando = false;
+        let assinaturaVazia = true;
+
+        function ajustarCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+        window.addEventListener('load', ajustarCanvas);
+        window.addEventListener('resize', ajustarCanvas);
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function iniciar(e) {
+            e.preventDefault();
+            desenhando = true;
+            assinaturaVazia = false;
+            const p = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+        }
+
+        function desenhar(e) {
+            if (!desenhando) return;
+            e.preventDefault();
+            const p = getPos(e);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+        }
+
+        function parar() { desenhando = false; }
+
+        canvas.addEventListener('mousedown', iniciar);
+        canvas.addEventListener('mousemove', desenhar);
+        canvas.addEventListener('mouseup', parar);
+        canvas.addEventListener('mouseleave', parar);
+        canvas.addEventListener('touchstart', iniciar, { passive: false });
+        canvas.addEventListener('touchmove', desenhar, { passive: false });
+        canvas.addEventListener('touchend', parar);
+
+        function limparAssinatura() {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            assinaturaVazia = true;
+        }
+
+        // ===== MODO ASSINATURA =====
+        let modoAtual = 'dedo';
+        function mudarModo(modo) {
+            modoAtual = modo;
+            document.getElementById('areaDedo').style.display  = modo === 'dedo'  ? 'block' : 'none';
+            document.getElementById('areaTexto').style.display = modo === 'texto' ? 'block' : 'none';
+            document.getElementById('btnModoDedo').classList.toggle('ativo',  modo === 'dedo');
+            document.getElementById('btnModoTexto').classList.toggle('ativo', modo === 'texto');
+        }
+
+        // ===== REGISTRAR =====
+        async function registrar(tipo) {
+            const nomeGuerra = document.getElementById('nomeGuerra').value.trim();
+            const pelotao    = document.getElementById('pelotao').value;
+
+            if (!nomeGuerra) return mostrarMsg('Preencha o Nome de Guerra', 'erro');
+            if (!pelotao)    return mostrarMsg('Selecione o Pelotão', 'erro');
+
+            let assinatura = null;
+            if (modoAtual === 'dedo') {
+                if (assinaturaVazia) return mostrarMsg('Assine no quadro branco', 'erro');
+                assinatura = canvas.toDataURL('image/png');
+            } else {
+                const texto = document.getElementById('assinaturaTexto').value.trim();
+                if (!texto) return mostrarMsg('Digite seu nome na assinatura', 'erro');
+                assinatura = 'TEXTO:' + texto;
+            }
+
+            const btnEntrada = document.getElementById('btnEntrada');
+            const btnSaida   = document.getElementById('btnSaida');
+            btnEntrada.disabled = true;
+            btnSaida.disabled   = true;
+
+            try {
+                const resp = await fetch('/api/ficha/registrar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tipo: tipo,
+                        nome_guerra: nomeGuerra,
+                        pelotao: pelotao,
+                        assinatura: assinatura
+                    })
+                });
+
+                const data = await resp.json();
+
+                if (data.success) {
+                    const acao = tipo === 'entrada' ? 'Entrada' : 'Saída';
+                    mostrarMsg(acao + ' registrada às ' + data.hora + '!', 'sucesso');
+
+                    setTimeout(() => {
+                        document.getElementById('nomeGuerra').value = '';
+                        document.getElementById('pelotao').value = '';
+                        document.getElementById('assinaturaTexto').value = '';
+                        limparAssinatura();
+                        document.getElementById('msg').style.display = 'none';
+                    }, 2500);
+                } else {
+                    mostrarMsg(data.erro || 'Erro ao registrar', 'erro');
+                }
+            } catch (err) {
+                console.error(err);
+                mostrarMsg('Erro de conexão. Verifique a internet.', 'erro');
+            } finally {
+                btnEntrada.disabled = false;
+                btnSaida.disabled   = false;
+            }
+        }
+
+        function mostrarMsg(texto, tipo) {
+            const el = document.getElementById('msg');
+            el.textContent = texto;
+            el.className = 'msg ' + tipo;
+        }
+
+        // ===== LOGOUT =====
+        function logout() {
+            fetch('/api/logout', { method: 'POST' })
+                .then(response => response.json())
+                .then(() => {
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                })
+                .catch(() => {
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                });
+        }
+
+        console.log('Ficha - Grêmio 1ª Cia');
+    </script>
+
+</body>
+</html>

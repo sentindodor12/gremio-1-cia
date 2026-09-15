@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Login - Grêmio 1ª Cia</title>
-    
+
     <style>
         /* ======================================== */
         /* ===== RESET E CONFIGURAÇÕES ===== */
@@ -47,9 +47,7 @@
             padding: 0 16px;
         }
 
-        /* ======================================== */
-        /* ===== HEADER PREMIUM ===== */
-        /* ======================================== */
+        /* ===== HEADER ===== */
         .header {
             background: rgba(0, 0, 0, 0.88);
             backdrop-filter: blur(20px);
@@ -162,14 +160,9 @@
         }
 
         .nav-menu a:hover::after,
-        .nav-menu a.active::after {
-            width: 100%;
-        }
-
+        .nav-menu a.active::after { width: 100%; }
         .nav-menu a:hover,
-        .nav-menu a.active {
-            color: #fff;
-        }
+        .nav-menu a.active { color: #fff; }
 
         .menu-toggle {
             display: none;
@@ -189,9 +182,7 @@
             background: rgba(139, 0, 0, 0.1);
         }
 
-        /* ======================================== */
         /* ===== LOGIN ===== */
-        /* ======================================== */
         .login-section {
             flex: 1;
             display: flex;
@@ -436,9 +427,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ======================================== */
         /* ===== FOOTER ===== */
-        /* ======================================== */
         .footer {
             background: #000000;
             color: #666;
@@ -495,14 +484,9 @@
             color: #555;
         }
 
-        /* ======================================== */
         /* ===== RESPONSIVO ===== */
-        /* ======================================== */
-
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
+            .menu-toggle { display: block; }
 
             .nav-menu {
                 display: none;
@@ -520,9 +504,7 @@
                 backdrop-filter: blur(20px);
             }
 
-            .nav-menu.open {
-                display: flex;
-            }
+            .nav-menu.open { display: flex; }
 
             .nav-menu a {
                 padding: 12px;
@@ -531,17 +513,10 @@
                 font-size: 16px;
             }
 
-            .nav-menu a::after {
-                display: none;
-            }
+            .nav-menu a::after { display: none; }
 
-            .login-box {
-                padding: 30px 20px;
-            }
-
-            .login-header h2 {
-                font-size: 20px;
-            }
+            .login-box { padding: 30px 20px; }
+            .login-header h2 { font-size: 20px; }
 
             .form-options {
                 flex-direction: column;
@@ -549,10 +524,7 @@
                 align-items: flex-start;
             }
 
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-            }
+            .footer-content { gap: 20px; }
 
             .footer-links {
                 flex-direction: row;
@@ -561,127 +533,56 @@
                 gap: 15px;
             }
 
-            .logo-text .title {
-                font-size: 16px;
-            }
-
-            .logo-icon {
-                width: 34px;
-                height: 34px;
-            }
+            .logo-text .title { font-size: 16px; }
+            .logo-icon { width: 34px; height: 34px; }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 0 12px;
-            }
+            .container { padding: 0 12px; }
 
             .logo-text .title {
                 font-size: 14px;
                 letter-spacing: 1px;
             }
 
-            .logo-text .sub {
-                display: none;
-            }
+            .logo-text .sub { display: none; }
+            .logo-icon { width: 30px; height: 30px; }
 
-            .logo-icon {
-                width: 30px;
-                height: 30px;
-            }
-
-            .login-box {
-                padding: 25px 16px;
-            }
-
-            .login-header .logo-wrapper img {
-                width: 55px;
-                height: 55px;
-            }
-
-            .login-header h2 {
-                font-size: 18px;
-            }
+            .login-box { padding: 25px 16px; }
+            .login-header .logo-wrapper img { width: 55px; height: 55px; }
+            .login-header h2 { font-size: 18px; }
 
             .form-group input {
                 padding: 10px 12px;
                 font-size: 13px;
             }
 
-            .btn {
-                padding: 12px 20px;
-                font-size: 14px;
-            }
+            .btn { padding: 12px 20px; font-size: 14px; }
+            .login-footer { font-size: 12px; }
 
-            .login-footer {
-                font-size: 12px;
-            }
-
-            .footer {
-                padding: 30px 0 20px;
-            }
-
-            .footer-info h3 {
-                font-size: 16px;
-            }
+            .footer { padding: 30px 0 20px; }
+            .footer-info h3 { font-size: 16px; }
         }
 
         @media (max-width: 360px) {
-            .login-box {
-                padding: 20px 12px;
-            }
-
-            .login-header h2 {
-                font-size: 16px;
-            }
-
-            .login-header .logo-wrapper img {
-                width: 45px;
-                height: 45px;
-            }
-
-            .form-group label {
-                font-size: 11px;
-            }
-
-            .form-group input {
-                padding: 8px 10px;
-                font-size: 12px;
-            }
-
-            .btn {
-                font-size: 13px;
-                padding: 10px 16px;
-            }
+            .login-box { padding: 20px 12px; }
+            .login-header h2 { font-size: 16px; }
+            .login-header .logo-wrapper img { width: 45px; height: 45px; }
+            .form-group label { font-size: 11px; }
+            .form-group input { padding: 8px 10px; font-size: 12px; }
+            .btn { font-size: 13px; padding: 10px 16px; }
         }
 
         @media (min-width: 992px) {
-            .container {
-                padding: 0 32px;
-            }
-
-            .login-box {
-                padding: 45px 40px;
-            }
-
-            .login-header h2 {
-                font-size: 26px;
-            }
-
-            .logo-text .title {
-                font-size: 20px;
-            }
-
-            .logo-icon {
-                width: 44px;
-                height: 44px;
-            }
+            .container { padding: 0 32px; }
+            .login-box { padding: 45px 40px; }
+            .login-header h2 { font-size: 26px; }
+            .logo-text .title { font-size: 20px; }
+            .logo-icon { width: 44px; height: 44px; }
         }
 
         @media print {
-            .header {
-                position: static;
-            }
+            .header { position: static; }
             .nav-menu { display: none !important; }
             .menu-toggle { display: none !important; }
             .btn { display: none !important; }
@@ -709,6 +610,9 @@
                 <a href="/">Início</a>
                 <a href="/lista">Membros</a>
                 <a href="/avaliacao">Sugestões</a>
+                <a href="/ficha">Ficha</a>
+                <a href="/ficha_admin">Painel da Ficha</a>
+                <a href="/dashboard">Dashboard</a>
             </nav>
             <button class="menu-toggle" id="menuToggle">☰</button>
         </div>
@@ -727,7 +631,6 @@
                 <div class="line"></div>
             </div>
 
-            <!-- Mensagem de erro -->
             <div id="errorMessage" class="error-message">
                 Email ou senha incorretos. Tente novamente.
             </div>
@@ -785,19 +688,16 @@
     </footer>
 
     <script>
-        // ===== HEADER SCROLL EFFECT =====
+        // ===== HEADER SCROLL =====
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.getElementById('mainHeader');
             window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
             });
         });
 
-        // ===== MENU MOBILE =====
+        // ===== MENU MOBILE + VERIFICAÇÃO DE SESSÃO =====
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
@@ -808,37 +708,37 @@
                 });
             }
 
-            const navLinks = navMenu.querySelectorAll('a');
-            navLinks.forEach(link => {
+            navMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        navMenu.classList.remove('open');
-                    }
+                    if (window.innerWidth <= 768) navMenu.classList.remove('open');
                 });
             });
 
             document.addEventListener('click', function(event) {
                 const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
-                if (!isClickInside && window.innerWidth <= 768) {
-                    navMenu.classList.remove('open');
-                }
+                if (!isClickInside && window.innerWidth <= 768) navMenu.classList.remove('open');
             });
 
-            // Verificar se já está logado via API
+            // Limpa a flag de redirecionamento sempre que abrir o login
+            sessionStorage.removeItem('ultimo_redir');
+
+            // Verifica se JÁ está logado. Se sim, vai pro dashboard. Se não, fica no login.
             fetch('/api/verificar_sessao')
                 .then(response => response.json())
                 .then(data => {
                     if (data.logado) {
+                        // Já logado → vai pro dashboard
                         localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
                         window.location.href = '/dashboard';
                     }
+                    // Se NÃO está logado → não faz NADA, fica na tela de login
                 })
                 .catch(error => {
                     console.error('Erro ao verificar sessão:', error);
                 });
         });
 
-        // ===== LOGIN COM API REAL =====
+        // ===== LOGIN =====
         function handleLogin(event) {
             event.preventDefault();
 
@@ -847,10 +747,8 @@
             const errorMsg = document.getElementById('errorMessage');
             const loginBtn = document.getElementById('loginBtn');
 
-            // Esconder mensagem anterior
             errorMsg.classList.remove('show');
 
-            // Validação básica
             if (!email || !senha) {
                 errorMsg.textContent = 'Por favor, preencha todos os campos.';
                 errorMsg.classList.add('show');
@@ -863,24 +761,19 @@
                 return false;
             }
 
-            // Mostrar loading
             loginBtn.innerHTML = '<span class="btn-loader"></span> Entrando...';
             loginBtn.disabled = true;
 
-            // Chamar API de login
             fetch('/api/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    senha: senha
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, senha: senha })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    // Login OK → vai pro dashboard
+                    sessionStorage.removeItem('ultimo_redir');
                     localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
                     window.location.href = '/dashboard';
                 } else {

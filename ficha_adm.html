@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Ficha - Grêmio 1ª Cia</title>
+
+    <style>
+        /* ===== RESET ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #8b0000;
+            --primary-hover: #c0392b;
+            --primary-light: #e74c3c;
+            --primary-glow: rgba(139, 0, 0, 0.4);
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --text-white: #ffffff;
+            --text-gray: #aaaaaa;
+            --text-light: #cccccc;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --radius: 14px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --success: #28a745;
+            --danger: #e74c3c;
+        }
+
+        html { -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: var(--bg-dark);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom-color: rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            text-decoration: none;
+            min-width: 0;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
+        }
+
+        .logo-icon .glow-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 0; }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            min-width: 0;
+        }
+
+        .logo-text .title {
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 3px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .logo-text .sub {
+            font-size: 9px;
+            color: #888;
+            letter-spacing: 2px;
+            font-weight: 400;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-menu a {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            padding: 6px 0;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after { width: 100%; }
+
+        .nav-menu a:hover,
+        .nav-menu a.active { color: #fff; }
+
+        .menu-toggle {
+            display: none;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+
+        .menu-toggle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .user-info .user-role {
+            background: var(--primary);
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* ===== SEÇÃO PRINCIPAL ===== */
+        .ficha-admin-section {
+            padding: 30px 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .page-header h2 span {
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* ===== BARRA DE STATUS ===== */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+        }
+
+        .status-live {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulseDot 2s infinite;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+            flex-shrink: 0;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .status-info {
+            margin-left: auto;
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .status-info strong { color: #fff; }
+
+        /* ===== CONTROLES ===== */
+        .controles {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-controle {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        .btn-controle:hover {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.15);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-controle.ativo {
+            border-color: var(--primary);
+            background: rgba(139, 0, 0, 0.25);
+            color: #fff;
+        }
+
+        .campo-data {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            backdrop-filter: blur(10px);
+            min-width: 0;
+        }
+
+        .campo-data:focus {
+            outline: none;
+            border-color: var(--primary-hover);
+        }
+
+        /* ===== CARDS DE ESTATÍSTICA ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            border-color: rgba(139, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-card .stat-desc {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* ===== TABELA ===== */
+        .tabela-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tabela-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tabela-card .card-header h3 {
+            color: #fff;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .tabela-card .card-header .registro-count {
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .tabela-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead th {
+            background: rgba(139, 0, 0, 0.15);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 14px 12px;
+            font-size: 14px;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        tbody tr { transition: background 0.2s ease; }
+        tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+        tbody tr.novo { animation: destacarNovo 4s ease-out; }
+
+        @keyframes destacarNovo {
+            0% { background: rgba(40, 167, 69, 0.4); }
+            100% { background: transparent; }
+        }
+
+        tbody tr.sem-saida td { background: rgba(139, 0, 0, 0.05); }
+
+        .nome-guerra {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .hora {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .hora.vazia {
+            color: #555;
+            font-weight: 400;
+        }
+
+        /* ===== ASSINATURA ===== */
+        .assinatura-thumb {
+            width: 70px;
+            height: 34px;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            object-fit: contain;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .assinatura-thumb:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-hover);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.4);
+        }
+
+        .assinatura-texto {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(139, 0, 0, 0.15);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 6px;
+            font-style: italic;
+            font-size: 12px;
+            color: #fff;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .assinatura-vazia {
+            color: #444;
+            font-size: 12px;
+        }
+
+        /* ===== CARDS MOBILE ===== */
+        .cards-mobile { display: none; }
+
+        .ficha-card-mobile {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .ficha-card-mobile.novo {
+            animation: destacarNovo 4s ease-out;
+        }
+
+        .ficha-card-mobile.sem-saida {
+            border-left: 3px solid var(--primary-hover);
+        }
+
+        .ficha-card-mobile .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            gap: 10px;
+        }
+
+        .ficha-card-mobile .nome {
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .ficha-card-mobile .pelotao-tag {
+            background: rgba(139, 0, 0, 0.2);
+            color: var(--primary-light);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .ficha-card-mobile .linha {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            gap: 10px;
+        }
+
+        .ficha-card-mobile .linha-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .ficha-card-mobile .linha-valor {
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .ficha-card-mobile .linha-valor.vazia { color: #555; }
+
+        .ficha-card-mobile .assinatura-linha {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            gap: 10px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 6px;
+            padding-top: 12px;
+        }
+
+        .ficha-card-mobile .assinatura-thumb {
+            width: 90px;
+            height: 40px;
+        }
+
+        /* ===== ESTADO VAZIO ===== */
+        .estado-vazio {
+            text-align: center;
+            padding: 60px 20px;
+            color: #555;
+        }
+
+        .estado-vazio .titulo {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .estado-vazio .desc {
+            font-size: 13px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal.aberto { display: flex; animation: fadeIn 0.25s ease-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-conteudo {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 20px;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-conteudo .modal-titulo {
+            color: #333;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-conteudo img {
+            width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .modal-fechar {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            background: var(--danger);
+            color: #fff;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.5);
+        }
+
+        .modal-fechar:hover {
+            background: var(--primary);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #000000;
+            color: #666;
+            padding: 40px 0 24px;
+            border-top: 2px solid var(--primary);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .footer-info h3 {
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+        }
+
+        .footer-info p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover { color: var(--primary-hover); }
+
+        .footer-copy {
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .footer-copy p {
+            margin: 3px 0;
+            color: #555;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 1100px) {
+            .page-header h2 { font-size: 24px; }
+        }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.98);
+                padding: 20px 16px;
+                gap: 14px;
+                border-bottom: 2px solid var(--primary);
+                text-align: center;
+                z-index: 101;
+                backdrop-filter: blur(20px);
+                max-height: calc(100vh - 64px);
+                overflow-y: auto;
+            }
+
+            .nav-menu.open { display: flex; }
+
+            .nav-menu a {
+                padding: 12px;
+                width: 100%;
+                text-align: center;
+                font-size: 16px;
+            }
+
+            .nav-menu a::after { display: none; }
+
+            .tabela-wrapper { display: none; }
+            .cards-mobile { display: block; }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 0 12px; }
+
+            .ficha-admin-section { padding: 20px 0; }
+
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .page-header h2 { font-size: 20px; }
+            .page-header p { font-size: 13px; }
+
+            .logo-text .title {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .logo-text .sub { display: none; }
+
+            .logo-icon { width: 32px; height: 32px; }
+
+            .status-bar {
+                padding: 12px 16px;
+                gap: 8px;
+            }
+
+            .status-info {
+                margin-left: 0;
+                width: 100%;
+                font-size: 12px;
+            }
+
+            .controles {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .btn-controle {
+                padding: 10px 8px;
+                font-size: 12px;
+                text-align: center;
+            }
+
+            .campo-data {
+                grid-column: 1 / -1;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-card .stat-label { font-size: 10px; }
+            .stat-card .stat-number { font-size: 22px; }
+            .stat-card .stat-desc { font-size: 10px; }
+
+            .tabela-card { padding: 14px; }
+            .tabela-card .card-header { margin-bottom: 14px; }
+            .tabela-card .card-header h3 { font-size: 15px; }
+
+            .ficha-card-mobile { padding: 14px; }
+            .ficha-card-mobile .nome { font-size: 15px; }
+
+            .footer { padding: 30px 0 20px; }
+            .footer-info h3 { font-size: 16px; }
+        }
+
+        @media (max-width: 360px) {
+            .logo-text .title { font-size: 12px; letter-spacing: 0; }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controles {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-controle { width: 100%; }
+
+            .ficha-card-mobile .nome { font-size: 14px; }
+            .ficha-card-mobile .pelotao-tag { font-size: 10px; padding: 3px 8px; }
+            .ficha-card-mobile .linha-valor { font-size: 13px; }
+        }
+
+        @media print {
+            .header { position: static; }
+            .nav-menu { display: none !important; }
+            .menu-toggle { display: none !important; }
+            .controles { display: none !important; }
+            .status-bar { display: none !important; }
+            .stats-grid { display: none !important; }
+            .footer { background: #f0f0f0 !important; color: #333 !important; }
+
+            body {
+                background: #fff !important;
+                color: #000 !important;
+            }
+
+            .tabela-card {
+                background: #fff !important;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
+
+            .tabela-wrapper { display: block !important; }
+            .cards-mobile { display: none !important; }
+
+            table { min-width: auto; }
+
+            thead th {
+                background: #eee !important;
+                color: #000 !important;
+                border-bottom: 2px solid #333 !important;
+            }
+
+            tbody td {
+                color: #000 !important;
+                border-bottom: 1px solid #ddd !important;
+            }
+
+            .nome-guerra { color: #000 !important; }
+            .hora { color: #000 !important; }
+            .page-header h2 { color: #000 !important; }
+            .page-header h2 span {
+                -webkit-text-fill-color: #8b0000 !important;
+                color: #8b0000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header" id="mainHeader">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/ficha">Ficha</a>
+                <a href="/ficha_admin" class="active">Painel da Ficha</a>
+                <a href="/dashboard">Dashboard</a>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </header>
+
+    <!-- PAINEL -->
+    <section class="ficha-admin-section">
+        <div class="container">
+
+            <div class="page-header">
+                <div>
+                    <h2>Painel da <span>Ficha</span></h2>
+                    <p>Acompanhe em tempo real as entradas e saídas do Grêmio</p>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Admin</span>
+                    <span class="user-role" id="userRole">ADM</span>
+                </div>
+            </div>
+
+            <div class="status-bar">
+                <div class="status-live">
+                    <span class="status-dot"></span>
+                    <span>Atualizando automaticamente</span>
+                </div>
+                <div class="status-info" id="statusInfo">Carregando...</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total de Registros</div>
+                    <div class="stat-number" id="totalRegistros">0</div>
+                    <div class="stat-desc">no período selecionado</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Presentes Agora</div>
+                    <div class="stat-number" id="presentesAgora">0</div>
+                    <div class="stat-desc">entraram e não saíram</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Entradas</div>
+                    <div class="stat-number" id="totalEntradas">0</div>
+                    <div class="stat-desc">registradas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Saídas</div>
+                    <div class="stat-number" id="totalSaidas">0</div>
+                    <div class="stat-desc">registradas</div>
+                </div>
+            </div>
+
+            <div class="controles">
+                <button class="btn-controle ativo" onclick="mudarFiltro('hoje', this)">Hoje</button>
+                <button class="btn-controle" onclick="mudarFiltro('ontem', this)">Ontem</button>
+                <button class="btn-controle" onclick="mudarFiltro('semana', this)">Últimos 7 dias</button>
+                <input type="date" class="campo-data" id="filtroData" onchange="buscarPorData(this.value)">
+                <button class="btn-controle" onclick="window.print()">Imprimir</button>
+            </div>
+
+            <div class="tabela-card">
+                <div class="card-header">
+                    <h3 id="tituloTabela">Ficha do Dia</h3>
+                    <span class="registro-count" id="registroCount">0 registros</span>
+                </div>
+
+                <!-- TABELA (desktop/tablet) -->
+                <div class="tabela-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome de Guerra</th>
+                                <th>Pelotão</th>
+                                <th>Entrada</th>
+                                <th>Saída</th>
+                                <th>Assinatura Entrada</th>
+                                <th>Assinatura Saída</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabela">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="estado-vazio">
+                                        <div class="titulo">Carregando registros...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- CARDS (mobile) -->
+                <div class="cards-mobile" id="cardsMobile">
+                    <div class="estado-vazio">
+                        <div class="titulo">Carregando registros...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>GRÊMIO 1ª CIA</h3>
+                    <p>Espaço de lazer e integração</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Início</a>
+                    <a href="/lista">Membros</a>
+                    <a href="/avaliacao">Sugestões</a>
+                    <a href="/ficha">Ficha</a>
+                    <a href="/ficha_admin">Painel da Ficha</a>
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; 2026 Grêmio 1ª Cia</p>
+                    <p>Todos os direitos reservados</p>
+                    <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal" onclick="fecharModal(event)">
+        <div class="modal-conteudo" onclick="event.stopPropagation()">
+            <button class="modal-fechar" onclick="fecharModal()">X</button>
+            <div class="modal-titulo" id="modalTitulo">Assinatura</div>
+            <img id="modalImg" src="" alt="Assinatura">
+        </div>
+    </div>
+
+    <script>
+        // ===== ESTADO =====
+        let filtroAtual = 'hoje';
+        let idsConhecidos = new Set();
+        let primeiraCarga = true;
+
+        // ===== HEADER SCROLL =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+
+        // ===== MENU MOBILE + SESSÃO =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('open');
+                });
+            }
+
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 900) {
+                        navMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            document.addEventListener('click', function(event) {
+                const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
+                if (!isClickInside && window.innerWidth <= 900) {
+                    navMenu.classList.remove('open');
+                }
+            });
+
+            fetch('/api/verificar_sessao')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logado) {
+                        document.getElementById('userName').textContent =
+                            data.user.nome || data.user.email.split('@')[0];
+                        document.getElementById('userRole').textContent =
+                            data.user.role.toUpperCase();
+                    }
+                })
+                .catch(error => console.log('Sessão não verificada:', error));
+        });
+
+        // ===== FILTROS =====
+        function mudarFiltro(tipo, botao) {
+            filtroAtual = tipo;
+            primeiraCarga = true;
+            idsConhecidos.clear();
+
+            document.querySelectorAll('.btn-controle').forEach(b => b.classList.remove('ativo'));
+            if (botao) botao.classList.add('ativo');
+
+            document.getElementById('filtroData').value = '';
+
+            if (tipo === 'hoje') {
+                document.getElementById('tituloTabela').textContent = 'Ficha do Dia';
+            } else if (tipo === 'ontem') {
+                document.getElementById('tituloTabela').textContent = 'Ficha de Ontem';
+            } else if (tipo === 'semana') {
+                document.getElementById('tituloTabela').textContent = 'Últimos 7 dias';
+            }
+
+            carregarFicha();
+        }
+
+        function buscarPorData(data) {
+            if (!data) return;
+
+            filtroAtual = 'data';
+            primeiraCarga = true;
+            idsConhecidos.clear();
+
+            document.querySelectorAll('.btn-controle').forEach(b => b.classList.remove('ativo'));
+
+            const [ano, mes, dia] = data.split('-');
+            document.getElementById('tituloTabela').textContent =
+                'Ficha de ' + dia + '/' + mes + '/' + ano;
+
+            carregarFicha();
+        }
+
+        // ===== CARREGAR =====
+        async function carregarFicha() {
+            try {
+                let url = '/api/ficha/hoje';
+
+                if (filtroAtual === 'ontem') {
+                    const ontem = new Date();
+                    ontem.setDate(ontem.getDate() - 1);
+                    const ano = ontem.getFullYear();
+                    const mes = String(ontem.getMonth() + 1).padStart(2, '0');
+                    const dia = String(ontem.getDate()).padStart(2, '0');
+                    url = '/api/ficha/data/' + ano + '-' + mes + '-' + dia;
+                } else if (filtroAtual === 'semana') {
+                    url = '/api/ficha/semana';
+                } else if (filtroAtual === 'data') {
+                    const data = document.getElementById('filtroData').value;
+                    if (data) url = '/api/ficha/data/' + data;
+                }
+
+                const resp = await fetch(url);
+                const data = await resp.json();
+
+                if (!data.success) throw new Error(data.erro);
+
+                renderizarTabela(data.registros);
+                renderizarCards(data.registros);
+                atualizarEstatisticas(data.registros);
+                atualizarStatus(data.registros.length);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('statusInfo').textContent =
+                    'Erro ao carregar. Verifique a conexão.';
+            }
+        }
+
+        // ===== RENDERIZAR TABELA =====
+        function renderizarTabela(registros) {
+            const tbody = document.getElementById('corpoTabela');
+
+            if (registros.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="estado-vazio">
+                                <div class="titulo">Nenhum registro encontrado</div>
+                                <div class="desc">Quando alguém registrar entrada ou saída, aparecerá aqui.</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                primeiraCarga = false;
+                return;
+            }
+
+            tbody.innerHTML = registros.map(r => {
+                const ehNovo = !primeiraCarga && !idsConhecidos.has(r.id);
+                idsConhecidos.add(r.id);
+                const semSaida = !r.hora_saida;
+
+                return `
+                    <tr class="${ehNovo ? 'novo' : ''} ${semSaida ? 'sem-saida' : ''}">
+                        <td><span class="nome-guerra">${escapeHtml(r.nome_guerra)}</span></td>
+                        <td>${escapeHtml(r.pelotao)}</td>
+                        <td><span class="hora">${r.hora_entrada || '--'}</span></td>
+                        <td>${r.hora_saida
+                            ? '<span class="hora">' + r.hora_saida + '</span>'
+                            : '<span class="hora vazia">--:--</span>'}</td>
+                        <td>${renderAssinatura(r.assinatura_entrada, 'Entrada', r.nome_guerra)}</td>
+                        <td>${renderAssinatura(r.assinatura_saida, 'Saída', r.nome_guerra)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            primeiraCarga = false;
+        }
+
+        // ===== RENDERIZAR CARDS =====
+        function renderizarCards(registros) {
+            const container = document.getElementById('cardsMobile');
+
+            if (registros.length === 0) {
+                container.innerHTML = `
+                    <div class="estado-vazio">
+                        <div class="titulo">Nenhum registro encontrado</div>
+                        <div class="desc">Quando alguém registrar entrada ou saída, aparecerá aqui.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = registros.map(r => {
+                const semSaida = !r.hora_saida;
+
+                return `
+                    <div class="ficha-card-mobile ${semSaida ? 'sem-saida' : ''}">
+                        <div class="card-top">
+                            <span class="nome">${escapeHtml(r.nome_guerra)}</span>
+                            <span class="pelotao-tag">${escapeHtml(r.pelotao)}</span>
+                        </div>
+
+                        <div class="linha">
+                            <span class="linha-label">Entrada</span>
+                            <span class="linha-valor">${r.hora_entrada || '--:--'}</span>
+                        </div>
+
+                        <div class="linha">
+                            <span class="linha-label">Saída</span>
+                            <span class="linha-valor ${r.hora_saida ? '' : 'vazia'}">${r.hora_saida || '--:--'}</span>
+                        </div>
+
+                        <div class="assinatura-linha">
+                            <span class="linha-label">Assinatura Entrada</span>
+                            ${renderAssinatura(r.assinatura_entrada, 'Entrada', r.nome_guerra)}
+                        </div>
+
+                        ${r.assinatura_saida ? `
+                        <div class="assinatura-linha">
+                            <span class="linha-label">Assinatura Saída</span>
+                            ${renderAssinatura(r.assinatura_saida, 'Saída', r.nome_guerra)}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ===== ASSINATURA =====
+        function renderAssinatura(assinatura, tipo, nome) {
+            if (!assinatura) return '<span class="assinatura-vazia">--</span>';
+
+            if (assinatura.startsWith('TEXTO:')) {
+                const texto = assinatura.replace('TEXTO:', '');
+                return '<span class="assinatura-texto" title="' + escapeHtml(texto) + '">' +
+                       escapeHtml(texto) + '</span>';
+            }
+
+            const titulo = 'Assinatura de ' + tipo + ' - ' + nome;
+            return '<img src="' + assinatura + '" class="assinatura-thumb" ' +
+                   'onclick="abrirModal(\'' + assinatura + '\', \'' +
+                   escapeHtml(titulo) + '\')" alt="Assinatura">';
+        }
+
+        // ===== ESTATÍSTICAS =====
+        function atualizarEstatisticas(registros) {
+            const total = registros.length;
+            const saidas = registros.filter(r => r.hora_saida).length;
+            const presentes = registros.filter(r => !r.hora_saida).length;
+
+            document.getElementById('totalRegistros').textContent = total;
+            document.getElementById('totalEntradas').textContent = total;
+            document.getElementById('totalSaidas').textContent = saidas;
+            document.getElementById('presentesAgora').textContent = presentes;
+
+            document.getElementById('registroCount').textContent =
+                total + (total === 1 ? ' registro' : ' registros');
+        }
+
+        // ===== STATUS =====
+        function atualizarStatus(qtd) {
+            const hora = new Date().toLocaleTimeString('pt-BR', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+            document.getElementById('statusInfo').innerHTML =
+                'Última atualização: <strong>' + hora + '</strong> — ' +
+                qtd + (qtd === 1 ? ' registro' : ' registros');
+        }
+
+        // ===== MODAL =====
+        function abrirModal(src, titulo) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('modalTitulo').textContent = titulo || 'Assinatura';
+            document.getElementById('modal').classList.add('aberto');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModal(e) {
+            if (e && e.target.id !== 'modal') return;
+            document.getElementById('modal').classList.remove('aberto');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('modal').classList.remove('aberto');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // ===== SEGURANÇA =====
+        function escapeHtml(txt) {
+            const div = document.createElement('div');
+            div.textContent = txt || '';
+            return div.innerHTML.replace(/'/g, '&#39;');
+        }
+
+        // ===== LOGOUT =====
+        function logout() {
+            fetch('/api/logout', { method: 'POST' })
+                .then(response => response.json())
+                .then(() => {
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                })
+                .catch(() => {
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
+                });
+        }
+
+        // ===== POLLING =====
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarFicha();
+            setInterval(carregarFicha, 3000);
+        });
+
+        console.log('Painel da Ficha - Grêmio 1ª Cia');
+    </script>
+
+</body>
+</html>

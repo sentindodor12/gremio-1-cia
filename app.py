@@ -26,15 +26,16 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'limpaplus.sup1@gmail.com'
-app.config['MAIL_PASSWORD'] = 'pizu mgal rblk zenm'
-app.config['MAIL_DEFAULT_SENDER'] = 'limpaplus.sup1@gmail.com'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', '')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', '')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', app.config['MAIL_USERNAME'])
 app.config['MAIL_DEBUG'] = True
 
 mail = Mail(app)
 
 # ===== BANCO DE DADOS =====
-DATABASE = 'gremio.db'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, 'gremio.db')
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
@@ -93,6 +94,21 @@ def init_db():
         )
     ''')
     
+    # Tabela da ficha de entrada/saída
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ficha_registros (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome_guerra TEXT NOT NULL,
+            pelotao TEXT NOT NULL,
+            data TEXT NOT NULL,
+            hora_entrada TEXT,
+            hora_saida TEXT,
+            assinatura_entrada TEXT,
+            assinatura_saida TEXT,
+            criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     # Inserir usuários padrão
     cursor.execute('SELECT COUNT(*) FROM usuarios')
     count = cursor.fetchone()[0]
@@ -140,6 +156,14 @@ def avaliacao_page():
 @app.route('/configuracoes')
 def configuracoes_page():
     return render_template('configuracoes.html')
+
+@app.route('/ficha')
+def ficha_page():
+    return render_template('ficha.html')
+
+@app.route('/ficha_admin')
+def ficha_admin_page():
+    return render_template('ficha_adm.html')
 
 @app.route('/<path:filename>')
 def static_files(filename):
@@ -629,6 +653,113 @@ def api_get_logs():
     
     return jsonify(logs)
 
+# ===== API - FICHA DE ENTRADA E SAÍDA =====
+@app.route('/api/ficha/registrar', methods=['POST'])
+def api_ficha_registrar():
+    data = request.get_json(silent=True) or {}
+    tipo = (data.get('tipo') or '').strip().lower()
+    nome_guerra = (data.get('nome_guerra') or '').strip()
+    pelotao = (data.get('pelotao') or '').strip()
+    assinatura = data.get('assinatura')
+
+    if tipo not in ('entrada', 'saida'):
+        return jsonify({'success': False, 'erro': 'Tipo de registro inválido'}), 400
+    if not nome_guerra or not pelotao:
+        return jsonify({'success': False, 'erro': 'Nome de guerra e pelotão são obrigatórios'}), 400
+    if not assinatura:
+        return jsonify({'success': False, 'erro': 'Assinatura é obrigatória'}), 400
+
+    agora = datetime.now()
+    data_atual = agora.strftime('%Y-%m-%d')
+    hora = agora.strftime('%H:%M:%S')
+    conn = get_db()
+    cur = conn.cursor()
+
+    if tipo == 'entrada':
+        cur.execute("""
+            SELECT id FROM ficha_registros
+            WHERE data = ? AND lower(nome_guerra) = lower(?) AND pelotao = ? AND hora_saida IS NULL
+            ORDER BY id DESC LIMIT 1
+        """, (data_atual, nome_guerra, pelotao))
+        if cur.fetchone():
+            conn.close()
+            return jsonify({'success': False, 'erro': 'Já existe uma entrada em aberto para este militar hoje'}), 409
+
+        cur.execute("""
+            INSERT INTO ficha_registros
+            (nome_guerra, pelotao, data, hora_entrada, assinatura_entrada)
+            VALUES (?, ?, ?, ?, ?)
+        """, (nome_guerra, pelotao, data_atual, hora, assinatura))
+    else:
+        cur.execute("""
+            SELECT id FROM ficha_registros
+            WHERE data = ? AND lower(nome_guerra) = lower(?) AND pelotao = ? AND hora_saida IS NULL
+            ORDER BY id DESC LIMIT 1
+        """, (data_atual, nome_guerra, pelotao))
+        row = cur.fetchone()
+        if not row:
+            conn.close()
+            return jsonify({'success': False, 'erro': 'Nenhuma entrada em aberto encontrada para este militar hoje'}), 404
+        cur.execute("""
+            UPDATE ficha_registros
+            SET hora_saida = ?, assinatura_saida = ?
+            WHERE id = ?
+        """, (hora, assinatura, row['id']))
+
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True, 'hora': hora})
+
+
+def _ficha_registros(where_sql='', params=()):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(f"""
+        SELECT id, nome_guerra, pelotao, data, hora_entrada, hora_saida,
+               assinatura_entrada, assinatura_saida
+        FROM ficha_registros
+        {where_sql}
+        ORDER BY data DESC, id DESC
+    """, params)
+    rows = cur.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+@app.route('/api/ficha/hoje', methods=['GET'])
+def api_ficha_hoje():
+    registros = _ficha_registros('WHERE data = ?', (datetime.now().strftime('%Y-%m-%d'),))
+    return jsonify({'success': True, 'registros': registros})
+
+@app.route('/api/ficha/data/<string:data>', methods=['GET'])
+def api_ficha_data(data):
+    try:
+        datetime.strptime(data, '%Y-%m-%d')
+    except ValueError:
+        return jsonify({'success': False, 'erro': 'Data inválida'}), 400
+    registros = _ficha_registros('WHERE data = ?', (data,))
+    return jsonify({'success': True, 'registros': registros})
+
+@app.route('/api/ficha/semana', methods=['GET'])
+def api_ficha_semana():
+    registros = _ficha_registros("WHERE date(data) >= date('now', '-6 days')")
+    return jsonify({'success': True, 'registros': registros})
+
+# ===== API - BACKUP DO BANCO =====
+@app.route('/api/backup', methods=['GET'])
+def api_backup():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Nao autorizado'}), 401
+    if session.get('user_role') != 'dev':
+        return jsonify({'error': 'Permissao negada'}), 403
+    if not os.path.exists(DATABASE):
+        return jsonify({'error': 'Banco de dados nao encontrado'}), 404
+    return send_file(
+        DATABASE,
+        as_attachment=True,
+        download_name=f"backup_gremio_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.db",
+        mimetype='application/x-sqlite3'
+    )
+
 # ===== API - BAIXAR PDF DINÂMICO =====
 @app.route('/api/baixar-pdf', methods=['GET'])
 def api_baixar_pdf():
@@ -641,7 +772,7 @@ def api_baixar_pdf():
 
     try:
         # Buscar TODOS os membros do banco de dados
-        conn = sqlite3.connect('gremio.db')
+        conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
         
         # Verificar se a tabela membros existe
