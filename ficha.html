@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ficha de Entrada/Saída - Grêmio 1ª Cia</title>
 
     <style>
         /* ===== RESET ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         :root {
             --primary: #8b0000;
@@ -16,12 +16,14 @@
             --primary-glow: rgba(139, 0, 0, 0.4);
             --bg-dark: #0a0a0a;
             --bg-card: rgba(20, 20, 20, 0.85);
-            --text-white: #ffffff;
-            --text-gray: #aaaaaa;
             --text-light: #cccccc;
             --border-color: rgba(255, 255, 255, 0.06);
             --radius: 14px;
             --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        html, body {
+            overflow-x: hidden;
         }
 
         body {
@@ -31,6 +33,14 @@
             background: var(--bg-dark);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* Bloqueia scroll do fundo quando assinatura abre */
+        body.travado {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
         .container {
@@ -48,7 +58,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            width: 100%;
             transition: all 0.4s ease;
         }
 
@@ -69,7 +78,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-shrink: 0;
             text-decoration: none;
         }
 
@@ -83,15 +91,11 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
         }
 
         .logo-icon .glow-ring {
             position: absolute;
-            top: -4px;
-            left: -4px;
-            width: calc(100% + 8px);
-            height: calc(100% + 8px);
+            inset: -4px;
             border: 1px solid rgba(139, 0, 0, 0.2);
             border-radius: 50%;
             animation: ringPulse 2s ease-in-out infinite;
@@ -102,32 +106,11 @@
             50% { transform: scale(1.15); opacity: 0; }
         }
 
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .logo-text .title { font-size: 18px; color: #fff; letter-spacing: 3px; font-weight: 700; }
+        .logo-text .sub { font-size: 9px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
 
-        .logo-text .title {
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 3px;
-            font-weight: 700;
-        }
-
-        .logo-text .sub {
-            font-size: 9px;
-            color: #888;
-            letter-spacing: 2px;
-            font-weight: 400;
-            text-transform: uppercase;
-        }
-
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
+        .nav-menu { display: flex; align-items: center; gap: 24px; }
 
         .nav-menu a {
             color: #aaa;
@@ -142,24 +125,15 @@
         .nav-menu a::after {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
+            bottom: -2px; left: 0;
+            width: 0; height: 2px;
             background: linear-gradient(90deg, var(--primary), var(--primary-hover));
             transition: width 0.3s ease;
-            box-shadow: 0 0 15px var(--primary-glow);
         }
 
         .nav-menu a:hover::after,
-        .nav-menu a.active::after {
-            width: 100%;
-        }
-
-        .nav-menu a:hover,
-        .nav-menu a.active {
-            color: #fff;
-        }
+        .nav-menu a.active::after { width: 100%; }
+        .nav-menu a:hover, .nav-menu a.active { color: #fff; }
 
         .btn-logout {
             background: transparent;
@@ -173,10 +147,7 @@
             font-size: 13px;
         }
 
-        .btn-logout:hover {
-            background: #e74c3c;
-            color: #fff !important;
-        }
+        .btn-logout:hover { background: #e74c3c; color: #fff !important; }
 
         .menu-toggle {
             display: none;
@@ -187,52 +158,25 @@
             cursor: pointer;
             color: #fff;
             font-size: 16px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .menu-toggle:hover {
-            border-color: var(--primary);
-            background: rgba(139, 0, 0, 0.1);
         }
 
         /* ===== FICHA ===== */
-        .ficha-section {
-            padding: 30px 0;
-            animation: fadeInUp 0.6s ease-out;
-        }
+        .ficha-section { padding: 30px 0; animation: fadeInUp 0.6s ease-out; }
 
         @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .ficha-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .ficha-header h2 {
-            font-size: 28px;
-            color: #fff;
-            font-weight: 700;
-        }
-
+        .ficha-header { margin-bottom: 30px; }
+        .ficha-header h2 { font-size: 28px; color: #fff; font-weight: 700; }
         .ficha-header h2 span {
             background: linear-gradient(135deg, var(--primary-hover), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .ficha-header p {
-            color: #888;
-            font-size: 14px;
-        }
+        .ficha-header p { color: #888; font-size: 14px; }
 
         .ficha-card {
             background: var(--bg-card);
@@ -240,14 +184,8 @@
             border-radius: var(--radius);
             padding: 30px;
             backdrop-filter: blur(10px);
-            transition: all 0.4s ease;
             max-width: 600px;
             margin: 0 auto;
-        }
-
-        .ficha-card:hover {
-            border-color: rgba(139, 0, 0, 0.3);
-            box-shadow: var(--shadow);
         }
 
         .ficha-card .card-title {
@@ -260,9 +198,7 @@
         }
 
         /* ===== CAMPOS ===== */
-        .campo {
-            margin-bottom: 20px;
-        }
+        .campo { margin-bottom: 20px; }
 
         .campo label {
             display: block;
@@ -283,33 +219,22 @@
             border: 1px solid var(--border-color);
             background: rgba(0, 0, 0, 0.4);
             color: #fff;
-            transition: all 0.3s ease;
             font-family: inherit;
+            transition: all 0.3s ease;
         }
 
         .campo input:focus,
         .campo select:focus {
             border-color: var(--primary-hover);
             outline: none;
-            background: rgba(0, 0, 0, 0.6);
             box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.15);
         }
 
-        .campo input::placeholder {
-            color: #555;
-        }
+        .campo input::placeholder { color: #555; }
+        .campo select option { background: #1a1a1a; color: #fff; }
 
-        .campo select option {
-            background: #1a1a1a;
-            color: #fff;
-        }
-
-        /* ===== TOGGLE ASSINATURA ===== */
-        .toggle-assinatura {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
+        /* ===== TOGGLE ===== */
+        .toggle-assinatura { display: flex; gap: 10px; margin-bottom: 14px; }
 
         .toggle-assinatura button {
             flex: 1;
@@ -321,63 +246,210 @@
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-family: inherit;
+            transition: all 0.3s ease;
         }
 
         .toggle-assinatura button.ativo {
             border-color: var(--primary);
             background: rgba(139, 0, 0, 0.2);
             color: #fff;
-            box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
         }
 
-        .toggle-assinatura button:hover:not(.ativo) {
-            border-color: rgba(139, 0, 0, 0.4);
-            color: #ccc;
-        }
-
-        /* ===== ASSINATURA ===== */
+        /* ===== QUADRO DE ASSINATURA (normal) ===== */
         .assinatura-box {
             background: #fff;
             border-radius: 10px;
             overflow: hidden;
             position: relative;
             border: 2px solid var(--border-color);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+            height: 200px;
         }
 
         .assinatura-box canvas {
             display: block;
             width: 100%;
-            height: 200px;
+            height: 100%;
             touch-action: none;
             cursor: crosshair;
         }
 
         .btn-limpar {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 10px; right: 10px;
             background: var(--primary);
             color: #fff;
             border: none;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-family: inherit;
+            z-index: 5;
         }
 
-        .btn-limpar:hover {
-            background: var(--primary-hover);
-            transform: scale(1.05);
+        .btn-limpar:hover { background: var(--primary-hover); }
+
+        .btn-fullscreen {
+            position: absolute;
+            top: 10px; left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(10px);
         }
 
-        .btn-limpar:active {
-            transform: scale(0.95);
+        .btn-fullscreen:hover { background: var(--primary); }
+        .btn-fullscreen svg { width: 14px; height: 14px; fill: currentColor; }
+
+        /* ===== OVERLAY DE ASSINATURA (tela cheia real) ===== */
+        #overlayAssinatura {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: #f5f5f5;
+            z-index: 999999;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #overlayAssinatura.ativo { display: flex; }
+
+        /* Área do canvas — preenche o espaço disponível */
+        .overlay-canvas-area {
+            flex: 1;
+            position: relative;
+            background: #fff;
+            overflow: hidden;
+            /* Aqui é onde a mágica acontece: rotacionamos o conteúdo */
+        }
+
+        /* O "papel" — pode ser girado 90° se estiver em modo paisagem forçado */
+        .overlay-papel {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .overlay-papel canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        /* Modo paisagem forçado: o papel é rotacionado 90° */
+        .overlay-papel.paisagem-forcada {
+            /* O papel tem o tamanho da tela rotacionada */
+            width: 100vh;
+            height: 100vw;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+
+        /* Barra inferior de ações */
+        .overlay-barra {
+            background: #111;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+            flex-shrink: 0;
+        }
+
+        .btn-overlay {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-overlay:active { transform: scale(0.97); }
+
+        .btn-overlay.limpar {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 0 0 auto;
+            padding: 16px 22px;
+        }
+
+        .btn-overlay.rotacionar {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 0 0 auto;
+            padding: 16px 22px;
+        }
+
+        .btn-overlay.rotacionar.ativo {
+            background: var(--primary);
+            border-color: var(--primary-hover);
+        }
+
+        .btn-overlay.concluir {
+            background: linear-gradient(135deg, #1e7e34, #28a745);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-overlay svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Aviso inicial (aparece por 2s) */
+        .aviso-inicial {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+            animation: someDepois 3s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes someDepois {
+            0%, 70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
         }
 
         /* ===== AÇÕES ===== */
@@ -395,41 +467,22 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-family: inherit;
             letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
 
-        .btn-acao:active {
-            transform: scale(0.96);
-        }
-
-        .btn-acao:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-acao:active { transform: scale(0.96); }
+        .btn-acao:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .btn-entrada {
             background: linear-gradient(135deg, #1e7e34, #28a745);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
-        }
-
-        .btn-entrada:hover:not(:disabled) {
-            box-shadow: 0 6px 30px rgba(40, 167, 69, 0.5);
-            transform: translateY(-2px);
         }
 
         .btn-saida {
             background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: #fff;
-            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
-        }
-
-        .btn-saida:hover:not(:disabled) {
-            box-shadow: 0 6px 30px rgba(139, 0, 0, 0.5);
-            transform: translateY(-2px);
         }
 
         /* ===== MENSAGEM ===== */
@@ -441,12 +494,6 @@
             font-weight: 600;
             font-size: 14px;
             display: none;
-            animation: aparecer 0.4s ease-out;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(-10px); }
-            to   { opacity: 1; transform: translateY(0); }
         }
 
         .msg.sucesso {
@@ -465,7 +512,7 @@
 
         /* ===== FOOTER ===== */
         .footer {
-            background: #000000;
+            background: #000;
             color: #666;
             padding: 40px 0 24px;
             border-top: 2px solid var(--primary);
@@ -480,45 +527,15 @@
             text-align: center;
         }
 
-        .footer-info h3 {
-            color: #fff;
-            font-size: 20px;
-            letter-spacing: 3px;
-            margin-bottom: 4px;
-        }
+        .footer-info h3 { color: #fff; font-size: 20px; letter-spacing: 3px; }
+        .footer-info p { font-size: 13px; color: #888; }
 
-        .footer-info p {
-            font-size: 13px;
-            color: #888;
-        }
+        .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 13px; }
+        .footer-links a:hover { color: var(--primary-hover); }
 
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .footer-links a {
-            color: #888;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 13px;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary-hover);
-        }
-
-        .footer-copy {
-            text-align: center;
-            font-size: 11px;
-        }
-
-        .footer-copy p {
-            margin: 3px 0;
-            color: #555;
-        }
+        .footer-copy { font-size: 11px; }
+        .footer-copy p { margin: 3px 0; color: #555; }
 
         /* ===== RESPONSIVO ===== */
         @media (max-width: 768px) {
@@ -528,8 +545,7 @@
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 60px;
-                left: 0;
+                top: 60px; left: 0;
                 width: 100%;
                 background: rgba(0, 0, 0, 0.98);
                 padding: 20px 16px;
@@ -537,72 +553,32 @@
                 border-bottom: 2px solid var(--primary);
                 text-align: center;
                 z-index: 101;
-                backdrop-filter: blur(20px);
             }
 
             .nav-menu.open { display: flex; }
-
-            .nav-menu a {
-                padding: 12px;
-                width: 100%;
-                text-align: center;
-                font-size: 16px;
-            }
-
+            .nav-menu a { padding: 12px; width: 100%; font-size: 16px; }
             .nav-menu a::after { display: none; }
 
-            .ficha-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
             .ficha-header h2 { font-size: 22px; }
-
             .ficha-card { padding: 20px; }
-
             .logo-text .title { font-size: 16px; }
             .logo-icon { width: 34px; height: 34px; }
-
-            .footer-content { gap: 20px; }
         }
 
         @media (max-width: 480px) {
             .container { padding: 0 12px; }
-
-            .logo-text .title {
-                font-size: 14px;
-                letter-spacing: 1px;
-            }
-
+            .logo-text .title { font-size: 14px; letter-spacing: 1px; }
             .logo-text .sub { display: none; }
-
             .logo-icon { width: 30px; height: 30px; }
-
             .ficha-header h2 { font-size: 20px; }
-
             .ficha-card { padding: 16px; }
-
-            .acoes {
-                grid-template-columns: 1fr;
-            }
-
-            .btn-acao {
-                padding: 16px;
-                font-size: 14px;
-            }
-
-            .footer { padding: 30px 0 20px; }
-            .footer-info h3 { font-size: 16px; }
+            .acoes { grid-template-columns: 1fr; }
+            .btn-acao { padding: 16px; font-size: 14px; }
         }
 
         @media print {
-            .header { position: static; }
-            .nav-menu { display: none !important; }
-            .menu-toggle { display: none !important; }
-            .btn-acao { display: none !important; }
-            .btn-limpar { display: none !important; }
-            .toggle-assinatura { display: none !important; }
-            .footer { background: #f0f0f0 !important; color: #333 !important; }
+            .header, .nav-menu, .menu-toggle, .btn-acao,
+            .btn-limpar, .btn-fullscreen, .toggle-assinatura { display: none !important; }
         }
     </style>
 </head>
@@ -636,22 +612,18 @@
     <section class="ficha-section">
         <div class="container">
             <div class="ficha-header">
-                <div>
-                    <h2>Ficha de <span>Entrada e Saída</span></h2>
-                    <p>Registre sua entrada ou saída do Grêmio 1ª Cia</p>
-                </div>
+                <h2>Ficha de <span>Entrada e Saída</span></h2>
+                <p>Registre sua entrada ou saída do Grêmio 1ª Cia</p>
             </div>
 
             <div class="ficha-card">
                 <div class="card-title">Registrar Movimento</div>
 
-                <!-- NOME DE GUERRA -->
                 <div class="campo">
                     <label for="nomeGuerra">Nome de Guerra *</label>
                     <input type="text" id="nomeGuerra" placeholder="Ex: Silva" autocomplete="off" autocapitalize="words">
                 </div>
 
-                <!-- PELOTÃO -->
                 <div class="campo">
                     <label for="pelotao">Pelotão *</label>
                     <select id="pelotao">
@@ -665,7 +637,6 @@
                     </select>
                 </div>
 
-                <!-- ASSINATURA -->
                 <div class="campo">
                     <label>Assinatura *</label>
                     <div class="toggle-assinatura">
@@ -673,29 +644,27 @@
                         <button id="btnModoTexto" onclick="mudarModo('texto')">Digitar nome</button>
                     </div>
 
-                    <!-- Modo desenho -->
                     <div id="areaDedo" class="assinatura-box">
                         <canvas id="canvasAssinatura"></canvas>
+
+                        <button class="btn-fullscreen" onclick="abrirOverlay()">
+                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                            Tela cheia
+                        </button>
+
                         <button class="btn-limpar" onclick="limparAssinatura()">Limpar</button>
                     </div>
 
-                    <!-- Modo texto -->
                     <div id="areaTexto" style="display:none;">
                         <input type="text" id="assinaturaTexto" placeholder="Digite seu nome de guerra" autocapitalize="words" style="width:100%; padding:14px 16px; font-size:15px; border-radius:10px; border:1px solid var(--border-color); background:rgba(0,0,0,0.4); color:#fff; font-family:inherit;">
                     </div>
                 </div>
 
-                <!-- BOTÕES -->
                 <div class="acoes">
-                    <button class="btn-acao btn-entrada" id="btnEntrada" onclick="registrar('entrada')">
-                        REGISTRAR ENTRADA
-                    </button>
-                    <button class="btn-acao btn-saida" id="btnSaida" onclick="registrar('saida')">
-                        REGISTRAR SAÍDA
-                    </button>
+                    <button class="btn-acao btn-entrada" id="btnEntrada" onclick="registrar('entrada')">REGISTRAR ENTRADA</button>
+                    <button class="btn-acao btn-saida" id="btnSaida" onclick="registrar('saida')">REGISTRAR SAÍDA</button>
                 </div>
 
-                <!-- MENSAGEM -->
                 <div id="msg" class="msg"></div>
             </div>
         </div>
@@ -719,122 +688,336 @@
                 <div class="footer-copy">
                     <p>&copy; 2026 Grêmio 1ª Cia</p>
                     <p>Todos os direitos reservados</p>
-                    <p style="margin-top: 4px;">Desenvolvido para a 1ª Companhia</p>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- ===== OVERLAY DE ASSINATURA TELA CHEIA ===== -->
+    <div id="overlayAssinatura">
+        <div class="overlay-canvas-area" id="overlayCanvasArea">
+            <div class="aviso-inicial" id="avisoInicial">
+                📱 Deite o telefone ou toque em ⟳ para assinar melhor
+            </div>
+            <div class="overlay-papel" id="overlayPapel">
+                <canvas id="canvasFullscreen"></canvas>
+            </div>
+        </div>
+
+        <div class="overlay-barra">
+            <button class="btn-overlay rotacionar" id="btnRotacionar" onclick="toggleRotacao()" title="Girar tela">
+                <svg viewBox="0 0 24 24"><path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/></svg>
+                Girar
+            </button>
+
+            <button class="btn-overlay limpar" onclick="limparAssinaturaOverlay()">
+                <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                Limpar
+            </button>
+
+            <button class="btn-overlay concluir" onclick="fecharOverlay()">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Concluir
+            </button>
+        </div>
+    </div>
+
     <script>
-        // ===== HEADER SCROLL =====
-        document.addEventListener('DOMContentLoaded', function() {
-            const header = document.getElementById('mainHeader');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) header.classList.add('scrolled');
-                else header.classList.remove('scrolled');
-            });
-        });
-
-        // ===== MENU MOBILE =====
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('menuToggle');
-            const navMenu = document.getElementById('navMenu');
-
-            if (menuToggle) {
-                menuToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('open');
-                });
-            }
-
-            navMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) navMenu.classList.remove('open');
-                });
-            });
-
-            document.addEventListener('click', function(event) {
-                const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
-                if (!isClickInside && window.innerWidth <= 768) navMenu.classList.remove('open');
-            });
-        });
-
-        // ===== CANVAS DE ASSINATURA =====
+        // ============================================================
+        // CANVAS PRINCIPAL (o pequeno, dentro do card)
+        // ============================================================
         const canvas = document.getElementById('canvasAssinatura');
         const ctx = canvas.getContext('2d');
-        let desenhando = false;
         let assinaturaVazia = true;
+        let desenhando = false;
 
-        function ajustarCanvas() {
+        function configurarCtx(contexto) {
+            contexto.strokeStyle = '#000000';
+            contexto.lineWidth = 3;
+            contexto.lineCap = 'round';
+            contexto.lineJoin = 'round';
+        }
+
+        function ajustarCanvasPequeno() {
             const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
+            if (rect.width === 0) return;
+
+            const imagemSalva = assinaturaVazia ? null : canvas.toDataURL();
+
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-        }
-        window.addEventListener('load', ajustarCanvas);
-        window.addEventListener('resize', ajustarCanvas);
+            configurarCtx(ctx);
 
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
+            if (imagemSalva) {
+                const img = new Image();
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                };
+                img.src = imagemSalva;
+            }
+        }
+
+        window.addEventListener('load', function() {
+            setTimeout(ajustarCanvasPequeno, 100);
+        });
+        window.addEventListener('resize', function() {
+            setTimeout(ajustarCanvasPequeno, 200);
+        });
+
+        // Eventos do canvas pequeno
+        function getPos(e, cv) {
+            const rect = cv.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
+            // Coordenadas em CSS pixels (já que aplicamos setTransform com DPR)
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
         }
 
-        function iniciar(e) {
-            e.preventDefault();
-            desenhando = true;
-            assinaturaVazia = false;
-            const p = getPos(e);
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
+        function setupCanvasEvents(cv, contexto, marcarVazio) {
+            let desenhando = false;
+
+            function iniciar(e) {
+                e.preventDefault();
+                desenhando = true;
+                marcarVazio(false);
+                const p = getPos(e, cv);
+                contexto.beginPath();
+                contexto.moveTo(p.x, p.y);
+            }
+
+            function mover(e) {
+                if (!desenhando) return;
+                e.preventDefault();
+                const p = getPos(e, cv);
+                contexto.lineTo(p.x, p.y);
+                contexto.stroke();
+            }
+
+            function parar(e) {
+                desenhando = false;
+            }
+
+            cv.addEventListener('mousedown', iniciar);
+            cv.addEventListener('mousemove', mover);
+            cv.addEventListener('mouseup', parar);
+            cv.addEventListener('mouseleave', parar);
+
+            cv.addEventListener('touchstart', iniciar, { passive: false });
+            cv.addEventListener('touchmove', mover, { passive: false });
+            cv.addEventListener('touchend', parar);
+            cv.addEventListener('touchcancel', parar);
         }
 
-        function desenhar(e) {
-            if (!desenhando) return;
-            e.preventDefault();
-            const p = getPos(e);
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
-        }
-
-        function parar() { desenhando = false; }
-
-        canvas.addEventListener('mousedown', iniciar);
-        canvas.addEventListener('mousemove', desenhar);
-        canvas.addEventListener('mouseup', parar);
-        canvas.addEventListener('mouseleave', parar);
-        canvas.addEventListener('touchstart', iniciar, { passive: false });
-        canvas.addEventListener('touchmove', desenhar, { passive: false });
-        canvas.addEventListener('touchend', parar);
+        setupCanvasEvents(canvas, ctx, function(vazio) { assinaturaVazia = vazio; });
 
         function limparAssinatura() {
+            const rect = canvas.getBoundingClientRect();
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0, 0, rect.width, rect.height);
             assinaturaVazia = true;
         }
 
-        // ===== MODO ASSINATURA =====
+        // ============================================================
+        // OVERLAY DE TELA CHEIA
+        // ============================================================
+        const overlay = document.getElementById('overlayAssinatura');
+        const canvasFull = document.getElementById('canvasFullscreen');
+        const ctxFull = canvasFull.getContext('2d');
+        const overlayPapel = document.getElementById('overlayPapel');
+        const overlayCanvasArea = document.getElementById('overlayCanvasArea');
+
+        let overlayAberto = false;
+        let rotacaoAtiva = false; // se está em modo paisagem forçado
+        let assinaturaVaziaFull = true;
+
+        function ajustarCanvasFull() {
+            // O canvas full ocupa sempre o papel (que pode estar rotacionado)
+            const papelRect = overlayPapel.getBoundingClientRect();
+
+            let largura, altura;
+            if (rotacaoAtiva) {
+                // Quando rotacionado, o papel tem largura = altura da tela e vice-versa
+                largura = papelRect.width;
+                altura = papelRect.height;
+            } else {
+                largura = papelRect.width;
+                altura = papelRect.height;
+            }
+
+            if (largura === 0 || altura === 0) return;
+
+            // Salva desenho
+            const imagemSalva = assinaturaVaziaFull ? null : canvasFull.toDataURL();
+
+            // Configura tamanho real (com DPR)
+            canvasFull.width = largura * window.devicePixelRatio;
+            canvasFull.height = altura * window.devicePixelRatio;
+            canvasFull.style.width = largura + 'px';
+            canvasFull.style.height = altura + 'px';
+
+            ctxFull.setTransform(1, 0, 0, 1, 0, 0);
+            ctxFull.scale(window.devicePixelRatio, window.devicePixelRatio);
+            ctxFull.fillStyle = '#ffffff';
+            ctxFull.fillRect(0, 0, largura, altura);
+            configurarCtx(ctxFull);
+
+            if (imagemSalva) {
+                const img = new Image();
+                img.onload = function() {
+                    ctxFull.drawImage(img, 0, 0, largura, altura);
+                };
+                img.src = imagemSalva;
+            }
+        }
+
+        setupCanvasEvents(canvasFull, ctxFull, function(vazio) {
+            assinaturaVaziaFull = vazio;
+        });
+
+        function limparAssinaturaOverlay() {
+            const papelRect = overlayPapel.getBoundingClientRect();
+            ctxFull.fillStyle = '#ffffff';
+            ctxFull.fillRect(0, 0, papelRect.width, papelRect.height);
+            assinaturaVaziaFull = true;
+        }
+
+        // Abrir overlay
+        function abrirOverlay() {
+            overlayAberto = true;
+            rotacaoAtiva = false;
+            overlayPapel.classList.remove('paisagem-forcada');
+            document.getElementById('btnRotacionar').classList.remove('ativo');
+
+            // Copia o desenho atual do canvas pequeno pro grande
+            assinaturaVaziaFull = assinaturaVazia;
+
+            overlay.classList.add('ativo');
+            document.body.classList.add('travado');
+
+            // Espera o layout e ajusta
+            setTimeout(function() {
+                ajustarCanvasFull();
+
+                // Copia o desenho do pequeno pro grande
+                if (!assinaturaVazia) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const papelRect = overlayPapel.getBoundingClientRect();
+                        ctxFull.drawImage(img, 0, 0, papelRect.width, papelRect.height);
+                    };
+                    img.src = canvas.toDataURL();
+                }
+            }, 100);
+        }
+
+        // Fechar overlay
+        function fecharOverlay() {
+            overlayAberto = false;
+
+            // Copia o desenho do grande pro pequeno
+            if (!assinaturaVaziaFull) {
+                const dataGrande = canvasFull.toDataURL();
+                const img = new Image();
+                img.onload = function() {
+                    const rect = canvas.getBoundingClientRect();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, rect.width, rect.height);
+                    ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                    assinaturaVazia = false;
+                };
+                img.src = dataGrande;
+            }
+
+            overlay.classList.remove('ativo');
+            document.body.classList.remove('travado');
+            overlayPapel.classList.remove('paisagem-forcada');
+            rotacaoAtiva = false;
+        }
+
+        // Rotacionar (paisagem forçada)
+        function toggleRotacao() {
+            rotacaoAtiva = !rotacaoAtiva;
+            const btn = document.getElementById('btnRotacionar');
+
+            // Salva desenho antes
+            const imagemSalva = assinaturaVaziaFull ? null : canvasFull.toDataURL();
+
+            if (rotacaoAtiva) {
+                overlayPapel.classList.add('paisagem-forcada');
+                btn.classList.add('ativo');
+            } else {
+                overlayPapel.classList.remove('paisagem-forcada');
+                btn.classList.remove('ativo');
+            }
+
+            // Reajusta após transição CSS
+            setTimeout(function() {
+                ajustarCanvasFull();
+                if (imagemSalva) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const papelRect = overlayPapel.getBoundingClientRect();
+                        ctxFull.drawImage(img, 0, 0, papelRect.width, papelRect.height);
+                    };
+                    img.src = imagemSalva;
+                }
+            }, 350);
+        }
+
+        // Fecha com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && overlayAberto) {
+                fecharOverlay();
+            }
+        });
+
+        // Reajusta em mudança de orientação real
+        window.addEventListener('orientationchange', function() {
+            if (overlayAberto) {
+                setTimeout(ajustarCanvasFull, 400);
+            }
+        });
+
+        // ============================================================
+        // MODO DE ASSINATURA
+        // ============================================================
         let modoAtual = 'dedo';
         function mudarModo(modo) {
             modoAtual = modo;
-            document.getElementById('areaDedo').style.display  = modo === 'dedo'  ? 'block' : 'none';
+            document.getElementById('areaDedo').style.display = modo === 'dedo' ? 'block' : 'none';
             document.getElementById('areaTexto').style.display = modo === 'texto' ? 'block' : 'none';
-            document.getElementById('btnModoDedo').classList.toggle('ativo',  modo === 'dedo');
+            document.getElementById('btnModoDedo').classList.toggle('ativo', modo === 'dedo');
             document.getElementById('btnModoTexto').classList.toggle('ativo', modo === 'texto');
+
+            if (modo === 'dedo') {
+                setTimeout(ajustarCanvasPequeno, 150);
+            }
         }
 
-        // ===== REGISTRAR =====
+        // ============================================================
+        // REGISTRAR
+        // ============================================================
         async function registrar(tipo) {
+            if (overlayAberto) {
+                fecharOverlay();
+                await new Promise(r => setTimeout(r, 300));
+            }
+
             const nomeGuerra = document.getElementById('nomeGuerra').value.trim();
-            const pelotao    = document.getElementById('pelotao').value;
+            const pelotao = document.getElementById('pelotao').value;
 
             if (!nomeGuerra) return mostrarMsg('Preencha o Nome de Guerra', 'erro');
-            if (!pelotao)    return mostrarMsg('Selecione o Pelotão', 'erro');
+            if (!pelotao) return mostrarMsg('Selecione o Pelotão', 'erro');
 
             let assinatura = null;
             if (modoAtual === 'dedo') {
@@ -847,9 +1030,9 @@
             }
 
             const btnEntrada = document.getElementById('btnEntrada');
-            const btnSaida   = document.getElementById('btnSaida');
+            const btnSaida = document.getElementById('btnSaida');
             btnEntrada.disabled = true;
-            btnSaida.disabled   = true;
+            btnSaida.disabled = true;
 
             try {
                 const resp = await fetch('/api/ficha/registrar', {
@@ -884,7 +1067,7 @@
                 mostrarMsg('Erro de conexão. Verifique a internet.', 'erro');
             } finally {
                 btnEntrada.disabled = false;
-                btnSaida.disabled   = false;
+                btnSaida.disabled = false;
             }
         }
 
@@ -894,10 +1077,32 @@
             el.className = 'msg ' + tipo;
         }
 
-        // ===== LOGOUT =====
+        // ============================================================
+        // HEADER E MENU
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+            }
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) navMenu.classList.remove('open');
+                });
+            });
+        });
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
         function logout() {
             fetch('/api/logout', { method: 'POST' })
-                .then(response => response.json())
                 .then(() => {
                     localStorage.removeItem('usuarioLogado');
                     window.location.href = '/';
