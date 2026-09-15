@@ -4,16 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Lista de Membros - Grêmio 1ª Cia</title>
-    
+
     <style>
-        /* ======================================== */
-        /* ===== RESET E CONFIGURAÇÕES ===== */
-        /* ======================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #8b0000;
@@ -22,8 +15,6 @@
             --primary-glow: rgba(139, 0, 0, 0.4);
             --bg-dark: #0a0a0a;
             --bg-card: rgba(20, 20, 20, 0.85);
-            --text-white: #ffffff;
-            --text-gray: #aaaaaa;
             --text-light: #cccccc;
             --border-color: rgba(255, 255, 255, 0.06);
             --radius: 14px;
@@ -39,23 +30,16 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
-        /* ===== HEADER PREMIUM ===== */
+        /* ===== HEADER ===== */
         .header {
             background: rgba(0, 0, 0, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(139, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            width: 100%;
-            transition: all 0.4s ease;
+            position: sticky; top: 0; z-index: 100;
+            width: 100%; transition: all 0.4s ease;
         }
 
         .header.scrolled {
@@ -65,39 +49,24 @@
         }
 
         .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
+            display: flex; align-items: center;
+            justify-content: space-between; padding: 12px 0;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-            text-decoration: none;
+            display: flex; align-items: center; gap: 12px;
+            flex-shrink: 0; text-decoration: none;
         }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            position: relative;
-        }
-
+        .logo-icon { width: 40px; height: 40px; position: relative; }
         .logo-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            width: 100%; height: 100%; object-fit: contain;
             filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
         }
 
         .logo-icon .glow-ring {
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            width: calc(100% + 8px);
-            height: calc(100% + 8px);
+            position: absolute; top: -4px; left: -4px;
+            width: calc(100% + 8px); height: calc(100% + 8px);
             border: 1px solid rgba(139, 0, 0, 0.2);
             border-radius: 50%;
             animation: ringPulse 2s ease-in-out infinite;
@@ -108,64 +77,38 @@
             50% { transform: scale(1.15); opacity: 0; }
         }
 
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-
+        .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
         .logo-text .title {
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 3px;
-            font-weight: 700;
+            font-size: 18px; color: #fff;
+            letter-spacing: 3px; font-weight: 700;
         }
-
         .logo-text .sub {
-            font-size: 9px;
-            color: #888;
-            letter-spacing: 2px;
-            font-weight: 400;
+            font-size: 9px; color: #888;
+            letter-spacing: 2px; font-weight: 400;
             text-transform: uppercase;
         }
 
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
+        .nav-menu { display: flex; align-items: center; gap: 24px; }
 
         .nav-menu a {
-            color: #aaa;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
+            color: #aaa; text-decoration: none;
+            font-weight: 500; font-size: 14px;
             transition: all 0.3s ease;
-            padding: 6px 0;
-            position: relative;
+            padding: 6px 0; position: relative;
         }
 
         .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
+            content: ''; position: absolute;
+            bottom: -2px; left: 0; width: 0; height: 2px;
             background: linear-gradient(90deg, var(--primary), var(--primary-hover));
             transition: width 0.3s ease;
             box-shadow: 0 0 15px var(--primary-glow);
         }
 
         .nav-menu a:hover::after,
-        .nav-menu a.active::after {
-            width: 100%;
-        }
-
+        .nav-menu a.active::after { width: 100%; }
         .nav-menu a:hover,
-        .nav-menu a.active {
-            color: #fff;
-        }
+        .nav-menu a.active { color: #fff; }
 
         .btn-logout {
             background: transparent;
@@ -188,13 +131,9 @@
             display: none;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            color: #fff;
-            font-size: 16px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
+            padding: 8px 16px; border-radius: 10px;
+            cursor: pointer; color: #fff; font-size: 16px;
+            transition: all 0.3s; backdrop-filter: blur(10px);
         }
 
         .menu-toggle:hover {
@@ -214,18 +153,13 @@
         }
 
         .lista-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 15px;
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 25px;
+            flex-wrap: wrap; gap: 15px;
         }
 
         .lista-header h2 {
-            font-size: 26px;
-            color: #fff;
-            font-weight: 700;
+            font-size: 26px; color: #fff; font-weight: 700;
         }
 
         .lista-header h2 span {
@@ -235,21 +169,15 @@
             background-clip: text;
         }
 
-        .lista-header p {
-            color: #888;
-            font-size: 14px;
-        }
+        .lista-header p { color: #888; font-size: 14px; }
 
         .lista-controls {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
+            display: flex; gap: 12px;
+            flex-wrap: wrap; align-items: center;
         }
 
         .search-box {
-            display: flex;
-            align-items: center;
+            display: flex; align-items: center;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 10px;
@@ -264,34 +192,22 @@
         }
 
         .search-box input {
-            background: none;
-            border: none;
-            padding: 10px 8px;
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-            width: 200px;
+            background: none; border: none;
+            padding: 10px 8px; color: #fff;
+            font-size: 14px; outline: none; width: 200px;
         }
 
-        .search-box input::placeholder {
-            color: #555;
-        }
-
-        .search-box .search-icon {
-            color: #555;
-            font-size: 16px;
-        }
+        .search-box input::placeholder { color: #555; }
+        .search-box .search-icon { color: #555; font-size: 16px; }
 
         .btn {
             display: inline-block;
             padding: 10px 22px;
             text-decoration: none;
             border-radius: 10px;
-            font-weight: 600;
-            font-size: 13px;
+            font-weight: 600; font-size: 13px;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            border: none;
+            cursor: pointer; border: none;
             text-align: center;
             -webkit-tap-highlight-color: transparent;
         }
@@ -307,9 +223,7 @@
             box-shadow: 0 6px 25px rgba(139, 0, 0, 0.5);
         }
 
-        .btn-primary:active {
-            transform: scale(0.96);
-        }
+        .btn-primary:active { transform: scale(0.96); }
 
         .btn-success {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
@@ -322,16 +236,13 @@
             box-shadow: 0 6px 25px rgba(46, 204, 113, 0.5);
         }
 
-        .btn-success:active {
-            transform: scale(0.96);
-        }
+        .btn-success:active { transform: scale(0.96); }
 
         .btn-outline {
             background: transparent;
             color: var(--primary-hover);
             border: 2px solid var(--primary-hover);
-            padding: 8px 18px;
-            font-size: 13px;
+            padding: 8px 18px; font-size: 13px;
             border-radius: 10px;
         }
 
@@ -357,14 +268,10 @@
             box-shadow: var(--shadow);
         }
 
-        .table-wrapper {
-            overflow-x: auto;
-            padding: 0;
-        }
+        .table-wrapper { overflow-x: auto; padding: 0; }
 
         table {
-            width: 100%;
-            border-collapse: collapse;
+            width: 100%; border-collapse: collapse;
             font-size: 14px;
         }
 
@@ -377,8 +284,7 @@
             padding: 14px 16px;
             text-align: left;
             color: #888;
-            font-weight: 600;
-            font-size: 12px;
+            font-weight: 600; font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
@@ -389,13 +295,8 @@
             transition: background 0.2s ease;
         }
 
-        table tbody tr:hover {
-            background: rgba(255,255,255,0.03);
-        }
-
-        table tbody tr:last-child {
-            border-bottom: none;
-        }
+        table tbody tr:hover { background: rgba(255,255,255,0.03); }
+        table tbody tr:last-child { border-bottom: none; }
 
         table tbody td {
             padding: 12px 16px;
@@ -404,73 +305,48 @@
         }
 
         table tbody td .avatar {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            font-weight: 600;
-            font-size: 14px;
+            color: #fff; font-weight: 600; font-size: 14px;
             box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
         }
 
         table tbody td .user-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            display: flex; align-items: center; gap: 12px;
         }
 
         table tbody td .user-cell .name {
-            font-weight: 500;
-            color: #fff;
-            font-size: 15px;
+            font-weight: 500; color: #fff; font-size: 15px;
         }
 
         table tbody td .user-cell .info {
-            font-size: 12px;
-            color: #666;
+            font-size: 12px; color: #666;
         }
 
-        .actions {
-            display: flex;
-            gap: 6px;
-        }
+        .actions { display: flex; gap: 6px; }
 
         .actions .btn-icon {
-            background: transparent;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: all 0.3s;
-            font-size: 14px;
+            background: transparent; border: none;
+            color: #888; cursor: pointer;
+            padding: 4px 8px; border-radius: 6px;
+            transition: all 0.3s; font-size: 14px;
         }
 
         .actions .btn-icon:hover {
-            background: rgba(255,255,255,0.05);
-            color: #fff;
+            background: rgba(255,255,255,0.05); color: #fff;
         }
 
-        .actions .btn-icon.edit:hover {
-            color: #3498db;
-        }
-
-        .actions .btn-icon.delete:hover {
-            color: #e74c3c;
-        }
+        .actions .btn-icon.edit:hover { color: #3498db; }
+        .actions .btn-icon.delete:hover { color: #e74c3c; }
 
         /* ===== MODAL ===== */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            display: none; position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85);
             backdrop-filter: blur(10px);
             z-index: 1000;
@@ -479,19 +355,15 @@
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
             padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 500px; width: 100%;
+            max-height: 90vh; overflow-y: auto;
             animation: modalFade 0.3s ease;
             backdrop-filter: blur(20px);
         }
@@ -502,43 +374,30 @@
         }
 
         .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
         }
 
         .modal-header h3 {
-            color: #fff;
-            font-size: 20px;
-            font-weight: 700;
+            color: #fff; font-size: 20px; font-weight: 700;
         }
 
         .modal-close {
-            background: none;
-            border: none;
-            color: #888;
-            font-size: 24px;
+            background: none; border: none;
+            color: #888; font-size: 24px;
             cursor: pointer;
-            transition: color 0.3s;
-            padding: 0 5px;
+            transition: color 0.3s; padding: 0 5px;
         }
 
-        .modal-close:hover {
-            color: #e74c3c;
-        }
+        .modal-close:hover { color: #e74c3c; }
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+        .form-group { margin-bottom: 18px; }
 
         .form-group label {
-            display: block;
-            color: #ccc;
-            font-size: 13px;
-            font-weight: 500;
+            display: block; color: #ccc;
+            font-size: 13px; font-weight: 500;
             margin-bottom: 5px;
         }
 
@@ -549,10 +408,8 @@
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s;
-            outline: none;
+            color: #fff; font-size: 14px;
+            transition: all 0.3s; outline: none;
         }
 
         .form-group input:focus,
@@ -561,61 +418,37 @@
             box-shadow: 0 0 20px rgba(139, 0, 0, 0.1);
         }
 
-        .form-group input::placeholder {
-            color: #555;
-        }
-
-        .form-group select option {
-            background: #1a1a1a;
-            color: #fff;
-        }
+        .form-group input::placeholder { color: #555; }
+        .form-group select option { background: #1a1a1a; color: #fff; }
 
         .form-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 20px;
+            display: flex; gap: 12px;
+            justify-content: flex-end; margin-top: 20px;
         }
 
-        .form-actions .btn {
-            min-width: 100px;
-        }
+        .form-actions .btn { min-width: 100px; }
 
         /* ===== PAGINAÇÃO ===== */
         .pagination {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 15px 20px;
             border-top: 1px solid var(--border-color);
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-wrap: wrap; gap: 10px;
         }
 
-        .pagination .info {
-            color: #888;
-            font-size: 13px;
-        }
-
-        .pagination .pages {
-            display: flex;
-            gap: 5px;
-        }
+        .pagination .info { color: #888; font-size: 13px; }
+        .pagination .pages { display: flex; gap: 5px; }
 
         .pagination .pages button {
             background: transparent;
             border: 1px solid var(--border-color);
-            color: #888;
-            padding: 5px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 13px;
+            color: #888; padding: 5px 12px;
+            border-radius: 6px; cursor: pointer;
+            transition: all 0.3s; font-size: 13px;
         }
 
         .pagination .pages button:hover {
-            border-color: var(--primary);
-            color: #fff;
+            border-color: var(--primary); color: #fff;
         }
 
         .pagination .pages button.active {
@@ -626,73 +459,49 @@
 
         /* ===== FOOTER ===== */
         .footer {
-            background: #000000;
-            color: #666;
+            background: #000000; color: #666;
             padding: 40px 0 24px;
             border-top: 2px solid var(--primary);
             margin-top: 30px;
         }
 
         .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+            display: flex; flex-direction: column;
+            align-items: center; gap: 20px;
             text-align: center;
         }
 
         .footer-info h3 {
-            color: #fff;
-            font-size: 20px;
-            letter-spacing: 3px;
-            margin-bottom: 4px;
+            color: #fff; font-size: 20px;
+            letter-spacing: 3px; margin-bottom: 4px;
         }
 
-        .footer-info p {
-            font-size: 13px;
-            color: #888;
-        }
+        .footer-info p { font-size: 13px; color: #888; }
 
         .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: flex; gap: 20px;
+            flex-wrap: wrap; justify-content: center;
         }
 
         .footer-links a {
-            color: #888;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 13px;
+            color: #888; text-decoration: none;
+            transition: color 0.3s; font-size: 13px;
         }
 
-        .footer-links a:hover {
-            color: var(--primary-hover);
-        }
+        .footer-links a:hover { color: var(--primary-hover); }
 
-        .footer-copy {
-            text-align: center;
-            font-size: 11px;
-        }
-
-        .footer-copy p {
-            margin: 3px 0;
-            color: #555;
-        }
+        .footer-copy { text-align: center; font-size: 11px; }
+        .footer-copy p { margin: 3px 0; color: #555; }
 
         /* ===== RESPONSIVO ===== */
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
+            .menu-toggle { display: block; }
 
             .nav-menu {
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 60px;
-                left: 0;
+                top: 60px; left: 0;
                 width: 100%;
                 background: rgba(0, 0, 0, 0.98);
                 padding: 20px 16px;
@@ -703,9 +512,7 @@
                 backdrop-filter: blur(20px);
             }
 
-            .nav-menu.open {
-                display: flex;
-            }
+            .nav-menu.open { display: flex; }
 
             .nav-menu a {
                 padding: 12px;
@@ -714,59 +521,36 @@
                 font-size: 16px;
             }
 
-            .nav-menu a::after {
-                display: none;
-            }
+            .nav-menu a::after { display: none; }
 
             .lista-header {
                 flex-direction: column;
                 text-align: center;
             }
 
-            .lista-header h2 {
-                font-size: 22px;
-            }
+            .lista-header h2 { font-size: 22px; }
 
             .lista-controls {
                 flex-direction: column;
                 width: 100%;
             }
 
-            .lista-controls .btn {
-                width: 100%;
-            }
+            .lista-controls .btn { width: 100%; }
+            .search-box { width: 100%; }
+            .search-box input { width: 100%; }
 
-            .search-box {
-                width: 100%;
-            }
-
-            .search-box input {
-                width: 100%;
-            }
-
-            table {
-                font-size: 13px;
-            }
-
+            table { font-size: 13px; }
             table thead th,
-            table tbody td {
-                padding: 10px 12px;
-            }
+            table tbody td { padding: 10px 12px; }
 
             .pagination {
                 flex-direction: column;
                 text-align: center;
             }
 
-            .modal {
-                padding: 20px;
-                margin: 10px;
-            }
+            .modal { padding: 20px; margin: 10px; }
 
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-            }
+            .footer-content { gap: 20px; }
 
             .footer-links {
                 flex-direction: row;
@@ -775,38 +559,22 @@
                 gap: 15px;
             }
 
-            .logo-text .title {
-                font-size: 16px;
-            }
-
-            .logo-icon {
-                width: 34px;
-                height: 34px;
-            }
+            .logo-text .title { font-size: 16px; }
+            .logo-icon { width: 34px; height: 34px; }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 0 12px;
-            }
+            .container { padding: 0 12px; }
 
             .logo-text .title {
                 font-size: 14px;
                 letter-spacing: 1px;
             }
 
-            .logo-text .sub {
-                display: none;
-            }
+            .logo-text .sub { display: none; }
+            .logo-icon { width: 30px; height: 30px; }
 
-            .logo-icon {
-                width: 30px;
-                height: 30px;
-            }
-
-            .lista-header h2 {
-                font-size: 18px;
-            }
+            .lista-header h2 { font-size: 18px; }
 
             table thead th,
             table tbody td {
@@ -815,40 +583,21 @@
             }
 
             table tbody td .avatar {
-                width: 30px;
-                height: 30px;
-                font-size: 12px;
+                width: 30px; height: 30px; font-size: 12px;
             }
 
             .actions .btn-icon {
-                padding: 2px 6px;
-                font-size: 12px;
+                padding: 2px 6px; font-size: 12px;
             }
 
-            .modal {
-                padding: 15px;
-            }
+            .modal { padding: 15px; }
+            .modal-header h3 { font-size: 18px; }
 
-            .modal-header h3 {
-                font-size: 18px;
-            }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; min-width: auto; }
 
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .form-actions .btn {
-                width: 100%;
-                min-width: auto;
-            }
-
-            .footer {
-                padding: 30px 0 20px;
-            }
-
-            .footer-info h3 {
-                font-size: 16px;
-            }
+            .footer { padding: 30px 0 20px; }
+            .footer-info h3 { font-size: 16px; }
         }
 
         @media (max-width: 360px) {
@@ -862,30 +611,31 @@
 </head>
 <body>
 
-   <!-- HEADER PREMIUM -->
-<header class="header" id="mainHeader">
-    <div class="container header-content">
-        <a href="/" class="logo">
-            <div class="logo-icon">
-                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                <div class="glow-ring"></div>
-            </div>
-            <div class="logo-text">
-                <span class="title">GRÊMIO 1ª CIA</span>
-                <span class="sub">Sistema de Gestão</span>
-            </div>
-        </a>
-        <nav class="nav-menu" id="navMenu">
-            <a href="/">Início</a>
-            <a href="/lista">Membros</a>
-            <a href="/avaliacao">Sugestões</a>
-            <a href="/ficha">Ficha</a>
-            
-        
-        </nav>
-        <button class="menu-toggle" id="menuToggle">☰</button>
-    </div>
-</header>
+    <!-- HEADER PREMIUM -->
+    <header class="header" id="mainHeader">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/">Início</a>
+                <a href="/lista" class="active">Membros</a>
+                <a href="/avaliacao">Sugestões</a>
+                <a href="/ficha">Ficha</a>
+                <a href="/ficha_admin">Painel da Ficha</a>
+                <a href="/dashboard">Dashboard</a>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </header>
 
     <!-- LISTA -->
     <section class="lista-section">
@@ -905,7 +655,6 @@
                 </div>
             </div>
 
-            <!-- Tabela -->
             <div class="table-container">
                 <div class="table-wrapper">
                     <table>
@@ -960,6 +709,8 @@
                         <option value="1° Pelotão">1° Pelotão</option>
                         <option value="2° Pelotão">2° Pelotão</option>
                         <option value="3° Pelotão">3° Pelotão</option>
+                        <option value="Furriel">Furriel</option>
+                        <option value="Sargentia">Sargentia</option>
                         <option value="ENC-MAT">ENC-MAT</option>
                     </select>
                 </div>
@@ -998,6 +749,8 @@
                         <option value="1° Pelotão">1° Pelotão</option>
                         <option value="2° Pelotão">2° Pelotão</option>
                         <option value="3° Pelotão">3° Pelotão</option>
+                        <option value="Furriel">Furriel</option>
+                        <option value="Sargentia">Sargentia</option>
                         <option value="ENC-MAT">ENC-MAT</option>
                     </select>
                 </div>
@@ -1025,6 +778,8 @@
                     <a href="/">Início</a>
                     <a href="/lista">Membros</a>
                     <a href="/avaliacao">Sugestões</a>
+                    <a href="/ficha">Ficha</a>
+                    <a href="/ficha_admin">Painel da Ficha</a>
                     <a href="/dashboard">Dashboard</a>
                 </div>
                 <div class="footer-copy">
@@ -1044,24 +799,21 @@
         const itensPorPagina = 10;
         let usuarioLogado = null;
 
-        // ===== HEADER SCROLL EFFECT =====
+        // ===== HEADER SCROLL =====
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.getElementById('mainHeader');
             window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
             });
         });
 
-        // ===== FUNÇÕES DE USUÁRIO =====
+        // ===== VERIFICA SE É ADM OU DEV =====
         function isAdmOuDev() {
             return usuarioLogado && (usuarioLogado.role === 'adm' || usuarioLogado.role === 'dev');
         }
 
-        // ===== CARREGAR MEMBROS DA API =====
+        // ===== CARREGAR MEMBROS =====
         function carregarMembros() {
             const tbody = document.getElementById('tabelaBody');
             tbody.innerHTML = `
@@ -1171,7 +923,7 @@
             }
         }
 
-        // ===== BAIXAR LISTA COMPLETA COMO PDF (VIA API) =====
+        // ===== BAIXAR PDF =====
         function baixarLista() {
             if (!isAdmOuDev()) {
                 alert('Você precisa estar logado como ADM ou DEV para baixar a lista.');
@@ -1193,9 +945,7 @@
                     return response.blob();
                 })
                 .then(blob => {
-                    if (blob.size === 0) {
-                        throw new Error('PDF vazio gerado');
-                    }
+                    if (blob.size === 0) throw new Error('PDF vazio gerado');
                     
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(blob);
@@ -1219,7 +969,7 @@
                 });
         }
 
-        // ===== ADICIONAR MEMBRO =====
+        // ===== ADICIONAR =====
         function abrirModalAdicionar() {
             if (!isAdmOuDev()) {
                 alert('Você precisa estar logado como ADM ou DEV para adicionar membros.');
@@ -1279,12 +1029,12 @@
                 alert('Erro de conexão com o servidor.');
             })
             .finally(() => {
-                btn.textContent = 'Adicionar Membro';
+                btn.textContent = 'Adicionar';
                 btn.disabled = false;
             });
         }
 
-        // ===== EDITAR MEMBRO =====
+        // ===== EDITAR =====
         function abrirModalEditar(id) {
             if (!isAdmOuDev()) {
                 alert('Você precisa estar logado como ADM ou DEV para editar membros.');
@@ -1353,12 +1103,12 @@
                 alert('Erro de conexão com o servidor.');
             })
             .finally(() => {
-                btn.textContent = 'Salvar Alterações';
+                btn.textContent = 'Salvar';
                 btn.disabled = false;
             });
         }
 
-        // ===== DELETAR MEMBRO =====
+        // ===== DELETAR =====
         function deletarMembro(id) {
             if (!isAdmOuDev()) {
                 alert('Você precisa estar logado como ADM ou DEV para excluir membros.');
@@ -1368,26 +1118,22 @@
             const membro = membros.find(m => m.id === id);
             if (!membro) return;
 
-            if (!confirm(`Tem certeza que deseja excluir "${membro.nome}"?`)) {
-                return;
-            }
+            if (!confirm(`Tem certeza que deseja excluir "${membro.nome}"?`)) return;
 
-            fetch(`/api/membros/${id}`, {
-                method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    carregarMembros();
-                    alert('Membro excluído com sucesso!');
-                } else {
-                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro de conexão com o servidor.');
-            });
+            fetch(`/api/membros/${id}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        carregarMembros();
+                        alert('Membro excluído com sucesso!');
+                    } else {
+                        alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro de conexão com o servidor.');
+                });
         }
 
         // ===== LOGOUT =====
@@ -1416,46 +1162,35 @@
                 });
             }
 
-            const navLinks = navMenu.querySelectorAll('a');
-            navLinks.forEach(link => {
+            navMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        navMenu.classList.remove('open');
-                    }
+                    if (window.innerWidth <= 768) navMenu.classList.remove('open');
                 });
             });
 
+            // Verifica sessão e mostra/esconde os botões
             fetch('/api/verificar_sessao')
                 .then(response => response.json())
                 .then(data => {
-                    const navLogin = document.getElementById('navLogin');
-                    const navLogout = document.getElementById('navLogout');
-                    const navDashboard = document.getElementById('navDashboard');
                     const btnAdicionar = document.getElementById('btnAdicionar');
                     const btnDownload = document.getElementById('btnDownload');
 
                     if (data.logado) {
                         usuarioLogado = data.user;
-                        if (navLogin) navLogin.style.display = 'none';
-                        navLogout.style.display = 'inline-block';
-                        navDashboard.style.display = 'inline-block';
                         localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
 
                         if (data.user.role === 'adm' || data.user.role === 'dev') {
-                            btnAdicionar.style.display = 'inline-block';
-                            btnDownload.style.display = 'inline-block';
+                            if (btnAdicionar) btnAdicionar.style.display = 'inline-block';
+                            if (btnDownload) btnDownload.style.display = 'inline-block';
                         } else {
-                            btnAdicionar.style.display = 'none';
-                            btnDownload.style.display = 'none';
+                            if (btnAdicionar) btnAdicionar.style.display = 'none';
+                            if (btnDownload) btnDownload.style.display = 'none';
                         }
                     } else {
                         usuarioLogado = null;
-                        if (navLogin) navLogin.style.display = 'none';
-                        navLogout.style.display = 'none';
-                        navDashboard.style.display = 'none';
-                        btnAdicionar.style.display = 'none';
-                        btnDownload.style.display = 'none';
                         localStorage.removeItem('usuarioLogado');
+                        if (btnAdicionar) btnAdicionar.style.display = 'none';
+                        if (btnDownload) btnDownload.style.display = 'none';
                     }
 
                     carregarMembros();

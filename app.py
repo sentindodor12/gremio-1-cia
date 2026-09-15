@@ -11,14 +11,15 @@ import sqlite3
 import os
 from datetime import datetime
 import bcrypt
-import secrets
 import io
 
-app = Flask(__name__, 
-            template_folder='.', 
-            static_folder='.',    
-            static_url_path='')   
-app.secret_key = secrets.token_hex(16)
+app = Flask(__name__,
+            template_folder='.',
+            static_folder='.',
+            static_url_path='')
+
+# ===== CHAVE FIXA (não muda a cada reinício) =====
+app.secret_key = os.getenv('SECRET_KEY', 'gremio-1cia-chave-fixa-super-secreta-2026-nao-mude')
 CORS(app)
 
 # ===== CONFIGURAÇÃO DO EMAIL =====
@@ -26,8 +27,8 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', '')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', '')
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'limpaplus.sup1@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'pizu mgal rblk zenm')
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', app.config['MAIL_USERNAME'])
 app.config['MAIL_DEBUG'] = True
 
@@ -45,8 +46,7 @@ def get_db():
 def init_db():
     conn = get_db()
     cursor = conn.cursor()
-    
-    # Tabela de usuários
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,8 +57,7 @@ def init_db():
             criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
-    # Tabela de membros (com nome_guerra)
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS membros (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,8 +68,7 @@ def init_db():
             criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
-    # Tabela de sugestões
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS sugestoes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -81,8 +79,7 @@ def init_db():
             data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
-    # Tabela de logs
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -93,9 +90,8 @@ def init_db():
             data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
-    # Tabela da ficha de entrada/saída
-    cursor.execute("""
+
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS ficha_registros (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome_guerra TEXT NOT NULL,
@@ -107,25 +103,24 @@ def init_db():
             assinatura_saida TEXT,
             criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
-    """)
+    ''')
 
-    # Inserir usuários padrão
     cursor.execute('SELECT COUNT(*) FROM usuarios')
     count = cursor.fetchone()[0]
-    
+
     if count == 0:
         senha_admin = bcrypt.hashpw("admin123".encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         cursor.execute('''
             INSERT INTO usuarios (nome, email, senha, role)
             VALUES (?, ?, ?, ?)
         ''', ('Administrador', 'admin@gremio.com', senha_admin, 'adm'))
-        
+
         senha_dev = bcrypt.hashpw("dev123".encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         cursor.execute('''
             INSERT INTO usuarios (nome, email, senha, role)
             VALUES (?, ?, ?, ?)
         ''', ('Desenvolvedor', 'dev@gremio.com', senha_dev, 'dev'))
-    
+
     conn.commit()
     conn.close()
     print('Banco de dados inicializado com sucesso!')
@@ -179,7 +174,7 @@ def api_login():
     senha = data.get('senha')
 
     if not email or not senha:
-        return jsonify({'error': 'Email e senha são obrigatórios'}), 400
+        return jsonify({'error': 'Email e senha sao obrigatorios'}), 400
 
     conn = get_db()
     cursor = conn.cursor()
@@ -246,7 +241,7 @@ def api_get_membros():
     cursor.execute('SELECT * FROM membros ORDER BY id')
     rows = cursor.fetchall()
     conn.close()
-    
+
     membros = []
     for row in rows:
         membros.append({
@@ -256,14 +251,14 @@ def api_get_membros():
             'pelotao': row[3] if row[3] else '',
             'email': row[4] if row[4] else ''
         })
-    
+
     return jsonify(membros)
 
 @app.route('/api/membros', methods=['POST'])
 def api_add_membro():
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     user_role = session.get('user_role')
     if user_role not in ['adm', 'dev']:
         return jsonify({'error': 'Permissao negada'}), 403
@@ -284,12 +279,12 @@ def api_add_membro():
         VALUES (?, ?, ?, ?)
     ''', (nome.strip(), nome_guerra.strip(), pelotao.strip(), email.strip()))
     conn.commit()
-    
+
     novo_id = cursor.lastrowid
     cursor.execute('SELECT * FROM membros WHERE id = ?', (novo_id,))
     row = cursor.fetchone()
     conn.close()
-    
+
     novo_membro = {
         'id': row[0],
         'nome': row[1],
@@ -304,7 +299,7 @@ def api_add_membro():
 def api_edit_membro(id):
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     user_role = session.get('user_role')
     if user_role not in ['adm', 'dev']:
         return jsonify({'error': 'Permissao negada'}), 403
@@ -312,17 +307,17 @@ def api_edit_membro(id):
     data = request.get_json()
     conn = get_db()
     cursor = conn.cursor()
-    
+
     cursor.execute('SELECT * FROM membros WHERE id = ?', (id,))
     row = cursor.fetchone()
-    
+
     if not row:
         conn.close()
         return jsonify({'error': 'Membro nao encontrado'}), 404
 
     campos = []
     valores = []
-    
+
     if 'nome' in data and data['nome']:
         campos.append('nome = ?')
         valores.append(data['nome'].strip())
@@ -335,17 +330,17 @@ def api_edit_membro(id):
     if 'email' in data:
         campos.append('email = ?')
         valores.append(data['email'].strip())
-    
+
     if campos:
         valores.append(id)
         query = f"UPDATE membros SET {', '.join(campos)} WHERE id = ?"
         cursor.execute(query, valores)
         conn.commit()
-    
+
     cursor.execute('SELECT * FROM membros WHERE id = ?', (id,))
     row = cursor.fetchone()
     conn.close()
-    
+
     membro_atualizado = {
         'id': row[0],
         'nome': row[1],
@@ -360,17 +355,17 @@ def api_edit_membro(id):
 def api_delete_membro(id):
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     user_role = session.get('user_role')
     if user_role not in ['adm', 'dev']:
         return jsonify({'error': 'Permissao negada'}), 403
 
     conn = get_db()
     cursor = conn.cursor()
-    
+
     cursor.execute('SELECT * FROM membros WHERE id = ?', (id,))
     row = cursor.fetchone()
-    
+
     if not row:
         conn.close()
         return jsonify({'error': 'Membro nao encontrado'}), 404
@@ -378,7 +373,7 @@ def api_delete_membro(id):
     cursor.execute('DELETE FROM membros WHERE id = ?', (id,))
     conn.commit()
     conn.close()
-    
+
     return jsonify({'success': True})
 
 # ===== API - SUGESTÕES =====
@@ -389,7 +384,7 @@ def api_get_sugestoes():
     cursor.execute('SELECT * FROM sugestoes ORDER BY id DESC')
     rows = cursor.fetchall()
     conn.close()
-    
+
     sugestoes = []
     for row in rows:
         sugestoes.append({
@@ -400,7 +395,7 @@ def api_get_sugestoes():
             'texto': row[4],
             'data': row[5]
         })
-    
+
     return jsonify(sugestoes)
 
 @app.route('/api/sugestoes', methods=['POST'])
@@ -421,12 +416,12 @@ def api_add_sugestao():
         VALUES (?, ?, ?, ?)
     ''', (gmail.strip(), nome.strip(), pelotao.strip(), texto.strip()))
     conn.commit()
-    
+
     novo_id = cursor.lastrowid
     cursor.execute('SELECT * FROM sugestoes WHERE id = ?', (novo_id,))
     row = cursor.fetchone()
     conn.close()
-    
+
     nova_sugestao = {
         'id': row[0],
         'gmail': row[1],
@@ -436,66 +431,50 @@ def api_add_sugestao():
         'data': row[5]
     }
 
-    # Enviar email de confirmação
+    # ===== ENVIO DE EMAIL =====
     try:
-        msg = Message(
-            subject='Sugestao Recebida - Gremio 1ª Cia',
-            recipients=[gmail],
-            html=f'''
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>Sugestao Recebida</title>
-            </head>
-            <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #0a0a0a;">
-                <div style="max-width: 600px; margin: 20px auto; background: #0a0a0a; border-radius: 10px; border: 2px solid #8b0000; padding: 0; overflow: hidden;">
-                    <div style="background: #000000; padding: 20px; text-align: center; border-bottom: 2px solid #8b0000;">
-                        <h1 style="color: #fff; margin: 0; letter-spacing: 3px; font-size: 24px;">GREMIO 1ª CIA</h1>
-                        <p style="color: #888; margin: 5px 0 0 0; font-size: 12px;">Sistema de Gestao</p>
-                    </div>
-                    <div style="padding: 30px 25px; background: #0a0a0a;">
-                        <h2 style="color: #e74c3c; margin: 0 0 10px 0; font-size: 22px;">Sugestao Recebida com Sucesso!</h2>
-                        <p style="color: #ccc; font-size: 15px; line-height: 1.6;">
-                            Olá <strong style="color: #fff;">{nome}</strong>,
-                        </p>
-                        <p style="color: #ccc; font-size: 15px; line-height: 1.6;">
-                            Recebemos sua sugestao e agradecemos por contribuir para melhorar o <strong style="color: #fff;">Gremio 1ª Cia</strong>!
-                        </p>
-                        <div style="background: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #8b0000;">
-                            <p style="color: #888; font-size: 11px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">Sua sugestao:</p>
-                            <p style="color: #fff; font-size: 14px; margin: 0; line-height: 1.5;">{texto}</p>
+        if not app.config['MAIL_USERNAME'] or not app.config['MAIL_PASSWORD']:
+            print('=' * 50)
+            print(' AVISO: Email nao configurado!')
+            print(' Defina MAIL_USERNAME e MAIL_PASSWORD nas variaveis de ambiente')
+            print('=' * 50)
+        else:
+            msg = Message(
+                subject='Sugestao Recebida - Gremio 1ª Cia',
+                recipients=[gmail],
+                html=f'''
+                <!DOCTYPE html>
+                <html>
+                <head><meta charset="UTF-8"></head>
+                <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #0a0a0a;">
+                    <div style="max-width: 600px; margin: 20px auto; background: #0a0a0a; border-radius: 10px; border: 2px solid #8b0000; padding: 0; overflow: hidden;">
+                        <div style="background: #000000; padding: 20px; text-align: center; border-bottom: 2px solid #8b0000;">
+                            <h1 style="color: #fff; margin: 0; letter-spacing: 3px; font-size: 24px;">GREMIO 1ª CIA</h1>
+                            <p style="color: #888; margin: 5px 0 0 0; font-size: 12px;">Sistema de Gestao</p>
                         </div>
-                        <div style="background: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin: 15px 0;">
-                            <h3 style="color: #fff; font-size: 15px; margin: 0 0 10px 0; text-align: center;">HORARIO DE FUNCIONAMENTO</h3>
-                            <div style="border-bottom: 1px solid #2a2a2a; padding: 8px 0; display: flex; justify-content: space-between; color: #ccc; font-size: 13px;">
-                                <span>Segunda a Quinta</span>
-                                <span style="color: #e74c3c; font-weight: bold;">11:30 - 12:30 e 16:30 - 22:00</span>
-                            </div>
-                            <div style="border-bottom: 1px solid #2a2a2a; padding: 8px 0; display: flex; justify-content: space-between; color: #ccc; font-size: 13px;">
-                                <span>Sexta</span>
-                                <span style="color: #e74c3c; font-weight: bold;">12:00 - 22:00</span>
-                            </div>
-                            <div style="padding: 8px 0; display: flex; justify-content: space-between; color: #ccc; font-size: 13px;">
-                                <span>Finais de Semana e Feriados</span>
-                                <span style="color: #e74c3c; font-weight: bold;">08:00 - 22:00</span>
+                        <div style="padding: 30px 25px; background: #0a0a0a;">
+                            <h2 style="color: #e74c3c; margin: 0 0 10px 0; font-size: 22px;">Sugestao Recebida!</h2>
+                            <p style="color: #ccc; font-size: 15px; line-height: 1.6;">Ola <strong style="color: #fff;">{nome}</strong>,</p>
+                            <p style="color: #ccc; font-size: 15px; line-height: 1.6;">Recebemos sua sugestao e agradecemos por contribuir para melhorar o <strong style="color: #fff;">Gremio 1ª Cia</strong>!</p>
+                            <div style="background: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #8b0000;">
+                                <p style="color: #888; font-size: 11px; margin: 0 0 5px 0; text-transform: uppercase;">Sua sugestao:</p>
+                                <p style="color: #fff; font-size: 14px; margin: 0; line-height: 1.5;">{texto}</p>
                             </div>
                         </div>
+                        <div style="background: #000000; padding: 15px 20px; text-align: center; border-top: 1px solid #1a1a1a;">
+                            <p style="color: #555; font-size: 11px; margin: 0;">&copy; 2026 Gremio 1ª Cia</p>
+                        </div>
                     </div>
-                    <div style="background: #000000; padding: 15px 20px; text-align: center; border-top: 1px solid #1a1a1a;">
-                        <p style="color: #555; font-size: 11px; margin: 0;">
-                            &copy; 2026 Gremio 1ª Cia - Todos os direitos reservados
-                        </p>
-                    </div>
-                </div>
-            </body>
-            </html>
-            '''
-        )
-        mail.send(msg)
-        print(f'Email enviado com sucesso para: {gmail}')
+                </body>
+                </html>
+                '''
+            )
+            mail.send(msg)
+            print(f'[EMAIL OK] Enviado para: {gmail}')
     except Exception as e:
-        print(f'Erro ao enviar email: {e}')
+        print('=' * 50)
+        print(f'[EMAIL ERRO] {type(e).__name__}: {e}')
+        print('=' * 50)
 
     return jsonify({'success': True, 'sugestao': nova_sugestao})
 
@@ -503,17 +482,17 @@ def api_add_sugestao():
 def api_delete_sugestao(id):
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     user_role = session.get('user_role')
     if user_role not in ['adm', 'dev']:
         return jsonify({'error': 'Permissao negada'}), 403
 
     conn = get_db()
     cursor = conn.cursor()
-    
+
     cursor.execute('SELECT * FROM sugestoes WHERE id = ?', (id,))
     row = cursor.fetchone()
-    
+
     if not row:
         conn.close()
         return jsonify({'error': 'Sugestao nao encontrada'}), 404
@@ -521,7 +500,7 @@ def api_delete_sugestao(id):
     cursor.execute('DELETE FROM sugestoes WHERE id = ?', (id,))
     conn.commit()
     conn.close()
-    
+
     return jsonify({'success': True})
 
 # ===== API - USUARIOS =====
@@ -529,7 +508,7 @@ def api_delete_sugestao(id):
 def api_get_usuarios():
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     if session.get('user_role') != 'dev':
         return jsonify({'error': 'Permissao negada'}), 403
 
@@ -538,7 +517,7 @@ def api_get_usuarios():
     cursor.execute('SELECT id, nome, email, role FROM usuarios')
     rows = cursor.fetchall()
     conn.close()
-    
+
     usuarios = []
     for row in rows:
         usuarios.append({
@@ -547,14 +526,14 @@ def api_get_usuarios():
             'email': row[2],
             'role': row[3]
         })
-    
+
     return jsonify(usuarios)
 
 @app.route('/api/usuarios', methods=['POST'])
 def api_add_usuario():
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     if session.get('user_role') != 'dev':
         return jsonify({'error': 'Permissao negada'}), 403
 
@@ -569,25 +548,25 @@ def api_add_usuario():
 
     conn = get_db()
     cursor = conn.cursor()
-    
+
     cursor.execute('SELECT id FROM usuarios WHERE email = ?', (email,))
     if cursor.fetchone():
         conn.close()
         return jsonify({'error': 'Email ja cadastrado'}), 400
 
     senha_hash = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    
+
     cursor.execute('''
         INSERT INTO usuarios (nome, email, senha, role)
         VALUES (?, ?, ?, ?)
     ''', (nome.strip(), email.strip(), senha_hash, role))
     conn.commit()
-    
+
     novo_id = cursor.lastrowid
     cursor.execute('SELECT id, nome, email, role FROM usuarios WHERE id = ?', (novo_id,))
     row = cursor.fetchone()
     conn.close()
-    
+
     novo_usuario = {
         'id': row[0],
         'nome': row[1],
@@ -601,16 +580,16 @@ def api_add_usuario():
 def api_delete_usuario(id):
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     if session.get('user_role') != 'dev':
         return jsonify({'error': 'Permissao negada'}), 403
 
     conn = get_db()
     cursor = conn.cursor()
-    
+
     cursor.execute('SELECT * FROM usuarios WHERE id = ?', (id,))
     row = cursor.fetchone()
-    
+
     if not row:
         conn.close()
         return jsonify({'error': 'Usuario nao encontrado'}), 404
@@ -622,7 +601,7 @@ def api_delete_usuario(id):
     cursor.execute('DELETE FROM usuarios WHERE id = ?', (id,))
     conn.commit()
     conn.close()
-    
+
     return jsonify({'success': True})
 
 # ===== API - LOGS =====
@@ -630,7 +609,7 @@ def api_delete_usuario(id):
 def api_get_logs():
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     if session.get('user_role') != 'dev':
         return jsonify({'error': 'Permissao negada'}), 403
 
@@ -639,7 +618,7 @@ def api_get_logs():
     cursor.execute('SELECT * FROM logs ORDER BY id DESC LIMIT 100')
     rows = cursor.fetchall()
     conn.close()
-    
+
     logs = []
     for row in rows:
         logs.append({
@@ -650,7 +629,7 @@ def api_get_logs():
             'acao': row[4],
             'data': row[5]
         })
-    
+
     return jsonify(logs)
 
 # ===== API - FICHA DE ENTRADA E SAÍDA =====
@@ -663,11 +642,11 @@ def api_ficha_registrar():
     assinatura = data.get('assinatura')
 
     if tipo not in ('entrada', 'saida'):
-        return jsonify({'success': False, 'erro': 'Tipo de registro inválido'}), 400
+        return jsonify({'success': False, 'erro': 'Tipo de registro invalido'}), 400
     if not nome_guerra or not pelotao:
-        return jsonify({'success': False, 'erro': 'Nome de guerra e pelotão são obrigatórios'}), 400
+        return jsonify({'success': False, 'erro': 'Nome de guerra e pelotao sao obrigatorios'}), 400
     if not assinatura:
-        return jsonify({'success': False, 'erro': 'Assinatura é obrigatória'}), 400
+        return jsonify({'success': False, 'erro': 'Assinatura e obrigatoria'}), 400
 
     agora = datetime.now()
     data_atual = agora.strftime('%Y-%m-%d')
@@ -683,7 +662,7 @@ def api_ficha_registrar():
         """, (data_atual, nome_guerra, pelotao))
         if cur.fetchone():
             conn.close()
-            return jsonify({'success': False, 'erro': 'Já existe uma entrada em aberto para este militar hoje'}), 409
+            return jsonify({'success': False, 'erro': 'Ja existe uma entrada em aberto para este militar hoje'}), 409
 
         cur.execute("""
             INSERT INTO ficha_registros
@@ -735,7 +714,7 @@ def api_ficha_data(data):
     try:
         datetime.strptime(data, '%Y-%m-%d')
     except ValueError:
-        return jsonify({'success': False, 'erro': 'Data inválida'}), 400
+        return jsonify({'success': False, 'erro': 'Data invalida'}), 400
     registros = _ficha_registros('WHERE data = ?', (data,))
     return jsonify({'success': True, 'registros': registros})
 
@@ -765,23 +744,20 @@ def api_backup():
 def api_baixar_pdf():
     if 'user_id' not in session:
         return jsonify({'error': 'Nao autorizado'}), 401
-    
+
     user_role = session.get('user_role')
     if user_role not in ['adm', 'dev']:
         return jsonify({'error': 'Permissao negada'}), 403
 
     try:
-        # Buscar TODOS os membros do banco de dados
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
-        
-        # Verificar se a tabela membros existe
+
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='membros'")
         if not cursor.fetchone():
             conn.close()
             return jsonify({'error': 'Tabela membros nao encontrada'}), 404
-        
-        # Buscar todos os membros
+
         cursor.execute('SELECT * FROM membros ORDER BY pelotao, nome')
         rows = cursor.fetchall()
         conn.close()
@@ -789,18 +765,16 @@ def api_baixar_pdf():
         if not rows:
             return jsonify({'error': 'Nenhum membro encontrado no banco de dados'}), 404
 
-        # Converter para lista de dicionários
         membros = []
         for row in rows:
             membros.append({
                 'id': row[0],
                 'nome': row[1],
                 'nome_guerra': row[2] if row[2] else '-',
-                'pelotao': row[3] if row[3] else 'Sem pelotão',
+                'pelotao': row[3] if row[3] else 'Sem pelotao',
                 'email': row[4] if row[4] else ''
             })
 
-        # Criar PDF em memória
         buffer = io.BytesIO()
         doc = SimpleDocTemplate(
             buffer,
@@ -811,85 +785,56 @@ def api_baixar_pdf():
             bottomMargin=2*cm
         )
 
-        # Estilos
         styles = getSampleStyleSheet()
-        
+
         titulo_style = ParagraphStyle(
-            'Titulo',
-            parent=styles['Heading1'],
-            alignment=TA_CENTER,
-            fontSize=20,
+            'Titulo', parent=styles['Heading1'],
+            alignment=TA_CENTER, fontSize=20,
             textColor=colors.HexColor('#8b0000'),
-            fontName='Helvetica-Bold',
-            spaceAfter=8
+            fontName='Helvetica-Bold', spaceAfter=8
         )
-        
         subtitulo_style = ParagraphStyle(
-            'Subtitulo',
-            parent=styles['Normal'],
-            alignment=TA_CENTER,
-            fontSize=12,
-            textColor=colors.HexColor('#555555'),
-            spaceAfter=5
+            'Subtitulo', parent=styles['Normal'],
+            alignment=TA_CENTER, fontSize=12,
+            textColor=colors.HexColor('#555555'), spaceAfter=5
         )
-        
         data_style = ParagraphStyle(
-            'Data',
-            parent=styles['Normal'],
-            alignment=TA_CENTER,
-            fontSize=11,
-            textColor=colors.HexColor('#888888'),
-            spaceAfter=25
+            'Data', parent=styles['Normal'],
+            alignment=TA_CENTER, fontSize=11,
+            textColor=colors.HexColor('#888888'), spaceAfter=25
         )
-        
         cabecalho_style = ParagraphStyle(
-            'Cabecalho',
-            parent=styles['Normal'],
-            alignment=TA_LEFT,
-            fontSize=10,
+            'Cabecalho', parent=styles['Normal'],
+            alignment=TA_LEFT, fontSize=10,
             textColor=colors.HexColor('#ffffff'),
             fontName='Helvetica-Bold'
         )
-        
         celula_style = ParagraphStyle(
-            'Celula',
-            parent=styles['Normal'],
-            alignment=TA_LEFT,
-            fontSize=10,
+            'Celula', parent=styles['Normal'],
+            alignment=TA_LEFT, fontSize=10,
             textColor=colors.HexColor('#000000')
         )
-        
         pelotao_style = ParagraphStyle(
-            'Pelotao',
-            parent=styles['Heading2'],
-            alignment=TA_LEFT,
-            fontSize=14,
+            'Pelotao', parent=styles['Heading2'],
+            alignment=TA_LEFT, fontSize=14,
             textColor=colors.HexColor('#ffffff'),
             fontName='Helvetica-Bold',
-            spaceAfter=10,
-            spaceBefore=20
+            spaceAfter=10, spaceBefore=20
         )
-        
         rodape_style = ParagraphStyle(
-            'Rodape',
-            parent=styles['Normal'],
-            alignment=TA_CENTER,
-            fontSize=10,
-            textColor=colors.HexColor('#888888'),
-            spaceBefore=20
+            'Rodape', parent=styles['Normal'],
+            alignment=TA_CENTER, fontSize=10,
+            textColor=colors.HexColor('#888888'), spaceBefore=20
         )
 
         elementos = []
-
-        # Título
-        elementos.append(Paragraph('RELAÇÃO DE PAGAMENTO DO GRÊMIO — 1ª CIA', titulo_style))
+        elementos.append(Paragraph('RELACAO DE PAGAMENTO DO GREMIO — 1ª CIA', titulo_style))
         elementos.append(Paragraph('Somente os militares que efetuaram o pagamento', subtitulo_style))
         elementos.append(Paragraph(
-            f'Gerado em: {datetime.now().strftime("%d/%m/%Y")} às {datetime.now().strftime("%H:%M")}',
+            f'Gerado em: {datetime.now().strftime("%d/%m/%Y")} as {datetime.now().strftime("%H:%M")}',
             data_style
         ))
 
-        # Agrupar por pelotão
         pelotoes = {}
         for membro in membros:
             pelotao = membro['pelotao']
@@ -897,25 +842,21 @@ def api_baixar_pdf():
                 pelotoes[pelotao] = []
             pelotoes[pelotao].append(membro)
 
-        # Ordenar pelotões
-        ordem_pelotoes = ['1° Pelotão', '2° Pelotão', '3° Pelotão', 'ENC-MAT']
+        ordem_pelotoes = ['1° Pelotão', '2° Pelotão', '3° Pelotão', 'Furriel', 'Sargentia', 'ENC-MAT']
         pelotoes_ordenados = [p for p in ordem_pelotoes if p in pelotoes]
 
         for pelotao in pelotoes_ordenados:
             membros_pelotao = pelotoes[pelotao]
-            
-            # Título do pelotão
             elementos.append(Paragraph(pelotao, pelotao_style))
-            
-            # Dados da tabela
+
             data = []
             data.append([
                 Paragraph('N°', cabecalho_style),
                 Paragraph('NOME COMPLETO', cabecalho_style),
                 Paragraph('NOME DE GUERRA', cabecalho_style),
-                Paragraph('SITUAÇÃO', cabecalho_style)
+                Paragraph('SITUACAO', cabecalho_style)
             ])
-            
+
             for idx, m in enumerate(membros_pelotao, 1):
                 data.append([
                     Paragraph(str(idx), celula_style),
@@ -923,8 +864,7 @@ def api_baixar_pdf():
                     Paragraph(m['nome_guerra'], celula_style),
                     Paragraph('PAGO', celula_style)
                 ])
-            
-            # Criar tabela
+
             table = Table(data, colWidths=[0.8*cm, 7*cm, 5*cm, 2.5*cm])
             table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#8b0000')),
@@ -942,24 +882,21 @@ def api_baixar_pdf():
             ]))
             elementos.append(table)
             elementos.append(Spacer(1, 0.5*cm))
-        
-        # Rodapé
-        elementos.append(Paragraph('_____________________________________________', rodape_style))
-        elementos.append(Paragraph('ST ADAIR - SEÇ CMDO', rodape_style))
-        elementos.append(Paragraph('&copy; 2026 Grêmio 1ª Cia - Todos os direitos reservados', rodape_style))
 
-        # Gerar PDF
+        elementos.append(Paragraph('_____________________________________________', rodape_style))
+        elementos.append(Paragraph('ST ADAIR - SEC CMDO', rodape_style))
+        elementos.append(Paragraph('&copy; 2026 Gremio 1ª Cia - Todos os direitos reservados', rodape_style))
+
         doc.build(elementos)
         buffer.seek(0)
 
-        # Retornar PDF
         return send_file(
             buffer,
             as_attachment=True,
-            download_name=f'Relacao de Pagamento - Gremio 1ª Cia.pdf',
+            download_name='Relacao de Pagamento - Gremio 1ª Cia.pdf',
             mimetype='application/pdf'
         )
-        
+
     except Exception as e:
         print(f'Erro ao gerar PDF: {e}')
         import traceback
@@ -972,7 +909,6 @@ if __name__ == '__main__':
     print(' GREMIO 1ª CIA - Sistema de Gestao')
     print('=' * 50)
     print(f' Banco de dados: {DATABASE}')
-    print(f' Email: limpaplus.sup1@gmail.com')
     print(' Credenciais padrao:')
     print('   - admin@gremio.com / admin123 (ADM)')
     print('   - dev@gremio.com / dev123 (DEV)')

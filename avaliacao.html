@@ -4,16 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Sugestões - Grêmio 1ª Cia</title>
-    
+
     <style>
-        /* ======================================== */
-        /* ===== RESET E CONFIGURAÇÕES ===== */
-        /* ======================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #8b0000;
@@ -22,8 +15,6 @@
             --primary-glow: rgba(139, 0, 0, 0.4);
             --bg-dark: #0a0a0a;
             --bg-card: rgba(20, 20, 20, 0.85);
-            --text-white: #ffffff;
-            --text-gray: #aaaaaa;
             --text-light: #cccccc;
             --border-color: rgba(255, 255, 255, 0.06);
             --radius: 14px;
@@ -39,25 +30,16 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
-        /* ======================================== */
-        /* ===== HEADER PREMIUM ===== */
-        /* ======================================== */
+        /* ===== HEADER ===== */
         .header {
             background: rgba(0, 0, 0, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(139, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            width: 100%;
-            transition: all 0.4s ease;
+            position: sticky; top: 0; z-index: 100;
+            width: 100%; transition: all 0.4s ease;
         }
 
         .header.scrolled {
@@ -67,39 +49,24 @@
         }
 
         .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
+            display: flex; align-items: center;
+            justify-content: space-between; padding: 12px 0;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-            text-decoration: none;
+            display: flex; align-items: center; gap: 12px;
+            flex-shrink: 0; text-decoration: none;
         }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            position: relative;
-        }
-
+        .logo-icon { width: 40px; height: 40px; position: relative; }
         .logo-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            width: 100%; height: 100%; object-fit: contain;
             filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.2));
         }
 
         .logo-icon .glow-ring {
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            width: calc(100% + 8px);
-            height: calc(100% + 8px);
+            position: absolute; top: -4px; left: -4px;
+            width: calc(100% + 8px); height: calc(100% + 8px);
             border: 1px solid rgba(139, 0, 0, 0.2);
             border-radius: 50%;
             animation: ringPulse 2s ease-in-out infinite;
@@ -110,64 +77,38 @@
             50% { transform: scale(1.15); opacity: 0; }
         }
 
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-
+        .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
         .logo-text .title {
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 3px;
-            font-weight: 700;
+            font-size: 18px; color: #fff;
+            letter-spacing: 3px; font-weight: 700;
         }
-
         .logo-text .sub {
-            font-size: 9px;
-            color: #888;
-            letter-spacing: 2px;
-            font-weight: 400;
+            font-size: 9px; color: #888;
+            letter-spacing: 2px; font-weight: 400;
             text-transform: uppercase;
         }
 
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
+        .nav-menu { display: flex; align-items: center; gap: 24px; }
 
         .nav-menu a {
-            color: #aaa;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
+            color: #aaa; text-decoration: none;
+            font-weight: 500; font-size: 14px;
             transition: all 0.3s ease;
-            padding: 6px 0;
-            position: relative;
+            padding: 6px 0; position: relative;
         }
 
         .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
+            content: ''; position: absolute;
+            bottom: -2px; left: 0; width: 0; height: 2px;
             background: linear-gradient(90deg, var(--primary), var(--primary-hover));
             transition: width 0.3s ease;
             box-shadow: 0 0 15px var(--primary-glow);
         }
 
         .nav-menu a:hover::after,
-        .nav-menu a.active::after {
-            width: 100%;
-        }
-
+        .nav-menu a.active::after { width: 100%; }
         .nav-menu a:hover,
-        .nav-menu a.active {
-            color: #fff;
-        }
+        .nav-menu a.active { color: #fff; }
 
         .btn-logout {
             background: transparent;
@@ -190,13 +131,9 @@
             display: none;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            color: #fff;
-            font-size: 16px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
+            padding: 8px 16px; border-radius: 10px;
+            cursor: pointer; color: #fff; font-size: 16px;
+            transition: all 0.3s; backdrop-filter: blur(10px);
         }
 
         .menu-toggle:hover {
@@ -204,9 +141,7 @@
             background: rgba(139, 0, 0, 0.1);
         }
 
-        /* ======================================== */
-        /* ===== AVALIACAO ===== */
-        /* ======================================== */
+        /* ===== AVALIAÇÃO ===== */
         .avaliacao-section {
             padding: 30px 0;
             animation: fadeInUp 0.6s ease-out;
@@ -223,9 +158,7 @@
         }
 
         .avaliacao-header h2 {
-            font-size: 28px;
-            color: #fff;
-            font-weight: 700;
+            font-size: 28px; color: #fff; font-weight: 700;
         }
 
         .avaliacao-header h2 span {
@@ -236,14 +169,11 @@
         }
 
         .avaliacao-header p {
-            color: #888;
-            font-size: 15px;
-            margin-top: 5px;
+            color: #888; font-size: 15px; margin-top: 5px;
         }
 
         .avaliacao-header .line {
-            width: 60px;
-            height: 3px;
+            width: 60px; height: 3px;
             background: linear-gradient(90deg, var(--primary), var(--primary-hover));
             margin: 10px auto 0;
             border-radius: 2px;
@@ -255,11 +185,8 @@
             100% { width: 60px; opacity: 1; }
         }
 
-        /* ===== FORMULARIO ===== */
-        .form-container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
+        /* ===== FORMULÁRIO ===== */
+        .form-container { max-width: 700px; margin: 0 auto; }
 
         .form-box {
             background: var(--bg-card);
@@ -275,23 +202,17 @@
             box-shadow: var(--shadow);
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-group label {
-            display: block;
-            color: #ccc;
-            font-size: 13px;
-            font-weight: 500;
+            display: block; color: #ccc;
+            font-size: 13px; font-weight: 500;
             margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .form-group label .required {
-            color: var(--primary-hover);
-        }
+        .form-group label .required { color: var(--primary-hover); }
 
         .form-group input,
         .form-group textarea {
@@ -300,10 +221,8 @@
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s;
-            outline: none;
+            color: #fff; font-size: 14px;
+            transition: all 0.3s; outline: none;
             font-family: inherit;
         }
 
@@ -314,13 +233,10 @@
         }
 
         .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #555;
-        }
+        .form-group textarea::placeholder { color: #555; }
 
         .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
+            resize: vertical; min-height: 120px;
         }
 
         .form-row {
@@ -329,25 +245,22 @@
             gap: 20px;
         }
 
-        /* ===== BUTTONS ===== */
+        /* ===== BOTÕES ===== */
         .btn {
             display: inline-block;
             padding: 14px 30px;
             text-decoration: none;
             border-radius: 12px;
-            font-weight: 600;
-            font-size: 15px;
+            font-weight: 600; font-size: 15px;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            border: none;
+            cursor: pointer; border: none;
             text-align: center;
             -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-            color: #fff;
-            width: 100%;
+            color: #fff; width: 100%;
             box-shadow: 0 4px 20px rgba(139, 0, 0, 0.35);
         }
 
@@ -357,36 +270,15 @@
         }
 
         .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+            opacity: 0.6; cursor: not-allowed; transform: none;
         }
 
-        .btn-primary:active {
-            transform: scale(0.96);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary-hover);
-            border: 2px solid var(--primary-hover);
-            padding: 8px 18px;
-            font-size: 13px;
-            border-radius: 10px;
-        }
-
-        .btn-outline:hover {
-            background: var(--primary-hover);
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
-        }
+        .btn-primary:active { transform: scale(0.96); }
 
         /* ===== LOADER ===== */
         .btn-loader {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border: 2px solid rgba(255,255,255,0.3);
             border-top: 2px solid #fff;
             border-radius: 50%;
@@ -401,14 +293,10 @@
         }
 
         /* ===== LISTA DE SUGESTÕES ===== */
-        .sugestoes-list {
-            margin-top: 40px;
-        }
+        .sugestoes-list { margin-top: 40px; }
 
         .sugestoes-list h3 {
-            color: #fff;
-            font-size: 22px;
-            font-weight: 700;
+            color: #fff; font-size: 22px; font-weight: 700;
             margin-bottom: 20px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 12px;
@@ -431,44 +319,33 @@
         }
 
         .sugestao-item .sugestao-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 8px;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap;
+            gap: 10px; margin-bottom: 8px;
         }
 
         .sugestao-item .sugestao-header .nome {
-            color: #fff;
-            font-weight: 600;
-            font-size: 16px;
+            color: #fff; font-weight: 600; font-size: 16px;
         }
 
         .sugestao-item .sugestao-header .data {
-            color: #666;
-            font-size: 12px;
+            color: #666; font-size: 12px;
         }
 
         .sugestao-item .sugestao-header .pelotao {
-            color: #888;
-            font-size: 13px;
+            color: #888; font-size: 13px;
         }
 
         .sugestao-item .sugestao-texto {
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.7;
-            margin-top: 6px;
-            padding-left: 5px;
+            color: #ccc; font-size: 14px;
+            line-height: 1.7; margin-top: 6px;
             border-left: 3px solid var(--primary);
             padding-left: 14px;
         }
 
         .sugestao-item .sugestao-actions {
             margin-top: 12px;
-            display: flex;
-            gap: 10px;
+            display: flex; gap: 10px;
         }
 
         .btn-danger-sm {
@@ -478,89 +355,60 @@
             padding: 5px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 12px; font-weight: 600;
             transition: all 0.3s;
         }
 
         .btn-danger-sm:hover {
-            background: #c0392b;
-            color: #fff;
+            background: #c0392b; color: #fff;
             border-color: #c0392b;
         }
 
         /* ===== FOOTER ===== */
         .footer {
-            background: #000000;
-            color: #666;
+            background: #000000; color: #666;
             padding: 40px 0 24px;
             border-top: 2px solid var(--primary);
             margin-top: 30px;
         }
 
         .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+            display: flex; flex-direction: column;
+            align-items: center; gap: 20px;
             text-align: center;
         }
 
         .footer-info h3 {
-            color: #fff;
-            font-size: 20px;
-            letter-spacing: 3px;
-            margin-bottom: 4px;
+            color: #fff; font-size: 20px;
+            letter-spacing: 3px; margin-bottom: 4px;
         }
 
-        .footer-info p {
-            font-size: 13px;
-            color: #888;
-        }
+        .footer-info p { font-size: 13px; color: #888; }
 
         .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: flex; gap: 20px;
+            flex-wrap: wrap; justify-content: center;
         }
 
         .footer-links a {
-            color: #888;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 13px;
+            color: #888; text-decoration: none;
+            transition: color 0.3s; font-size: 13px;
         }
 
-        .footer-links a:hover {
-            color: var(--primary-hover);
-        }
+        .footer-links a:hover { color: var(--primary-hover); }
 
-        .footer-copy {
-            text-align: center;
-            font-size: 11px;
-        }
+        .footer-copy { text-align: center; font-size: 11px; }
+        .footer-copy p { margin: 3px 0; color: #555; }
 
-        .footer-copy p {
-            margin: 3px 0;
-            color: #555;
-        }
-
-        /* ======================================== */
         /* ===== RESPONSIVO ===== */
-        /* ======================================== */
-
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
+            .menu-toggle { display: block; }
 
             .nav-menu {
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 60px;
-                left: 0;
+                top: 60px; left: 0;
                 width: 100%;
                 background: rgba(0, 0, 0, 0.98);
                 padding: 20px 16px;
@@ -571,9 +419,7 @@
                 backdrop-filter: blur(20px);
             }
 
-            .nav-menu.open {
-                display: flex;
-            }
+            .nav-menu.open { display: flex; }
 
             .nav-menu a {
                 padding: 12px;
@@ -582,36 +428,19 @@
                 font-size: 16px;
             }
 
-            .nav-menu a::after {
-                display: none;
-            }
+            .nav-menu a::after { display: none; }
 
-            .form-box {
-                padding: 25px 20px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-
-            .avaliacao-header h2 {
-                font-size: 24px;
-            }
+            .form-box { padding: 25px 20px; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+            .avaliacao-header h2 { font-size: 24px; }
 
             .sugestao-item .sugestao-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
 
-            .sugestao-item {
-                padding: 16px 18px;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-            }
+            .sugestao-item { padding: 16px 18px; }
+            .footer-content { gap: 20px; }
 
             .footer-links {
                 flex-direction: row;
@@ -620,46 +449,24 @@
                 gap: 15px;
             }
 
-            .logo-text .title {
-                font-size: 16px;
-            }
-
-            .logo-icon {
-                width: 34px;
-                height: 34px;
-            }
+            .logo-text .title { font-size: 16px; }
+            .logo-icon { width: 34px; height: 34px; }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 0 12px;
-            }
+            .container { padding: 0 12px; }
 
             .logo-text .title {
                 font-size: 14px;
                 letter-spacing: 1px;
             }
 
-            .logo-text .sub {
-                display: none;
-            }
+            .logo-text .sub { display: none; }
+            .logo-icon { width: 30px; height: 30px; }
 
-            .logo-icon {
-                width: 30px;
-                height: 30px;
-            }
-
-            .form-box {
-                padding: 20px 16px;
-            }
-
-            .avaliacao-header h2 {
-                font-size: 20px;
-            }
-
-            .avaliacao-header p {
-                font-size: 13px;
-            }
+            .form-box { padding: 20px 16px; }
+            .avaliacao-header h2 { font-size: 20px; }
+            .avaliacao-header p { font-size: 13px; }
 
             .form-group input,
             .form-group textarea {
@@ -667,36 +474,18 @@
                 font-size: 13px;
             }
 
-            .btn {
-                padding: 12px 20px;
-                font-size: 14px;
-            }
+            .btn { padding: 12px 20px; font-size: 14px; }
 
-            .sugestao-item {
-                padding: 14px 14px;
-            }
+            .sugestao-item { padding: 14px 14px; }
+            .sugestao-item .sugestao-texto { font-size: 13px; }
 
-            .sugestao-item .sugestao-texto {
-                font-size: 13px;
-            }
-
-            .footer {
-                padding: 30px 0 20px;
-            }
-
-            .footer-info h3 {
-                font-size: 16px;
-            }
+            .footer { padding: 30px 0 20px; }
+            .footer-info h3 { font-size: 16px; }
         }
 
         @media (max-width: 360px) {
-            .form-box {
-                padding: 16px 12px;
-            }
-
-            .form-group label {
-                font-size: 11px;
-            }
+            .form-box { padding: 16px 12px; }
+            .form-group label { font-size: 11px; }
 
             .form-group input,
             .form-group textarea {
@@ -704,88 +493,58 @@
                 font-size: 12px;
             }
 
-            .btn {
-                font-size: 13px;
-                padding: 10px 16px;
-            }
-
-            .sugestao-item .sugestao-header .nome {
-                font-size: 14px;
-            }
+            .btn { font-size: 13px; padding: 10px 16px; }
+            .sugestao-item .sugestao-header .nome { font-size: 14px; }
         }
 
         @media (min-width: 992px) {
-            .container {
-                padding: 0 32px;
-            }
-
-            .avaliacao-section {
-                padding: 40px 0;
-            }
-
-            .avaliacao-header h2 {
-                font-size: 32px;
-            }
-
-            .form-box {
-                padding: 40px 45px;
-            }
-
-            .logo-text .title {
-                font-size: 20px;
-            }
-
-            .logo-icon {
-                width: 44px;
-                height: 44px;
-            }
-
-            .sugestoes-list h3 {
-                font-size: 24px;
-            }
+            .container { padding: 0 32px; }
+            .avaliacao-section { padding: 40px 0; }
+            .avaliacao-header h2 { font-size: 32px; }
+            .form-box { padding: 40px 45px; }
+            .logo-text .title { font-size: 20px; }
+            .logo-icon { width: 44px; height: 44px; }
+            .sugestoes-list h3 { font-size: 24px; }
         }
 
         @media print {
-            .header {
-                position: static;
-            }
+            .header { position: static; }
             .nav-menu { display: none !important; }
             .menu-toggle { display: none !important; }
             .btn { display: none !important; }
             .footer { background: #f0f0f0 !important; color: #333 !important; }
-            .form-box { border: 1px solid #ccc !important; }
-            .sugestao-item { border: 1px solid #ccc !important; }
         }
     </style>
 </head>
 <body>
 
     <!-- HEADER PREMIUM -->
-    <!-- HEADER PREMIUM -->
-<header class="header" id="mainHeader">
-    <div class="container header-content">
-        <a href="/" class="logo">
-            <div class="logo-icon">
-                <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
-                <div class="glow-ring"></div>
-            </div>
-            <div class="logo-text">
-                <span class="title">GRÊMIO 1ª CIA</span>
-                <span class="sub">Sistema de Gestão</span>
-            </div>
-        </a>
-        <nav class="nav-menu" id="navMenu">
-            <a href="/">Início</a>
-            <a href="/lista">Membros</a>
-            <a href="/avaliacao">Sugestões</a>
-            <a href="/ficha">Ficha</a>
-         
-        </nav>
-        <button class="menu-toggle" id="menuToggle">☰</button>
-    </div>
-</header>
+    <header class="header" id="mainHeader">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="1cia.png" alt="Logo Grêmio 1ª Cia">
+                    <div class="glow-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="title">GRÊMIO 1ª CIA</span>
+                    <span class="sub">Sistema de Gestão</span>
+                </div>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/">Início</a>
+                <a href="/lista">Membros</a>
+                <a href="/avaliacao" class="active">Sugestões</a>
+                <a href="/ficha">Ficha</a>
+                <a href="/ficha_admin">Painel da Ficha</a>
+                <a href="/dashboard">Dashboard</a>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </nav>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </header>
 
-    <!-- AVALIACAO -->
+    <!-- AVALIAÇÃO -->
     <section class="avaliacao-section">
         <div class="container">
             <div class="avaliacao-header">
@@ -847,6 +606,8 @@
                     <a href="/">Início</a>
                     <a href="/lista">Membros</a>
                     <a href="/avaliacao">Sugestões</a>
+                    <a href="/ficha">Ficha</a>
+                    <a href="/ficha_admin">Painel da Ficha</a>
                     <a href="/dashboard">Dashboard</a>
                 </div>
                 <div class="footer-copy">
@@ -859,15 +620,12 @@
     </footer>
 
     <script>
-        // ===== HEADER SCROLL EFFECT =====
+        // ===== HEADER SCROLL =====
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.getElementById('mainHeader');
             window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
             });
         });
 
@@ -875,11 +633,8 @@
         function getUsuario() {
             const data = localStorage.getItem('usuarioLogado');
             if (data) {
-                try {
-                    return JSON.parse(data);
-                } catch {
-                    return null;
-                }
+                try { return JSON.parse(data); }
+                catch { return null; }
             }
             return null;
         }
@@ -889,7 +644,7 @@
             return user && (user.role === 'adm' || user.role === 'dev');
         }
 
-        // ===== MENU MOBILE =====
+        // ===== MENU MOBILE + SESSÃO =====
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
@@ -900,44 +655,31 @@
                 });
             }
 
-            const navLinks = navMenu.querySelectorAll('a');
-            navLinks.forEach(link => {
+            navMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        navMenu.classList.remove('open');
-                    }
+                    if (window.innerWidth <= 768) navMenu.classList.remove('open');
                 });
             });
 
             document.addEventListener('click', function(event) {
                 const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
-                if (!isClickInside && window.innerWidth <= 768) {
-                    navMenu.classList.remove('open');
-                }
+                if (!isClickInside && window.innerWidth <= 768) navMenu.classList.remove('open');
             });
 
-            // Verificar sessão via API
+            // Verifica sessão e mostra/esconde a lista de sugestões
             fetch('/api/verificar_sessao')
                 .then(response => response.json())
                 .then(data => {
-                    const navLogin = document.getElementById('navLogin');
-                    const navLogout = document.getElementById('navLogout');
-                    const navDashboard = document.getElementById('navDashboard');
-
                     if (data.logado) {
-                        if (navLogin) navLogin.style.display = 'none';
-                        navLogout.style.display = 'inline-block';
-                        navDashboard.style.display = 'inline-block';
                         localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
 
+                        // Se for ADM ou DEV, mostra a lista
                         if (data.user.role === 'adm' || data.user.role === 'dev') {
-                            document.getElementById('sugestoesList').style.display = 'block';
+                            const lista = document.getElementById('sugestoesList');
+                            if (lista) lista.style.display = 'block';
                             carregarSugestoes();
                         }
                     } else {
-                        if (navLogin) navLogin.style.display = 'none';
-                        navLogout.style.display = 'none';
-                        navDashboard.style.display = 'none';
                         localStorage.removeItem('usuarioLogado');
                     }
                 })
@@ -946,8 +688,17 @@
                 });
         });
 
-        // ===== CARREGAR SUGESTÕES DA API =====
+        // ===== CARREGAR SUGESTÕES =====
         function carregarSugestoes() {
+            const container = document.getElementById('sugestoesContainer');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div style="text-align: center; padding: 30px; color: #666;">
+                    Carregando sugestões...
+                </div>
+            `;
+
             fetch('/api/sugestoes')
                 .then(response => response.json())
                 .then(data => {
@@ -955,7 +706,7 @@
                 })
                 .catch(error => {
                     console.error('Erro ao carregar sugestões:', error);
-                    document.getElementById('sugestoesContainer').innerHTML = `
+                    container.innerHTML = `
                         <div style="text-align: center; padding: 30px; color: #e74c3c;">
                             Erro ao carregar sugestões
                         </div>
@@ -966,6 +717,7 @@
         // ===== RENDERIZAR SUGESTÕES =====
         function renderizarSugestoes(sugestoes) {
             const container = document.getElementById('sugestoesContainer');
+            if (!container) return;
 
             if (!sugestoes || sugestoes.length === 0) {
                 container.innerHTML = `
@@ -980,7 +732,7 @@
                 let dataFormatada = s.data;
                 try {
                     const dataObj = new Date(s.data);
-                    dataFormatada = dataObj.toLocaleDateString('pt-BR') + ' ' + 
+                    dataFormatada = dataObj.toLocaleDateString('pt-BR') + ' ' +
                                    dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 } catch(e) {}
 
@@ -1002,7 +754,7 @@
             }).join('');
         }
 
-        // ===== ENVIAR SUGESTÃO PARA API =====
+        // ===== ENVIAR SUGESTÃO =====
         function enviarSugestao(event) {
             event.preventDefault();
 
@@ -1011,7 +763,6 @@
             const pelotao = document.getElementById('pelotao').value.trim();
             const texto = document.getElementById('sugestao').value.trim();
 
-            // Validação silenciosa - apenas alertas
             if (!gmail || !nome || !pelotao || !texto) {
                 alert('Preencha todos os campos obrigatórios.');
                 return;
@@ -1061,9 +812,7 @@
                 return;
             }
 
-            if (!confirm('Tem certeza que deseja excluir esta sugestão?')) {
-                return;
-            }
+            if (!confirm('Tem certeza que deseja excluir esta sugestão?')) return;
 
             fetch(`/api/sugestoes/${id}`, { method: 'DELETE' })
                 .then(response => response.json())
@@ -1085,10 +834,8 @@
             fetch('/api/logout', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
-                        localStorage.removeItem('usuarioLogado');
-                        window.location.href = '/';
-                    }
+                    localStorage.removeItem('usuarioLogado');
+                    window.location.href = '/';
                 })
                 .catch(error => {
                     console.error('Erro ao fazer logout:', error);
